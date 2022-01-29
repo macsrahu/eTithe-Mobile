@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="87169fdb-8551-4784-9281-e3d5da8d88ef" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/activities/Notifications.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/adapter/NotificationAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/models/Notification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../app/src/main/res/layout/notification_row.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../app/src/main/res/layout/notifications_list.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/LocationSummary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/models/SalesSummary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/drawable/ic_baseline_location_on_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/drawable/ic_baseline_text_snippet_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/drawable/ic_baseline_vertical_split_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/location_summary.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Songs/90s/Maalayil Yaro- [Masstamilan.In]-.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../$RECYCLE.BIN/S-1-5-21-1314409214-1492036432-1463258044-1001/$R9IVZII.idea/modules/eTithe.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/utilities/FirebaseTables.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/prgs/etithe/utilities/FirebaseTables.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../eTithe.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/LocationSalesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/LocationSalesList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/adapters/SalesRepAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/adapters/SalesRepAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/models/SalesReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/models/SalesReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/GenericAsyncTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/GenericAsyncTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/JsonHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/java/com/bosma/mreport/utilities/JsonHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/company_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/dialog_company_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/salesreport_row.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/layout/salesreport_row.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Projects/mReport/app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../" />
+  </component>
+  <component name="ProjectId" id="1oQ38P5RNEFxYvXrzHt5xUfGFnC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$PROJECT_DIR$/../../../../Development/android-sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../app" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.do.not.copy.http.proxy.settings.to.gradle" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="eTithe.app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="87169fdb-8551-4784-9281-e3d5da8d88ef" name="Default Changelist" comment="" />
+      <created>1613204827570</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1613204827570</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="92" y="92" width="1416" height="676" key="AVDManager" timestamp="1613206021374">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="92" y="92" width="1416" height="676" key="AVDManager/0.0.1600.860@0.0.1600.860" timestamp="1613206021374" />
+    <state x="580" y="171" key="FileChooserDialogImpl" timestamp="1619857690365">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="580" y="171" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1619857690365" />
+    <state width="1557" height="222" key="GridCell.Tab.0.bottom" timestamp="1613210954600">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1613210954600" />
+    <state width="1557" height="222" key="GridCell.Tab.0.center" timestamp="1613210954600">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1613210954600" />
+    <state width="1557" height="222" key="GridCell.Tab.0.left" timestamp="1613210954600">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1613210954600" />
+    <state width="1557" height="222" key="GridCell.Tab.0.right" timestamp="1613210954600">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1613210954600" />
+    <state x="609" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1613210111521">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="609" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1600.860@0.0.1600.860" timestamp="1613210111521" />
+  </component>
+</project>

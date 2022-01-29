@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!--Scrim insets vie that allows the drawer the be behind the status bar and visible -->
+    <declare-styleable name="ScrimInsetsView">
+        <attr name="insetForeground" format="reference|color" />
+    </declare-styleable>
+
+    <!-- ColorState to be used in the TinOnImageView view -->
+    <declare-styleable name="TintOnStateImageView">
+        <attr name="colorStateList" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="TimelineLayout">
+        <!-- Time axis offset -->
+        <attr name="line_margin_left" format="dimension"/>
+        <!-- Time axis offset -->
+        <attr name="line_margin_top" format="dimension"/>
+        <!-- line width -->
+        <attr name="line_stroke_width" format="dimension"/>
+        <!-- Line color -->
+        <attr name="line_color" format="color"/>
+        <!-- Dot size -->
+        <attr name="point_size" format="dimension"/>
+        <!-- Point color -->
+        <attr name="point_color" format="color"/>
+        <!-- Icon -->
+        <attr name="icon_src" format="reference|color"/>
+    </declare-styleable>
+
+</resources>

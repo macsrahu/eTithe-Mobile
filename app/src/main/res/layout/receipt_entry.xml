@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5ssp"
+            android:background="@drawable/recntangle_text_view_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_donor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".30"
+                android:background="@drawable/rectangel_text_view"
+                android:fontFamily="@font/good_time"
+                android:gravity="center_vertical|center_horizontal"
+                android:includeFontPadding="true"
+                android:lines="1"
+                android:padding="@dimen/_4ssp"
+                android:textColor="@color/white"
+                android:paddingLeft="@dimen/_4ssp"
+                android:text="Donor"
+                android:textAllCaps="true"
+                android:typeface="normal"></TextView>
+
+            <TextView
+                android:id="@+id/text_view_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvStoreName"
+                android:layout_marginTop="@dimen/_1ssp"
+                android:gravity="center_horizontal"
+                android:lines="4"
+                android:maxLines="4"
+                android:padding="@dimen/_2ssp"
+                android:text="Address"
+                android:textSize="@dimen/_12ssp" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/content_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_7ssp"
+                android:layout_marginBottom="200dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_add_payment"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add Payment"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/spinner_relations"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:text="Month Of" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:background="@drawable/date_border"
+                        android:padding="@dimen/_4ssp">
+
+                        <com.jaredrummler.materialspinner.MaterialSpinner
+                            android:id="@+id/spinner_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_above="@+id/text_root_name"
+                            android:background="@drawable/date_border"
+                            android:gravity="center"></com.jaredrummler.materialspinner.MaterialSpinner>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_view_no_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:fontFamily="@font/good_time"
+                        android:gravity="center"
+                        android:padding="@dimen/_5ssp"
+                        android:text="NO RECEIPT AMOUNT"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvReceipts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:padding="@dimen/_2ssp"
+                        android:background="@drawable/date_border"
+                        android:clipToPadding="false"
+                        android:scrollbars="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    <TextView
+                        android:id="@+id/text_view_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:fontFamily="@font/good_time"
+                        android:gravity="right"
+                        android:padding="@dimen/_5ssp"
+                        android:text="TOTAL"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <TextView
+                        android:id="@+id/text_remove"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:fontFamily="@font/pt_serif"
+                        android:gravity="right"
+                        android:padding="@dimen/_5ssp"
+                        android:text="* Long press to remove fund(s)"
+                        android:textColor="@color/md_grey_500" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:hint="Amount">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/rupee"
+                            android:drawablePadding="10dp"
+                            android:gravity="end"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="5" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/spinner_relations"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:text="Fund Type" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:background="@drawable/date_border"
+                        android:padding="@dimen/_4ssp">
+
+                        <com.jaredrummler.materialspinner.MaterialSpinner
+                            android:id="@+id/spinner_fund_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text_root_name"
+                            android:background="@drawable/date_border"
+                            android:gravity="center"></com.jaredrummler.materialspinner.MaterialSpinner>
+
+                    </LinearLayout>
+
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/date_border"
+                        android:checkedButton="@+id/radio_button_male"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_4ssp">
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <RadioButton
+                            android:id="@+id/radio_button_cash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="CASH" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <RadioButton
+                            android:id="@+id/radio_button_cheque"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CHEQUE" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <RadioButton
+                            android:id="@+id/radio_button_unknown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:text="ONLINE" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/layBankDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:hint="Cheque No">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_cheque_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/cheque"
+                                android:drawablePadding="10dp"
+                                android:imeOptions="actionDone"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:hint="Bank Name">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_bank_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_baseline_bank_24"
+                                android:drawablePadding="10dp"
+                                android:imeOptions="actionDone"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:hint="Note">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="80dp"
+                            android:drawableLeft="@drawable/ic_baseline_credit_card_24"
+                            android:drawablePadding="10dp"
+                            android:gravity="top|left"
+                            android:imeOptions="actionDone"
+                            android:inputType="textImeMultiLine"
+                            android:lines="6" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/white"
+        app:backgroundTint="@color/primary_dark"
+        app:elevation="@dimen/_5ssp"
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="@color/colorAccent"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_navigation_receipt" />
+</FrameLayout>

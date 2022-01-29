@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/save_text"
+        android:id="@+id/btnSave"
+        android:icon="@drawable/save"/>
+    <item android:title="@string/photo_text"
+        android:id="@+id/btnPhoto"
+        android:icon="@drawable/camera"/>
+    <item android:title="@string/dep_text"
+        android:id="@+id/btnDependent"
+        android:icon="@drawable/new_customer"/>
+    <item android:title="@string/back_text"
+        android:id="@+id/btnCancel"
+        android:icon="@drawable/ic_baseline_arrow_back_24"/>
+</menu>

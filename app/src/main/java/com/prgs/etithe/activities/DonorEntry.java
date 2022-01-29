@@ -1,0 +1,768 @@
+package com.prgs.etithe.activities;
+
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.github.florent37.expansionpanel.ExpansionLayout;
+import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
+import com.prgs.etithe.R;
+import com.prgs.etithe.models.Area;
+import com.prgs.etithe.models.Donor;
+import com.prgs.etithe.utilities.FirebaseTables;
+import com.prgs.etithe.utilities.Global;
+import com.prgs.etithe.utilities.KeyboardUtil;
+import com.prgs.etithe.utilities.Messages;
+import com.prgs.etithe.utilities.CommonList;
+
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class DonorEntry extends AppCompatActivity {
+    @BindView(R.id.input_donor_name)
+    TextInputEditText input_donor_name;
+
+    @BindView(R.id.input_aadhar_no)
+    TextInputEditText input_aadhar_no;
+
+    @BindView(R.id.input_pan)
+    TextInputEditText input_pan;
+
+    @BindView(R.id.input_address_line1)
+    TextInputEditText input_address_line1;
+
+    @BindView(R.id.input_address_line2)
+    TextInputEditText input_address_line2;
+
+    @BindView(R.id.input_city)
+    TextInputEditText input_city;
+
+    @BindView(R.id.input_district)
+    TextInputEditText input_district;
+
+    @BindView(R.id.imgBrithDate)
+    ImageButton imgBirthDate;
+
+    @BindView(R.id.imgWedDate)
+    ImageButton imgWedDate;
+
+    @BindView(R.id.input_pincode)
+    TextInputEditText input_pincode;
+
+    @BindView(R.id.input_mobile_no)
+    TextInputEditText input_mobile_no;
+
+    @BindView(R.id.input_whatsapp_no)
+    TextInputEditText input_whatsapp_no;
+
+    @BindView(R.id.input_email)
+    TextInputEditText input_email;
+
+    @BindView(R.id.radio_button_male)
+    RadioButton radio_button_male;
+    @BindView(R.id.radio_button_female)
+    RadioButton radio_button_female;
+
+    @BindView(R.id.radio_button_unknown)
+    RadioButton radio_button_unknown;
+
+    @BindView(R.id.input_birth_date)
+    TextView input_birth_date;
+
+    @BindView(R.id.input_web_date)
+    TextView input_web_date;
+
+    @BindView(R.id.radio_button_married)
+    RadioButton radio_button_married;
+
+    @BindView(R.id.radio_button_single)
+    RadioButton radio_button_single;
+
+    @BindView(R.id.radio_button_member)
+    RadioButton radio_button_member;
+
+    @BindView(R.id.radio_button_non_member)
+    RadioButton radio_button_non_member;
+
+
+    @BindView(R.id.spinner_area)
+    MaterialSpinner spinner_area;
+
+    @BindView(R.id.spinner_state)
+    MaterialSpinner spinner_state;
+
+
+    BottomNavigationView buttonNavigationView;
+
+    Toolbar mToolbarView = null;
+    Donor mDonor = new Donor();
+    boolean ENTRY_MODE_NEW = true;
+    Boolean isValid = false;
+
+    String mDonorName, mEmail, mMobile, mAadharNo, mPanNo, mMarried, mWhatsAppNo, mAddressLine1, mAddressLine2, mCity, mPincode;
+    String mDistrict, mState, mWedDate, mBirthDate, mGender, mMemberType;
+    String _NAVIGATE_FROM = "";
+    String mPrimaryKey = "";
+
+    Area mArea=null;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.donor_entry);
+        ButterKnife.bind(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            _NAVIGATE_FROM = extras.getString("FROM");
+        }
+
+
+        if (Global.LOGIN_USER_DETAIL==null){
+            Global.GET_LOGIN_INFO_FROM_MEMORY(getApplicationContext());
+        }
+        InitControls();
+
+        if (Global.SELECTED_DONOR_MODEL != null) {
+            ENTRY_MODE_NEW = false;
+            mDonor = Global.SELECTED_DONOR_MODEL;
+            Global.DONOR_KEY = Global.SELECTED_DONOR_MODEL.getKey();
+            mToolbarView = Global.PrepareToolBar(this, true, "Update Donor");
+            setSupportActionBar(mToolbarView);
+            BindDonorData();
+        } else {
+            Global.DONOR_KEY = "";
+            mToolbarView = Global.PrepareToolBar(this, true, "New Donor");
+            setSupportActionBar(mToolbarView);
+        }
+
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private void BindDonorData() {
+        input_donor_name.setText(mDonor.getDonor());
+        Global.DONOR_KEY = mDonor.getKey();
+        if (mDonor.getGender() != null) {
+            if (mDonor.getGender().equals("Male")) {
+                radio_button_male.setChecked(true);
+            } else if (mDonor.getGender().equals("Female")) {
+                radio_button_female.setChecked(true);
+            } else {
+                radio_button_unknown.setChecked(true);
+            }
+        }
+        if (mDonor.getMarried() != null) {
+            if (mDonor.getMarried().toLowerCase().equals("married")) {
+                radio_button_married.setChecked(true);
+            } else {
+                radio_button_single.setChecked(true);
+            }
+        }
+        if (mDonor.getMembertype() != null) {
+            if (mDonor.getMembertype().equals("Member")) {
+                radio_button_member.setChecked(true);
+            } else {
+                radio_button_non_member.setChecked(true);
+            }
+        }
+        if (mDonor.getAadhar() != null && !mDonor.getAadhar().equals("NA")) {
+            input_aadhar_no.setText(mDonor.getAadhar());
+        }
+        if (mDonor.getPan() != null) {
+            input_pan.setText(mDonor.getPan());
+        }
+        if (mDonor.getBirthdate() != null && !mDonor.getBirthdate().equals("NA")) {
+            input_birth_date.setText(mDonor.getBirthdate());
+        }
+        if (mDonor.getWeddate() != null && !mDonor.getWeddate().equals("NA")) {
+            input_web_date.setText(mDonor.getWeddate());
+        }
+        if (mDonor.getAddrline1() != null && !mDonor.getAddrline1().equals("NA")) {
+            input_address_line1.setText(mDonor.getAddrline1());
+        }
+        if (mDonor.getAddrline2() != null && !mDonor.getAddrline2().equals("NA")) {
+            input_address_line2.setText(mDonor.getAddrline2());
+        }
+        if (mDonor.getCity() != null && !mDonor.getCity().equals("NA")) {
+            input_city.setText(mDonor.getCity());
+        }
+        if (mDonor.getPincode() != null && !mDonor.getPincode().equals("NA")) {
+            input_pincode.setText(mDonor.getPincode());
+        }
+        if (mDonor.getPincode() != null && !mDonor.getPincode().equals("NA")) {
+            input_pincode.setText(mDonor.getPincode());
+        }
+        if (mDonor.getDistrict() != null && !mDonor.getDistrict().equals("NA")) {
+            input_district.setText(mDonor.getDistrict());
+        }
+        if (mDonor.getState() != null && !mDonor.getState().equals("NA")) {
+            spinner_state.setText(mDonor.getState());
+        }
+        if (mDonor.getMobile() != null && !mDonor.getMobile().equals("NA")) {
+            input_mobile_no.setText(mDonor.getMobile());
+        }
+        if (mDonor.getWhatsapp() != null && !mDonor.getWhatsapp().equals("NA")) {
+            input_whatsapp_no.setText(mDonor.getWhatsapp());
+        }
+        if (mDonor.getEmail() != null && !mDonor.getEmail().equals("NA")) {
+            input_email.setText(mDonor.getEmail());
+        }
+//        if (mDonor.getAreakey()!=null && mDonor.getArea()!=null){
+//            spinner_area.setHint(mDonor.getArea());
+//        }
+        buttonNavigationView.getMenu().findItem(R.id.btnSave).setTitle("Update");
+        buttonNavigationView.getMenu().findItem(R.id.btnPhoto).setEnabled(true);
+    }
+
+
+    private void InitControls() {
+        ExpansionLayout expAddr = findViewById(R.id.expansionLayoutAddr);
+        ExpansionLayout expPer = findViewById(R.id.expansionLayout);
+        final ExpansionLayoutCollection expansionLayoutCollection = new ExpansionLayoutCollection();
+        expansionLayoutCollection.add(expPer);
+        expansionLayoutCollection.add(expAddr);
+        expansionLayoutCollection.openOnlyOne(true);
+        radio_button_single.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    input_web_date.setText("");
+                } else {
+                    if (mDonor.getWeddate() != null) {
+                        input_web_date.setText(mDonor.getWeddate());
+                    }
+                }
+            }
+        });
+
+
+
+
+        buttonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
+        buttonNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.btnSave:
+                    if (Validate()) {
+                        if (ENTRY_MODE_NEW) {
+                            KeyboardUtil.hideKeyboard(DonorEntry.this);
+                            ValidateEmailAddress();
+                        } else {
+                            SaveRecord();
+                            KeyboardUtil.hideKeyboard(DonorEntry.this);
+                        }
+                    }
+                    break;
+
+                case R.id.btnPhoto:
+                    if (Global.DONOR_KEY.isEmpty()) {
+                        Messages.ShowToast(getApplicationContext(), "Before upload picture, add donor details");
+                    } else {
+                        Intent iUpload = new Intent(DonorEntry.this, UploadPhoto.class);
+                        iUpload.putExtra("FROM", "DEPENTRY");
+                        iUpload.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(iUpload);
+                    }
+                    break;
+
+                case R.id.btnDependent:
+                    if (Global.DONOR_KEY.isEmpty()) {
+                        Messages.ShowToast(getApplicationContext(), "Before add dependents, save donor details");
+                    } else {
+                        if (ENTRY_MODE_NEW) {
+                            Intent iUpload = new Intent(DonorEntry.this, DependentEntry.class);
+                            iUpload.putExtra("FROM", "DONOR_ENTRY");
+                            iUpload.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(iUpload);
+                        } else {
+                            Intent iUpload = new Intent(DonorEntry.this, DependentsList.class);
+                            iUpload.putExtra("FROM", "DONOR_ENTRY");
+                            iUpload.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(iUpload);
+                        }
+                    }
+                    break;
+                case R.id.btnCancel:
+                    onBackPressed();
+                    break;
+            }
+            return true;
+        });
+        if (ENTRY_MODE_NEW == false) {
+            buttonNavigationView.getMenu().findItem(R.id.btnSave).setTitle("Update");
+        }
+
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+        materialDateBuilder.setCalendarConstraints(limitRange().build());
+
+        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+
+        input_birth_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+                materialDatePicker.addOnPositiveButtonClickListener(
+                        new MaterialPickerOnPositiveButtonClickListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onPositiveButtonClick(Object selection) {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                input_birth_date.setText(dateFormat.format(selection));
+                            }
+                        });
+
+            }
+        });
+
+        MaterialDatePicker.Builder materialDateBuilderWed = MaterialDatePicker.Builder.datePicker();
+        materialDateBuilderWed.setCalendarConstraints(limitRange().build());
+        final MaterialDatePicker materialDatePickerWed = materialDateBuilder.build();
+        input_web_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (radio_button_married.isChecked()) {
+                    materialDatePickerWed.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+                    materialDatePickerWed.addOnPositiveButtonClickListener(
+                            new MaterialPickerOnPositiveButtonClickListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onPositiveButtonClick(Object selection) {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    input_web_date.setText(dateFormat.format(selection));
+                                }
+                            });
+                } else {
+                    Messages.ShowToast(getApplicationContext(), "Please select Married option to set wedding date");
+                }
+            }
+        });
+        input_birth_date.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                input_birth_date.setText("");
+                return false;
+            }
+        });
+        input_web_date.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                input_web_date.setText("");
+                return false;
+            }
+        });
+        LoadArea();
+        LoadState();
+        KeyboardUtil.hideKeyboard(this);
+
+    }
+    private void LoadState(){
+        ArrayList<String> stateList = CommonList.GetStateList();
+        if (stateList.size()>0) {
+            MaterialSpinnerAdapter adpState = new MaterialSpinnerAdapter<String>(getBaseContext(), stateList);
+            spinner_state.setAdapter(adpState);
+            mState = "Tamil Nadu";
+            spinner_state.setHint(mState);
+            spinner_state.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+                @Override
+                public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                    view.setSelectedIndex(position);
+                    if (view != null) {
+                        mState = item.toLowerCase().toString();
+                    }
+                }
+
+            });
+        }
+    }
+    private void LoadArea(){
+        if (Global.LOGIN_USER_DETAIL!=null) {
+
+            final ProgressDialog dialog = new ProgressDialog(DonorEntry.this, R.style.MyAlertDialogStyle);
+            dialog.setMessage("Loading areas..");
+            dialog.show();
+            ArrayList<Area> areas = new ArrayList<Area>();
+            FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_AREAS).orderByChild("regionkey")
+                    .equalTo(Global.LOGIN_USER_DETAIL.getRegionkey())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                areas.clear();
+
+                                Area areaMessage= new Area();
+                                areaMessage.setArea("Select Area");
+                                areaMessage.setKey("-1");
+                                areaMessage.setIsactive(true);
+                                areaMessage.setRegionkey("-1");
+                                areas.add(areaMessage);
+
+                                for (DataSnapshot areaSnapshot : dataSnapshot.getChildren()) {
+                                    Area area = areaSnapshot.getValue(Area.class);
+                                    area.setKey(areaSnapshot.getKey());
+                                    areas.add(area);
+                                }
+                                if (areas.size() > 0) {
+                                    MaterialSpinnerAdapter adpArea = new MaterialSpinnerAdapter<Area>(getBaseContext(), areas);
+                                    spinner_area.setAdapter(adpArea);
+                                    if (!ENTRY_MODE_NEW){
+                                        spinner_area.setText(mDonor.getArea());
+                                        mArea = new Area();
+                                        if (mDonor.getRegionkey()!=null){
+                                            mArea.setRegionkey(mDonor.getRegionkey());
+                                        }
+                                        mArea.setIsactive(true);
+                                        mArea.setKey(mDonor.getAreakey());
+                                    }
+                                    spinner_area.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<Area>() {
+                                        @Override
+                                        public void onItemSelected(MaterialSpinner view, int position, long id, Area item) {
+                                            view.setSelectedIndex(position);
+                                            if (view != null) {
+                                                mArea = item;
+                                            }
+                                        }
+
+                                    });
+                                }
+                                dialog.dismiss();
+                            } else {
+                                dialog.dismiss();
+                                Messages.ShowToast(getApplicationContext(), "Please check area created for this region");
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            dialog.dismiss();
+                        }
+                    });
+
+        }else{
+            Messages.ShowToast(getApplicationContext(), "Selected region not found");
+        }
+    }
+
+    private CalendarConstraints.Builder limitRange() {
+
+        CalendarConstraints.Builder constraintsBuilderRange = new CalendarConstraints.Builder();
+
+        Calendar calendarStart = Calendar.getInstance();
+        Calendar calendarEnd = Calendar.getInstance();
+
+        int year = 2020;
+        int startMonth = 2;
+        int startDate = 15;
+
+        int endMonth = 3;
+        int endDate = 20;
+        calendarStart.set(1950, startMonth - 1, startDate - 1);
+        calendarEnd.set(year - 5, endMonth - 1, endDate);
+
+        long minDate = calendarStart.getTimeInMillis();
+        long maxDate = calendarEnd.getTimeInMillis();
+
+
+        constraintsBuilderRange.setStart(minDate);
+        constraintsBuilderRange.setEnd(maxDate);
+        //constraintsBuilderRange.setValidator(new RangeValidator(minDate, maxDate));
+
+        return constraintsBuilderRange;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent iMain = new Intent(DonorEntry.this, _NAVIGATE_FROM.equals("MAIN") ? MainActivity.class : DonorsList.class);
+        iMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(iMain);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void SaveRecord() {
+
+        final ProgressDialog dialog = ProgressDialog.show(DonorEntry.this, null, "Updating..", true);
+        dialog.show();
+
+        DatabaseReference mDataRef = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS);
+        mDonor = new Donor();
+        if (ENTRY_MODE_NEW) {
+            mPrimaryKey = mDataRef.push().getKey();
+        } else {
+            mDonor = Global.SELECTED_DONOR_MODEL;
+            mPrimaryKey = Global.DONOR_KEY;
+        }
+        mDonor.setDonor(mDonorName);
+        mDonor.setAadhar(mAadharNo);
+        mDonor.setPan(mPanNo);
+        mDonor.setBirthdate(mBirthDate);
+        mDonor.setGender(mGender);
+
+        mDonor.setMarried(mMarried);
+        mDonor.setWeddate(mWedDate);
+        mDonor.setAddrline1(mAddressLine1);
+        mDonor.setAddrline2(mAddressLine2);
+        mDonor.setCity(mCity);
+        mDonor.setPincode(mPincode);
+        mDonor.setEmail(mEmail);
+        mDonor.setDistrict(mDistrict);
+        mDonor.setState(mState);
+        mDonor.setCountry("INDIA");
+        mDonor.setMobile(mMobile);
+        mDonor.setWhatsapp(mWhatsAppNo);
+        mDonor.setMembertype(mMemberType);
+        mDonor.setAreakey(mArea.getKey());
+        mDonor.setArea(mArea.getArea());
+        if (ENTRY_MODE_NEW) {
+            mDonor.setTransactionon(new Date().getTime());
+        }
+        mDonor.setUpdatedon(ENTRY_MODE_NEW ? "NA" : Global.GetCurrentDateAsString());
+        if (ENTRY_MODE_NEW) {
+            mDonor.setIsactive(true);
+            mDonor.setCreatedon(Global.GetCurrentDateAsString());
+            if (Global.LOGIN_USER_DETAIL.getRegionkey() != null) {
+                mDonor.setRegionkey(Global.LOGIN_USER_DETAIL.getRegionkey());
+            } else {
+                mDonor.setRegionkey("NA");
+            }
+            mDonor.setAreakey("NA");
+            if (Global.LOGIN_USER_DETAIL.getUsertype() == 3) {// AreaPerson
+                //Field Person Comes Under
+                mDonor.setPersonkey(Global.LOGIN_BY_AREA_PERSON.getKey());
+                mDonor.setOfficerkey(Global.LOGIN_BY_AREA_PERSON.getOfficerkey());
+                mDonor.setEnrolledby("AP");
+                if (Global.LOGIN_BY_AREA_PERSON.getAreakey() != null) {
+                    mDonor.setAreakey(Global.LOGIN_BY_AREA_PERSON.getAreakey());
+                }
+            } else {
+                //Field Officer Directly Entrolled the Donor
+                mDonor.setEnrolledby("FO");
+                mDonor.setOfficerkey(Global.LOGIN_BY_FIELD_OFFICER.getKey());
+                mDonor.setPersonkey(Global.LOGIN_BY_FIELD_OFFICER.getKey()); //
+                if (Global.LOGIN_BY_FIELD_OFFICER.getAreakey() != null) {
+                    mDonor.setAreakey(Global.LOGIN_BY_FIELD_OFFICER.getAreakey());
+                }
+            }
+        }
+        mDonor.setKey(mPrimaryKey);
+        mDataRef.child(mPrimaryKey).setValue(mDonor).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                dialog.dismiss();
+                if (ENTRY_MODE_NEW) {
+                    Messages.ShowToast(getApplicationContext(), "New donor has been added successfully");
+                    Global.DONOR_KEY = mPrimaryKey;
+                    Global.DONOR_NAME = mDonorName;
+                    Global.SELECTED_DONOR_MODEL = mDonor;
+                    Intent iMain = new Intent(DonorEntry.this, UploadPhoto.class);
+                    iMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(iMain);
+                } else {
+                    Messages.ShowToast(getApplicationContext(), "Donor detail  has been updated successfully");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Messages.ShowToast(getApplicationContext(), "Unable to add new donoor");
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private boolean Validate() {
+
+        boolean isvalid = true;
+        mDonorName = input_donor_name.getText().toString();
+        mGender = radio_button_female.isChecked() ? "Female" : radio_button_male.isChecked() ? "Male" : "Unknown";
+        mMarried = radio_button_married.isChecked() ? "Married" : "Single";
+
+        mBirthDate = input_birth_date.getText().toString();
+        mWedDate = input_web_date.getText().toString();
+
+        mMemberType = radio_button_member.isChecked() ? "MEMBER" : "NONMEMBER";
+
+        mAadharNo = input_aadhar_no.getText().toString() != null ? input_aadhar_no.getText().toString() : "NA";
+        mPanNo = input_pan.getText().toString() != null ? input_pan.getText().toString() : "NA";
+
+
+        mAddressLine1 = input_address_line1.getText().toString();
+        mAddressLine2 = input_address_line2.getText().toString();
+        mCity = input_city.getText().toString();
+        mPincode = input_district.getText().toString();
+        mDistrict = input_district.getText().toString();
+        //mState = input_state.getText().toString();
+
+        mEmail = input_email.getText().toString() != null ? input_email.getText().toString() : "NA";
+        mMobile = input_mobile_no.getText().toString();
+        mWhatsAppNo = input_whatsapp_no.getText().toString() != null ? input_whatsapp_no.getText().toString() : "NA";
+        mPincode = input_pincode.getText().toString();
+
+        if (mDonorName.isEmpty()) {
+            input_donor_name.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            input_donor_name.setError(null);
+        }
+//        if (mAadharNo.isEmpty()) {
+//            input_aadhar_no.setError("Cannot be empty");
+//            isvalid = false;
+//        } else {
+//            if (mAadharNo.length() != 12) {
+//                input_aadhar_no.setError("Length must be 12");
+//                isvalid = false;
+//            } else {
+//                input_aadhar_no.setError(null);
+//            }
+//        }
+
+//        if (mPanNo.isEmpty()) {
+//            input_pan.setError("Cannot be empty");
+//            isvalid = false;
+//        } else {
+//            if (input_pan.length() != 6) {
+//                input_pan.setError("Length must be 6");
+//                isvalid = false;
+//            } else {
+//                input_pan.setError(null);
+//            }
+//        }
+        spinner_area.setError(null);
+        if (mArea==null){
+            spinner_area.setError("Select Area");
+            isvalid=false;
+        }else{
+            if (mArea.getKey().equals("-1")){
+                spinner_area.setError("Select Area");
+                Messages.ShowToast(getApplicationContext(),"Select Donor area");
+                isvalid=false;
+            }
+        }
+        if (mAddressLine1.isEmpty()) {
+            input_address_line1.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            input_address_line1.setError(null);
+        }
+
+        if (mCity.isEmpty()) {
+            input_city.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            input_city.setError(null);
+        }
+
+        if (mPincode.isEmpty()) {
+            input_pincode.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            input_pincode.setError(null);
+        }
+        if (mDistrict.isEmpty()) {
+            input_district.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            input_district.setError(null);
+        }
+        if (mState.isEmpty()) {
+            spinner_state.setError("Cannot be empty");
+            isvalid = false;
+        } else {
+            spinner_state.setError(null);
+        }
+        if (mMobile.isEmpty() || mMobile.length() != 10) {
+            input_mobile_no.setError("Enter valid Mobile No");
+            isvalid = false;
+        } else {
+            input_mobile_no.setError(null);
+        }
+
+//        if (mWhatsAppNo.isEmpty() || mWhatsAppNo.length() != 10) {
+//            input_whatsapp_no.setError("Enter valid WhatsApp No");
+//            isvalid = false;
+//        } else {
+//            input_whatsapp_no.setError(null);
+//        }
+//
+//        if (mEmail.isEmpty() || mEmail.length() < 5) {
+//            input_email.setError("Enter valid Email");
+//            isvalid = false;
+//        }
+
+        return isvalid;
+    }
+
+    public void ValidateEmailAddress() {
+
+        if (!mEmail.isEmpty()) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            final ProgressDialog dialog = ProgressDialog.show(DonorEntry.this, null, "Validating email id", true);
+            dialog.show();
+            auth.fetchSignInMethodsForEmail(mEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                    if (task.getResult().getSignInMethods().size() > 0) {
+                        dialog.dismiss();
+                        input_email.setError("Email id already exist. Please try new email id");
+                        Global.ShowSnackMessage(DonorEntry.this, "Email id already exist. Please try new email id");
+                        isValid = false;
+                    } else {
+                        SaveRecord();
+                        dialog.dismiss();
+                        isValid = true;
+                    }
+                }
+            });
+
+        }
+    }
+}

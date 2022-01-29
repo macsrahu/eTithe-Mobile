@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangel_text_view"
+            android:elevation="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_4ssp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_viewMore"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_2ssp"
+                android:elevation="5dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_5ssp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_2ssp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layPicture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/imgPicture"
+                                android:layout_width="106dp"
+                                android:layout_height="106dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0"
+                                android:src="@drawable/profile"
+                                app:civ_border_color="@color/alphabet_background_border_color"
+                                app:civ_border_width="2dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_10ssp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/recntangle_text_view_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_2ssp">
+
+                            <TextView
+                                android:id="@+id/text_view_donor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorPrimary"
+                                android:fontFamily="@font/good_time"
+                                android:gravity="center_horizontal"
+                                android:lines="1"
+                                android:padding="@dimen/_6ssp"
+                                android:text="name"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_10ssp"></TextView>
+
+                            <TextView
+                                android:id="@+id/text_view_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pt_serif"
+                                android:gravity="center_horizontal"
+                                android:lines="5"
+                                android:padding="@dimen/_4ssp"
+                                android:text="Detail"
+                                android:textSize="@dimen/_9ssp"></TextView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/lineView"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dip"
+                        android:layout_marginTop="@dimen/_3ssp"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/_5ssp"
+                        android:paddingBottom="10dip"></View>
+
+                    <LinearLayout
+                        android:id="@+id/layShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_4ssp">
+
+                        <ImageView
+                            android:id="@+id/imgWhatsApp"
+                            android:layout_width="@dimen/_18ssp"
+                            android:layout_height="@dimen/_18ssp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/whatsapp_logo"
+                            android:visibility="gone"></ImageView>
+
+                        <ImageView
+                            android:id="@+id/imgShare"
+                            android:layout_width="@dimen/_18ssp"
+                            android:layout_height="@dimen/_18ssp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_baseline_share_24"></ImageView>
+                        <ImageView
+                            android:id="@+id/imgPdf"
+                            android:layout_width="@dimen/_18ssp"
+                            android:layout_height="@dimen/_18ssp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_baseline_picture_as_pdf_24"></ImageView>
+
+                        <ImageView
+                            android:id="@+id/imgPhone"
+                            android:layout_width="@dimen/_18ssp"
+                            android:layout_height="@dimen/_18ssp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_baseline_contact_phone_24"></ImageView>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/content_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_40ssp"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_6ssp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_2ssp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp">
+
+                    <LinearLayout
+                        android:id="@+id/layReceipt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5ssp"
+                        android:background="@drawable/date_border"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimaryDark"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Receipt"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_receipt_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_receipt_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Receipt no:"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_receipt_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_date_range_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Receipt Date:"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/rupee"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Amount"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_calendar_view_month_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Month"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_mode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:drawableLeft="@drawable/ic_baseline_payment_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Mode"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/date_border"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_2ssp">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvReceipts"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/_5ssp"
+                                android:background="@drawable/date_border"
+                                android:clipToPadding="false"
+                                android:padding="@dimen/_2ssp"
+                                android:scrollbars="vertical"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/lineBank"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"
+                            android:visibility="gone"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_bank"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_bank_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:lines="3"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Bank Detail"
+                            android:textSize="@dimen/_13ssp"
+                            android:visibility="gone">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_5ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="serif"
+                            android:lines="3"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Notes"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/_10ssp"></com.google.android.material.textview.MaterialTextView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip"
+                            android:layout_marginTop="@dimen/_3ssp"
+                            android:background="@color/md_grey_200"
+                            android:padding="@dimen/_5ssp"
+                            android:paddingBottom="10dip"></View>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Signature">
+
+                        </com.google.android.material.textview.MaterialTextView>
+
+                        <ImageView
+                            android:id="@+id/imgSignature"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_baseline_share_24">
+
+                        </ImageView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_back"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5ssp"
+            android:layout_weight="2"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark" />
+    </LinearLayout>
+</FrameLayout>

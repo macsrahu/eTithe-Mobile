@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources  xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppMaterialTheme" parent="SuperMaterialTheme">
+        <!-- only for Lollipop and above versions -->
+        <!-- Status Bar Color -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Toolbar Bar Color -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Toolbar Text Color -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="SuperMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+    <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
+        <item name="color">@android:color/white</item>
+    </style>
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+    <style name="SmallFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="NormalFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="MediumFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="LargeFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="LargerFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="LargestFont" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_18ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">Roboto-Light</item>
+    </style>
+
+    <style name="NoData" parent="AppMaterialTheme">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+    </style>
+
+    <style name="PauseDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
+    </style>
+
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_slow_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_slow_right</item>
+    </style>
+    <style name="HorizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/jumbo</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+</resources>

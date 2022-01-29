@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">e-Tithe</string>
+    <string name="drawer_item_profile">Profile</string>
+    <string name="drawer_item_reset">Change Password</string>
+    <string name="drawer_item_logout">Logout</string>
+    <string name="dialog_logout_message">Do you want to log out</string>
+    <string name="dialog_delete_fund">Do you want to delete the payment?</string>
+    <string name="dialog_cancel">Do you want to cancel ?</string>
+    <string name="save_text">Save</string>
+    <string name="sign_text">Sign</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="update_text">Update</string>
+    <string name="back_text">Back</string>
+    <string name="next_text">Next</string>
+    <string name="photo_text">Photo</string>
+    <string name="dep_text">Dependent</string>
+    <string name="upload_text">Upload</string>
+    <string name="remove_text">Remove</string>
+    <string name="create_text">Create</string>
+    <string name="remove_picture">Do you want to remove?</string>
+    <string name="dialog_delete_message">Do you want to remove?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="success_receipt">Receipt has been successfully created</string>
+</resources>

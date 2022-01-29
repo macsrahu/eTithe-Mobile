@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="@color/white"
+    android:focusableInTouchMode="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layReceiptContent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimaryDark"
+            android:padding="@dimen/_4ssp">
+
+            <TextView
+                android:id="@+id/text_view_fund"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="0.90"
+                android:textColor="@color/white"
+                android:text="Fund"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/text_view_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textColor="@color/white"
+                android:gravity="right"
+                android:text="Amount"
+                android:textSize="@dimen/_12ssp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_view_bank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:padding="@dimen/_5ssp"
+            android:text="Bank Detail"
+            android:textSize="@dimen/_10ssp" />
+
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:background="@color/md_grey_500"
+            android:padding="@dimen/_5ssp"
+            android:paddingBottom="10dip"></View>
+    </LinearLayout>
+
+</LinearLayout>

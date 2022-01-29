@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppMaterialTheme" parent="SuperMaterialTheme">
+
+        <!-- only for Lollipop and above versions -->
+        <!-- Status Bar Color -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Toolbar Bar Color -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Toolbar Text Color -->
+        <item name="android:colorControlHighlight">@color/md_blue_400</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+    </style>
+</resources>
