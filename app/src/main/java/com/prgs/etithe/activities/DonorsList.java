@@ -227,12 +227,13 @@ public class DonorsList extends AppCompatActivity {
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Messages.ShowToast(getApplicationContext(), "Please check area created for this region");
                             dialog.dismiss();
                         }
                     });
 
         }else{
-            Messages.ShowToast(getApplicationContext(), "Selected region not found");
+            Messages.ShowToast(getApplicationContext(), "User details not binded");
         }
     }
 
@@ -245,7 +246,7 @@ public class DonorsList extends AppCompatActivity {
         String lByKeyValueOf = Global.USER_TYPE == 3 ? Global.LOGIN_BY_AREA_PERSON.getKey() : Global.LOGIN_BY_FIELD_OFFICER.getKey();
 
         final ProgressDialog dialog = new ProgressDialog(DonorsList.this, R.style.MyAlertDialogStyle);
-        dialog.setMessage("Loading..");
+        dialog.setMessage("Loading donor..");
         dialog.show();
         // mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS);
         FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS).orderByChild(loadByKeyName)
@@ -288,6 +289,7 @@ public class DonorsList extends AppCompatActivity {
                         } else {
                             rvDonors.setVisibility(View.GONE);
                             tvNoRecordFound.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
                         }
                     }
 

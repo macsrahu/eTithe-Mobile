@@ -145,6 +145,7 @@ public class ReceiptEntry extends AppCompatActivity {
             Global.GET_FUND_TYPES();
         }
         InitializeControls();
+
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
@@ -173,12 +174,12 @@ public class ReceiptEntry extends AppCompatActivity {
     private void PaymentEntry() {
 
         final MaterialDialog dialogCheque = new MaterialDialog.Builder(ReceiptEntry.this)
-                .title("Payment Detail")
+                .title("Amount Detail")
                 .autoDismiss(false)
                 .customView(R.layout.dialog_cheque_entry, true)
                 .positiveText("OK")
-                .positiveColor(getBaseContext().getResources().getColor(R.color.primary_color_dark))
-                .negativeColor(getBaseContext().getResources().getColor(R.color.primary_color_dark))
+                .positiveColor(getBaseContext().getResources().getColor(R.color.primary_dark))
+                .negativeColor(getBaseContext().getResources().getColor(R.color.primary_dark))
                 .negativeText(android.R.string.cancel)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -194,42 +195,42 @@ public class ReceiptEntry extends AppCompatActivity {
                         String cheque_no = input_dialog_cheque_no.getText().toString();
                         KeyboardUtil.hideKeyboard(ReceiptEntry.this);
                         if (amount != null) {
-                             if (!amount.isEmpty()) {
-                                 if (!CheckFund(mSelectedFund.getKey())) {
-                                     ReceiptLine receiptLine = new ReceiptLine();
-                                     receiptLine.setAmount(Double.parseDouble(amount));
-                                     receiptLine.setFundkey(mSelectedFund.getKey());
-                                     receiptLine.setFundtype(mSelectedFund.getFundtype());
-                                     receiptLine.setBankname("NA");
-                                     receiptLine.setChequeno("NA");
-                                     receiptLine.setChequedate("NA");
-                                     receiptLine.setPaymode(radio_button_dialog_cash.isChecked() ? "CASH" : "CHEQUE");
-                                     if (radio_button_dialog_cheque.isChecked()) {
-                                         if (!bank_name.isEmpty() && !cheque_no.isEmpty()) {
-                                             receiptLine.setBankname(bank_name);
-                                             receiptLine.setChequeno(cheque_no);
-                                             mReceiptLineList.add(receiptLine);
-                                             LoadReceiptList();
-                                             KeyboardUtil.hideKeyboard(ReceiptEntry.this);
-                                         } else {
-                                             input_dialog_bank_name.setError("Cannot be empty");
-                                             input_dialog_cheque_no.setError("Cannot be empty");
-                                         }
-                                     } else {
-                                         mReceiptLineList.add(receiptLine);
-                                         LoadReceiptList();
-                                         dialog.dismiss();
-                                         KeyboardUtil.hideKeyboard(ReceiptEntry.this);
-                                     }
-                                 } else {
-                                     Messages.ShowToast(getApplicationContext(), "This fund already payed,select other one");
-                                 }
-                             }else{
-                                 Messages.ShowToast(getApplicationContext(),"Enter Amount!!");
-                                 input_amount.setError("Enter Amount !!");
-                             }
+                            if (!amount.isEmpty()) {
+                                if (!CheckFund(mSelectedFund.getKey())) {
+                                    ReceiptLine receiptLine = new ReceiptLine();
+                                    receiptLine.setAmount(Double.parseDouble(amount));
+                                    receiptLine.setFundkey(mSelectedFund.getKey());
+                                    receiptLine.setFundtype(mSelectedFund.getFundtype());
+                                    receiptLine.setBankname("NA");
+                                    receiptLine.setChequeno("NA");
+                                    receiptLine.setChequedate("NA");
+                                    receiptLine.setPaymode(radio_button_dialog_cash.isChecked() ? "CASH" : "CHEQUE");
+                                    if (radio_button_dialog_cheque.isChecked()) {
+                                        if (!bank_name.isEmpty() && !cheque_no.isEmpty()) {
+                                            receiptLine.setBankname(bank_name);
+                                            receiptLine.setChequeno(cheque_no);
+                                            mReceiptLineList.add(receiptLine);
+                                            LoadReceiptList();
+                                            KeyboardUtil.hideKeyboard(ReceiptEntry.this);
+                                        } else {
+                                            input_dialog_bank_name.setError("Cannot be empty");
+                                            input_dialog_cheque_no.setError("Cannot be empty");
+                                        }
+                                    } else {
+                                        mReceiptLineList.add(receiptLine);
+                                        LoadReceiptList();
+                                        dialog.dismiss();
+                                        KeyboardUtil.hideKeyboard(ReceiptEntry.this);
+                                    }
+                                } else {
+                                    Messages.ShowToast(getApplicationContext(), "This fund already payed,select other one");
+                                }
+                            } else {
+                                Messages.ShowToast(getApplicationContext(), "Enter Amount!!");
+                                input_amount.setError("Enter Amount !!");
+                            }
                         } else {
-                            Messages.ShowToast(getApplicationContext(),"Enter Amount!!");
+                            Messages.ShowToast(getApplicationContext(), "Enter Amount!!");
                             input_amount.setError("Enter Amount !!");
                         }
                     }
@@ -316,6 +317,11 @@ public class ReceiptEntry extends AppCompatActivity {
         rvReceipts.setLayoutManager(mLayoutManager);
         rvReceipts.addItemDecoration(new GridSpacingItemDecoration(1, Global.dpToPx(2, getApplicationContext()), false));
         rvReceipts.setItemAnimator(new DefaultItemAnimator());
+        if (Global.SELECTED_RECEIPT != null) {
+            mReceipt = Global.SELECTED_RECEIPT;
+            mReceiptLineList = Global.SELECTED_RECEIPTS_LIST;
+            LoadReceiptList();
+        }
 
         button_add_payment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,21 +342,6 @@ public class ReceiptEntry extends AppCompatActivity {
             String sAddress = mDonor.getAddrline1() + "\n" + mDonor.getAddrline2() + "\n" + mDonor.getCity() + "\n" + mDonor.getPincode();
             text_view_address.setText(sAddress);
         }
-//        MaterialSpinnerAdapter adpFundType = new MaterialSpinnerAdapter<FundType>(getBaseContext(), Global.FUND_TYPE_LIST);
-//        spinner_fund_type.setAdapter(adpFundType);
-//        spinner_fund_type.setSelectedIndex(0);
-//        mSelectedFund = Global.FUND_TYPE_LIST.get(0);
-//        spinner_fund_type.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<FundType>() {
-//            @Override
-//            public void onItemSelected(MaterialSpinner view, int position, long id, FundType item) {
-//                view.setSelectedIndex(position);
-//                if (view != null) {
-//                    mFundType = item.getKey();
-//                    mSelectedFund = item;
-//                }
-//            }
-//
-//        });
         DateFormat dateFormat = new SimpleDateFormat("MMMM");
         Date date = new Date();
         //Messages.ShowToast (getApplicationContext(), "Month: " + );
@@ -384,24 +375,27 @@ public class ReceiptEntry extends AppCompatActivity {
 
         });
 
-//        radio_button_cheque.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    //layChequeDetail.setVisibility(View.VISIBLE);
-//                    layBankDetail.setVisibility(View.VISIBLE);
-//                } else {
-//                    layBankDetail.setVisibility(View.GONE);
-//                }
-//            }
-//        });
 
         bottonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         bottonNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
 
+                case R.id.btnAddPay:
+
+                    if (Global.FUND_TYPE_LIST != null) {
+                        if (Global.FUND_TYPE_LIST.size() > 0) {
+                            PaymentEntry();
+                        } else {
+                            Messages.ShowToast(getApplicationContext(), "Fund Type not found.. Please check");
+                        }
+                    } else {
+                        Messages.ShowToast(getApplicationContext(), "Fund Type not found.. Please try again");
+                    }
+                    break;
                 case R.id.btnCreate:
+                    //Messages.ShowToast(getApplicationContext(),"Before Validation");
                     if (Validate()) {
+                        //Messages.ShowToast(getApplicationContext(),"Validation Pass");
                         CreateReceiptNoAndMoveToSignature(mDonor.getRegionkey());
                     }
                     break;
@@ -498,6 +492,7 @@ public class ReceiptEntry extends AppCompatActivity {
         }
         Global.SELECTED_RECEIPT = mReceipt;
         Global.SELECTED_RECEIPTS_LIST = mReceiptLineList;
+        //Messages.ShowToast(getApplicationContext(),"Receipt:" + Global.SELECTED_RECEIPT.getReceiptno());
         Intent intent = new Intent(ReceiptEntry.this, Signature.class);
         startActivity(intent);
         finish();

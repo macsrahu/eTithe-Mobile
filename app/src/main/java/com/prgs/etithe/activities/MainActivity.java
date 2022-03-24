@@ -1,6 +1,7 @@
 package com.prgs.etithe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -198,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     .build();
         }
 
-
         result = new DrawerBuilder(this)
                 .withAccountHeader(headerResult)
                 .withRootView(R.id.main)
@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 .withDisplayBelowStatusBar(true)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
+                .withFullscreen(false)
                 .withSelectedItem(getResources().getColor(R.color.colorPrimaryDark))
                 .addDrawerItems(
                         new SecondaryDrawerItem().withName(R.string.drawer_item_profile).withIcon(FontAwesome.Icon.faw_user).withTextColor(getResources().getColor(R.color.dark_blue)),
@@ -216,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 )
                 .withSavedInstance(mSavedInstanceState)
                 .build();
-
+        //this is the line change icon color
+        result.getActionBarDrawerToggle().getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         result.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {

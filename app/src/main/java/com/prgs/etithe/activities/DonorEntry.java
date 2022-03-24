@@ -490,8 +490,8 @@ public class DonorEntry extends AppCompatActivity {
 
         int endMonth = 3;
         int endDate = 20;
-        calendarStart.set(1950, startMonth - 1, startDate - 1);
-        calendarEnd.set(year - 5, endMonth - 1, endDate);
+        calendarStart.set(1920, startMonth - 1, startDate - 1);
+        calendarEnd.set(year - 1, endMonth - 1, endDate);
 
         long minDate = calendarStart.getTimeInMillis();
         long maxDate = calendarEnd.getTimeInMillis();

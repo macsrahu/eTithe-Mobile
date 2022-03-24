@@ -68,6 +68,9 @@ public class Signature extends AppCompatActivity {
     @BindView(R.id.button_save)
     MaterialButton button_save;
 
+    @BindView(R.id.button_back)
+    MaterialButton button_back;
+
     @BindView(R.id.button_clear)
     MaterialButton button_clear;
 
@@ -91,6 +94,7 @@ public class Signature extends AppCompatActivity {
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         button_save.setEnabled(false);
         button_clear.setEnabled(false);
+
 
         CheckFolderPermission();
         InitializeControl();
@@ -193,6 +197,15 @@ public class Signature extends AppCompatActivity {
                 }
             }
         });
+        button_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iMain = new Intent(Signature.this, ReceiptEntry.class);
+                iMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(iMain);
+                finish();
+            }
+        });
         signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
@@ -217,7 +230,7 @@ public class Signature extends AppCompatActivity {
     public int SaveAndCompress(Bitmap bitmap) throws IOException {
         int retValue = 1;
 
-        File fileSigns = new File(getBaseContext().getExternalCacheDir() + "/" + _FOLDER_PATH, "tempsign.jpg");
+        File fileSigns = new File(getBaseContext().getExternalCacheDir() + "/" + _FOLDER_PATH, "sign.jpg");
         try {
 
             FileOutputStream out = new FileOutputStream(fileSigns);
@@ -235,13 +248,15 @@ public class Signature extends AppCompatActivity {
         if (fileSigns.exists()) {
             try {
                 ImageCompressor imageCompressor = new ImageCompressor();
-                String mPictureOutPath = imageCompressor.compressImage(fileSigns.getAbsolutePath(),
+                String mPictureOutPath = imageCompressor.compressImage(getBaseContext(), fileSigns.getAbsolutePath(),
                         _FOLDER_PATH,
                         "RECEIPT_" + String.valueOf(System.currentTimeMillis()));
                 Global.SELECTED_RECEIPT.setSignurl(mPictureOutPath);
+                //Messages.ShowToast(getApplicationContext(),Global.SELECTED_RECEIPT.getSignurl());
 
             } catch (Exception ex) {
                 ex.printStackTrace();
+                Messages.ShowToast(getApplicationContext(),"Compress:" + ex.getMessage());
                 retValue = -1;
             }
         }
@@ -309,7 +324,7 @@ public class Signature extends AppCompatActivity {
                                 if (dialog != null) {
                                     dialog.dismiss();
                                 }
-                                Messages.ShowToast(getApplicationContext(), "Unable to save sign so as receipt, Error:" + e.getMessage());
+                                Messages.ShowToast(getApplicationContext(), "Unable to save sign so as receipt: Error:" + e.getLocalizedMessage());
                             }
                         });
                     }
@@ -350,15 +365,15 @@ public class Signature extends AppCompatActivity {
                         mDataReceiptLine.child(mPrimaryKey).child(mLineKey).setValue(mReceiptLine).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-
+                                dialog.dismiss();
+                                Intent intent = new Intent(Signature.this, ReceiptFinish.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
 
                     }
-                    dialog.dismiss();
-                    Intent intent = new Intent(Signature.this, ReceiptFinish.class);
-                    startActivity(intent);
-                    finish();
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

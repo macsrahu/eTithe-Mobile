@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -17,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
         android:gravity="center">
 
         <RelativeLayout
@@ -42,7 +41,7 @@
                 android:includeFontPadding="true"
                 android:padding="@dimen/_20ssp"
                 android:text="@string/success_receipt"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/_20ssp"
                 android:typeface="monospace" />
 

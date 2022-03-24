@@ -9,6 +9,7 @@
     <string name="save_text">Save</string>
     <string name="sign_text">Sign</string>
     <string name="cancel_text">Cancel</string>
+    <string name="addpay_text">Add Pay</string>
     <string name="update_text">Update</string>
     <string name="back_text">Back</string>
     <string name="next_text">Next</string>
@@ -16,7 +17,7 @@
     <string name="dep_text">Dependent</string>
     <string name="upload_text">Upload</string>
     <string name="remove_text">Remove</string>
-    <string name="create_text">Create</string>
+    <string name="create_text">Next</string>
     <string name="remove_picture">Do you want to remove?</string>
     <string name="dialog_delete_message">Do you want to remove?</string>
     <string name="yes">YES</string>

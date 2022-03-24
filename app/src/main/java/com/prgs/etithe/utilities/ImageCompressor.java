@@ -1,5 +1,6 @@
 package com.prgs.etithe.utilities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,7 +23,7 @@ public class ImageCompressor {
 
     private String outputFileName;
     private String outputFolder;
-    public String compressImage(String imageUri, String _outputFolder, String _outputFileName) {
+    public String compressImage(Context mContext, String imageUri, String _outputFolder, String _outputFileName) {
         outputFileName = _outputFileName;
         outputFolder=_outputFolder;
         String filePath = imageUri;
@@ -127,7 +128,7 @@ public class ImageCompressor {
         }
 
         FileOutputStream out = null;
-        String filename = getFilename();
+        String filename = getFilename(mContext);
         try {
             out = new FileOutputStream(filename);
 
@@ -142,8 +143,8 @@ public class ImageCompressor {
 
     }
 
-    public String getFilename() {
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), outputFolder);
+    public String getFilename(Context mContext) {
+        File file = new File(mContext.getExternalCacheDir().getPath(), outputFolder);
         if (!file.exists()) {
             file.mkdirs();
         }

@@ -76,6 +76,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_add_payment"
+                        android:visibility="gone"
                         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

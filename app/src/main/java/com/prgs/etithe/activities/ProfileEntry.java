@@ -220,12 +220,20 @@ public class ProfileEntry extends AppCompatActivity {
     private void InitializeControl() {
 
         if (Global.USER_TYPE == 3) {
-            input_name.setText(mAreaPerson.getPerson());
-            input_detail.setText("✉: " + mAreaPerson.getEmail() + "\n ☎: " + mAreaPerson.getMobile() + "\n " + Global.REGION_MODEL != null ? Global.REGION_MODEL.getRegion() : "");
+            if (mAreaPerson!=null) {
+                input_name.setText(mAreaPerson.getPerson());
+                input_detail.setText("✉: " + mAreaPerson.getEmail() + "\n ☎: " + mAreaPerson.getMobile() + "\n " + Global.REGION_MODEL != null ? Global.REGION_MODEL.getRegion() : "");
+            }else{
+                input_name.setText("Admin");
+            }
         } else {
-            input_name.setText(mFieldOfficer.getOfficer());
-            String sFormted = "✉: " + mFieldOfficer.getEmail() + "\n ☎: " + mFieldOfficer.getMobile() + "\n " + Global.REGION_MODEL != null ? Global.REGION_MODEL.getRegion() : "";
-            input_detail.setText(sFormted);
+            if (mFieldOfficer!=null) {
+                input_name.setText(mFieldOfficer.getOfficer());
+                String sFormatted = "✉: " + mFieldOfficer.getEmail() + "\n ☎: " + mFieldOfficer.getMobile() + "\n " + Global.REGION_MODEL != null ? Global.REGION_MODEL.getRegion() : "";
+                input_detail.setText(sFormatted);
+            }else{
+                input_name.setText("Admin");
+            }
         }
 
         EasyImage.configuration(this)
@@ -378,7 +386,7 @@ public class ProfileEntry extends AppCompatActivity {
         return new File("");
     }
 
-    private void UploadOfficerPicture() {
+    private void UploadingProfilePicture() {
         if (mOutputFilePath != null && !mOutputFilePath.isEmpty()) {
             final ProgressDialog dialog = ProgressDialog.show(ProfileEntry.this, null, "Uploading photo..", true);
             dialog.show();
@@ -696,7 +704,10 @@ public class ProfileEntry extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (PickFromGallary) {
             try {
-                mOutputFilePath = ImageUtil.PrepareImage(getApplicationContext(), requestCode, resultCode, data, RESULT_OK, imgPicture, _LOCAL_FOLDER, "DONOR");
+                mOutputFilePath = ImageUtil.PrepareImage(getApplicationContext(), requestCode, resultCode, data, RESULT_OK, imgPicture, _LOCAL_FOLDER, "PROFILE");
+                if (mOutputFilePath!=""){
+                    UploadingProfilePicture();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Messages.ShowToast(getApplicationContext(), e.getMessage());
@@ -735,7 +746,9 @@ public class ProfileEntry extends AppCompatActivity {
 
                 File mCompressedFile = new Compressor(this).compressToFile(mFile.getAbsoluteFile());
                 mOutputFilePath = mCompressedFile.getAbsolutePath();
-
+                if (mOutputFilePath!=""){
+                    UploadingProfilePicture();
+                }
             } catch (Exception ex) {
                 Messages.ShowToast(getApplication(), "Error:" + ex.getMessage());
             }

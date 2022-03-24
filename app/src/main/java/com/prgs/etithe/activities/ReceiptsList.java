@@ -152,6 +152,7 @@ public class ReceiptsList extends AppCompatActivity {
                         } else {
                             rvReceipts.setVisibility(View.GONE);
                             tvNoRecordFound.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
                         }
                     }
 

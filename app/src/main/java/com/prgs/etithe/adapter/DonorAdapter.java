@@ -220,6 +220,8 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
                 }
             } else if (item.getTitle().equals("New Receipt")) {
                 if (Global.SELECTED_DONOR_MODEL != null) {
+                    Global.SELECTED_RECEIPT=null;
+                    Global.SELECTED_RECEIPTS_LIST=null;
                     Global.DONOR_KEY = Global.SELECTED_DONOR_MODEL.getKey();
                     Intent iDep = new Intent(mContext, ReceiptEntry.class);
                     iDep.putExtra("FROM", "DONOR_LIST");

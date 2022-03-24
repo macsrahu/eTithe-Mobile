@@ -9,7 +9,7 @@ def getCurrentBuildType() {
     if (tskReqStr.contains("Release")) {
         //println "getCurrentBuildType release"
         return "release"
-    } else if (tskReqStr.contains("nellai")) {
+    } else if (tskReqStr.contains("eTythe")) {
         // println "getCurrentBuildType debug"
         return "etithe"
     }else{
@@ -20,13 +20,13 @@ def getCurrentBuildType() {
     return "";
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.prgs.etithe"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -105,8 +105,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
  //   implementation 'com.google.firebase:firebase-messaging:17.3.3'
-//    implementation 'com.google.firebase:firebase-storage:19.2.1'
+    //implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+
+
     //implementation 'com.google.firebase:firebase-messaging:20.2.3'
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
@@ -153,6 +155,9 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.2.5'//Sign Capturing
     implementation 'com.github.alirezaafkar:Android-Image-Cropper:2.3.3' //Crop Images
     implementation 'com.github.LucasFsc:Html2Pdf:0.2-beta' // HTML to PDF
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     api project(path: ':apwlibrary')
 
 }

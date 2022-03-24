@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:drawableLeft="@drawable/rupee"
+                android:drawableLeft="@drawable/rupee_ind"
                 android:drawablePadding="10dp"
                 android:gravity="right"
                 android:imeOptions="actionNext"
@@ -78,7 +78,7 @@
                 android:id="@+id/radio_button_cash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/primary_color_dark"
+                android:buttonTint="@color/colorPrimary"
                 android:checked="true"
                 android:text="CASH" />
 
@@ -90,7 +90,7 @@
             <RadioButton
                 android:id="@+id/radio_button_cheque"
                 android:layout_width="wrap_content"
-                android:buttonTint="@color/primary_color_dark"
+                android:buttonTint="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:text="CHEQUE" />
 

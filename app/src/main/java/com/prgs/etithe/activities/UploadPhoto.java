@@ -329,7 +329,7 @@ public class UploadPhoto extends AppCompatActivity {
     private void SaveRecord() {
         try {
             if (mOutputFilePath != null) {
-                Messages.ShowToast(getApplicationContext(),mOutputFilePath);
+                //Messages.ShowToast(getApplicationContext(),mOutputFilePath);
                 final ProgressDialog dialog = ProgressDialog.show(UploadPhoto.this, null, "Uploading photo..", true);
                 dialog.show();
 
@@ -447,6 +447,7 @@ public class UploadPhoto extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (PickFromGallary) {
             try {
+                Messages.ShowToast(getApplicationContext(),"Req:" + String.valueOf(requestCode) +" Result:" + String.valueOf(resultCode));
                 mOutputFilePath = ImageUtil.PrepareImage(getApplicationContext(), requestCode, resultCode, data, RESULT_OK, imgPicture, _FOLDER_PATH, "DONOR");
             } catch (IOException e) {
                 e.printStackTrace();

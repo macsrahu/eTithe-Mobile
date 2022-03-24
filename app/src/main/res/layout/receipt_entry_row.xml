@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/_4ssp"
         android:id="@+id/layReceiptContent"
         android:orientation="vertical">
 
@@ -18,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/colorPrimaryDark"
             android:padding="@dimen/_4ssp">
 
             <TextView
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="0.90"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:text="Fund"
                 android:textSize="@dimen/_12ssp" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:gravity="right"
                 android:text="Amount"
                 android:textSize="@dimen/_12ssp" />
@@ -48,8 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@color/transparent"
             android:padding="@dimen/_5ssp"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Bank Detail"
             android:textSize="@dimen/_10ssp" />
 
