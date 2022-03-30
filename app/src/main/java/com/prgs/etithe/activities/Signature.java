@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +29,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +52,7 @@ import com.prgs.etithe.models.ReceiptSettings;
 import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.ImageCompressor;
+import com.prgs.etithe.utilities.InternalStorage;
 import com.prgs.etithe.utilities.Messages;
 
 import java.io.File;
@@ -92,8 +96,8 @@ public class Signature extends AppCompatActivity {
         Toolbar mToolbarView = Global.PrepareToolBar(this, true, "Signature");
         setSupportActionBar(mToolbarView);
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        button_save.setEnabled(false);
-        button_clear.setEnabled(false);
+       // button_save.setEnabled(false);
+        //button_clear.setEnabled(false);
 
 
         CheckFolderPermission();
@@ -214,16 +218,69 @@ public class Signature extends AppCompatActivity {
 
             @Override
             public void onSigned() {
-                button_save.setEnabled(true);
-                button_clear.setEnabled(true);
+                //button_save.setEnabled(true);
+                //button_clear.setEnabled(true);
             }
 
             @Override
             public void onClear() {
-                button_save.setEnabled(false);
-                button_clear.setEnabled(false);
+                //button_save.setEnabled(false);
+                //button_clear.setEnabled(false);
             }
         });
+        BottomNavigationView bottonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
+        bottonNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.btnSubmit:
+
+                    Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
+                    if (signatureBitmap != null) {
+                        SaveImage(Global.SELECTED_RECEIPT.getRegionkey());
+                    } else {
+                        Messages.ShowToast(getApplicationContext(), "Please do signature");
+                    }
+                    break;
+                case R.id.btnClear:
+                    signaturePad.clear();
+                    break;
+
+                case R.id.btnBack:
+                    onBackPressed();
+                    break;
+
+                case R.id.btnCancel:
+
+                        break;
+            }
+            return true;
+        });
+    }
+    private void CancelReceipt() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(getResources().getDrawable(R.drawable.logo_spalsh_blue));
+        builder.setMessage(getResources().getString(R.string.dialog_cancel_receipt));
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog,
+                                        final int which) {
+                       Global.SELECTED_RECEIPTS_LIST=null;
+                       Global.SELECTED_RECEIPT=null;
+
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog,
+                                        final int which) {
+                        dialog.dismiss();
+                    }
+                });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 
@@ -312,7 +369,6 @@ public class Signature extends AppCompatActivity {
                                                 String photoStringLink = uri.toString();
                                                 dialog.dismiss();
                                                 SaveRecord(photoStringLink, ReceiptNo);
-
                                             }
                                         });
                                     }

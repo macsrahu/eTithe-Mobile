@@ -49,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/white"
                         android:text="Personal Detail"
                         android:textSize="@dimen/_12ssp"></TextView>
                     <!-- HEADER INDICATOR -->
@@ -361,7 +361,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:drawablePadding="4dp"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/white"
                         android:text="Address Detail"
                         android:textSize="@dimen/_12ssp"></TextView>
                     <!-- HEADER INDICATOR -->
@@ -596,7 +596,6 @@
         app:itemRippleColor="@color/colorAccent"
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="labeled"
-
         app:menu="@menu/bottom_navigation_menu" /><!--    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation-->
     <!--        android:id="@+id/bottom_submit"-->
     <!--        android:layout_width="match_parent"-->

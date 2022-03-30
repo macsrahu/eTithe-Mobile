@@ -21,6 +21,8 @@ public class ReceiptFinish extends AppCompatActivity {
     @BindView(R.id.button_done)
     MaterialButton button_done;
 
+    @BindView(R.id.button_print)
+    MaterialButton button_print;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,14 @@ public class ReceiptFinish extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReceiptFinish.this, DonorsList.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        button_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReceiptFinish.this, WebViewPDF.class);
                 startActivity(intent);
                 finish();
             }

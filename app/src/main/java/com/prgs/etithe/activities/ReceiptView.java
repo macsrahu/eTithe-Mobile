@@ -186,7 +186,13 @@ public class ReceiptView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Global.SELECTED_RECEIPT != null) {
-                    ReceiptCreation(1);
+                  //  ReceiptCreation(1);
+                    if (Global.SELECTED_RECEIPT != null) {
+                        WebView();
+                    }else
+                    {
+                        Messages.ShowToast(getApplicationContext(),"Receipt detail not found");
+                    }
                 }
             }
         });
@@ -243,7 +249,9 @@ public class ReceiptView extends AppCompatActivity {
                                 receiptLine.setKey(depenSnapshot.getKey());
                                 mReceiptLineList.add(receiptLine);
                             }
+                            Global.SELECTED_RECEIPTS_LIST = mReceiptLineList;
                             if (mReceiptLineList.size() > 0) {
+
                                 PaymentAdapter mAdapter = new PaymentAdapter(getApplicationContext(), ReceiptView.this, mReceiptLineList);
                                 rvReceipts.setAdapter(mAdapter);
                             }
@@ -315,10 +323,6 @@ public class ReceiptView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return true;
-    }
-
-    private void ReceiptAsPdf() {
-
     }
 
     @Override
@@ -442,6 +446,7 @@ public class ReceiptView extends AppCompatActivity {
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300, 600, 1).create();
         // start a page
         PdfDocument.Page page = document.startPage(pageInfo);
+
         Canvas canvas = page.getCanvas();
         Paint paint = new Paint();
         paint.setColor(Color.RED);
@@ -503,7 +508,12 @@ public class ReceiptView extends AppCompatActivity {
         drawable.draw(canvas);
         return bitmap;
     }
-
+    private void WebView(){
+        Intent iMain = new Intent(ReceiptView.this, WebViewPDF.class);
+        iMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(iMain);
+        finish();
+    }
     private void ReceiptCreation(int menu_type) {
         PDFWriter writer = new PDFWriter(PaperSize.FOLIO_WIDTH, PaperSize.FOLIO_HEIGHT);
         int _START_MARGIN = 890;

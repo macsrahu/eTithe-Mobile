@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/sign_submit"
+        android:id="@+id/btnSubmit"
+        android:icon="@drawable/ic_baseline_post_add_24"/>
+    <item android:title="@string/sign_clear"
+        android:id="@+id/btnClear"
+        android:icon="@drawable/ic_baseline_refresh_24"/>
+    <item android:title="@string/cancel_text"
+        android:id="@+id/btnCancel"
+        android:icon="@drawable/ic_baseline_delete_24"></item>
+    <item android:title="@string/back_text"
+        android:id="@+id/btnBack"
+        android:icon="@drawable/ic_baseline_arrow_back_24"></item>
+</menu>

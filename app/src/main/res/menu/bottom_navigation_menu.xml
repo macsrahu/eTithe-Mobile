@@ -6,6 +6,9 @@
     <item android:title="@string/photo_text"
         android:id="@+id/btnPhoto"
         android:icon="@drawable/camera"/>
+    <item android:title="@string/find_location"
+        android:id="@+id/btnLocation"
+        android:icon="@drawable/ic_baseline_add_location_24"/>
     <item android:title="@string/dep_text"
         android:id="@+id/btnDependent"
         android:icon="@drawable/new_customer"/>

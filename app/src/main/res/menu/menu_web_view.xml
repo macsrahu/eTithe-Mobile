@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/covert_pdf"
+        android:id="@+id/btnConvert"
+        android:icon="@drawable/ic_baseline_picture_as_pdf_24"/>
+    <item android:title="@string/share_pdf"
+        android:id="@+id/btnShare"
+        android:icon="@drawable/ic_baseline_share_24"/>
+    s<item android:title="@string/back_text"
+        android:id="@+id/btnBack"
+        android:icon="@drawable/ic_baseline_arrow_back_24"></item>
+</menu>

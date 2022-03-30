@@ -4,6 +4,7 @@
     <string name="drawer_item_reset">Change Password</string>
     <string name="drawer_item_logout">Logout</string>
     <string name="dialog_logout_message">Do you want to log out</string>
+    <string name="dialog_cancel_receipt">Do you want to cancel receipt?</string>
     <string name="dialog_delete_fund">Do you want to delete the payment?</string>
     <string name="dialog_cancel">Do you want to cancel ?</string>
     <string name="save_text">Save</string>
@@ -15,9 +16,14 @@
     <string name="next_text">Next</string>
     <string name="photo_text">Photo</string>
     <string name="dep_text">Dependent</string>
+    <string name="find_location">Find</string>
     <string name="upload_text">Upload</string>
     <string name="remove_text">Remove</string>
     <string name="create_text">Next</string>
+    <string name="sign_submit">Submit</string>
+    <string name="sign_clear">Clear</string>
+    <string name="covert_pdf">Show PDF</string>
+    <string name="share_pdf">Share</string>
     <string name="remove_picture">Do you want to remove?</string>
     <string name="dialog_delete_message">Do you want to remove?</string>
     <string name="yes">YES</string>

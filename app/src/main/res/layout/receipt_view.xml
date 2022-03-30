@@ -247,7 +247,7 @@
                             android:id="@+id/text_view_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/rupee"
+                            android:drawableLeft="@drawable/rupee_ind"
                             android:drawablePadding="@dimen/_5ssp"
                             android:padding="@dimen/_5ssp"
                             android:text="Amount"
@@ -359,6 +359,7 @@
                             android:fontFamily="serif"
                             android:lines="3"
                             android:padding="@dimen/_5ssp"
+                            android:textColor="@color/colorPrimaryDark"
                             android:text="Notes"
                             android:textAlignment="center"
                             android:textSize="@dimen/_10ssp"></com.google.android.material.textview.MaterialTextView>

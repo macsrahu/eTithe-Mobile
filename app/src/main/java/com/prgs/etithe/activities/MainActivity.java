@@ -7,18 +7,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -37,6 +44,9 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.prgs.etithe.R;
 import com.prgs.etithe.models.AreaPerson;
 import com.prgs.etithe.models.FieldOfficer;
@@ -45,6 +55,7 @@ import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.InternalStorage;
 import com.prgs.etithe.utilities.Messages;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -119,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     private void SetUserDetailByUserType() {
         if (Global.LOGIN_USER_DETAIL != null) {
             if (Global.USER_TYPE == 3) { //Area Person
-                mToolbar.setSubtitle(Global.LOGIN_USER_DETAIL.getName() + " - [AR]");
+                mToolbar.setSubtitle(Global.LOGIN_USER_DETAIL.getName() + " - [Area Person]");
                 if (Global.LOGIN_BY_AREA_PERSON == null) {
                     mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_AREA_PERSONS);
                     mPersonValueListener = mDatabaseReference.child(Global.LOGIN_USER_DETAIL.getUserkey()).addValueEventListener(new ValueEventListener() {
@@ -140,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     });
                 }
             } else {
-                mToolbar.setSubtitle(Global.LOGIN_USER_DETAIL.getName() + " - [FO]");
+                mToolbar.setSubtitle(Global.LOGIN_USER_DETAIL.getName() + " - [Field Officer]");
                 if (Global.LOGIN_BY_FIELD_OFFICER == null) {
                     mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_FIELD_OFFICERS);
                     mOfficerValueListener = mDatabaseReference.child(Global.LOGIN_USER_DETAIL.getUserkey()).addValueEventListener(new ValueEventListener() {
@@ -171,20 +182,34 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         String mImgUrl = (Global.USER_TYPE == 3 && Global.LOGIN_BY_AREA_PERSON != null) ? Global.LOGIN_BY_AREA_PERSON.getImgurl() :
                 (Global.USER_TYPE == 2 && Global.LOGIN_BY_FIELD_OFFICER != null) ? Global.LOGIN_BY_FIELD_OFFICER.getImgurl() : "NA";
         AccountHeader headerResult = null;
-
+        //Messages.ShowToast(getApplicationContext(),mImgUrl);
         if (mImgUrl != null && !mImgUrl.equals("NA") && !mImgUrl.isEmpty()) {
-            // Messages.ShowToast(getApplicationContext(), mImgUrl);
+            //Messages.ShowToast(getApplicationContext(),"HERE");
+            DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+                @Override
+                public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                    Picasso.with(imageView.getContext()).load(mImgUrl).placeholder(placeholder).into(imageView);
+                }
+
+                @Override
+                public void cancel(ImageView imageView) {
+                    Picasso.with(imageView.getContext()).cancelRequest(imageView);
+                }
+            });
             headerResult = new AccountHeaderBuilder()
                     .withActivity(this)
                     .withHeaderBackground(R.drawable.header)
                     .addProfiles(
                             new ProfileDrawerItem()
                                     .withTextColor(getResources().getColor(R.color.white))
+                                    .withIsExpanded(false)
                                     .withName(Global.LOGIN_USER_DETAIL != null ? Global.LOGIN_USER_DETAIL.getName() : "eTithe")
                                     .withEmail(Global.LOGIN_USER_DETAIL != null ? Global.LOGIN_USER_DETAIL.getEmail() : "NA")
                                     .withIcon(mImgUrl)
+
                     )
                     .build();
+
         } else {
             headerResult = new AccountHeaderBuilder()
                     .withActivity(this)
@@ -356,6 +381,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         dialog.show();
         if (Global.mImageSlide != null && Global.mImageSlide.size() > 0) {
             mDemoSlider.removeAllSliders();
+            //mDemoSlider.getPagerIndicator().setBackgroundColor(getResources().getColor(R.color.primary_dark));
+            //mDemoSlider.getCurrentSlider().getView().findViewById(R.id.description).setBackgroundColor(getResources().getColor(R.color.primary_dark));
             //Messages.ShowToast(getApplicationContext(), "Slide Count:" +String.valueOf(Global.mImageSlide.size()));
             for (Slideshow imgSld : Global.mImageSlide) {
                 TextSliderView textSliderView = new TextSliderView(MainActivity.this);
@@ -371,6 +398,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                         .putString("extra", imgSld.getImagedesc());
                 mDemoSlider.addSlider(textSliderView);
             }
+
+            //mDemoSlider.setBackgroundColor(getResources().getColor(R.color.primary_dark));
             dialog.dismiss();
         } else {
             Global.mImageSlide = new ArrayList<Slideshow>();

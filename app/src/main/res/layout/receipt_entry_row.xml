@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dip"
             android:layout_marginTop="@dimen/_2ssp"
-            android:background="@color/md_grey_500"
+            android:background="@color/colorPrimaryDark"
             android:padding="@dimen/_5ssp"
             android:paddingBottom="10dip"></View>
     </LinearLayout>
