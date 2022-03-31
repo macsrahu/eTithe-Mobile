@@ -16,6 +16,7 @@
     <string name="next_text">Next</string>
     <string name="photo_text">Photo</string>
     <string name="dep_text">Dependent</string>
+    <string name="tracking_enabled_notif">Tracking is currently enabled. Tap to cancel.</string>
     <string name="find_location">Find</string>
     <string name="upload_text">Upload</string>
     <string name="remove_text">Remove</string>

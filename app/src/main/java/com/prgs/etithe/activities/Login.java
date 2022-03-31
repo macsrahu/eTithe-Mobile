@@ -85,8 +85,8 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-        _emailText.setText("rahupathi@gmail.com");
-        _passwordText.setText("test@123");
+       // _emailText.setText("rahupathi@gmail.com");
+       // _passwordText.setText("test@123");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 

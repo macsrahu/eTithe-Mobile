@@ -5,6 +5,7 @@
         android:icon="@drawable/ic_baseline_picture_as_pdf_24"/>
     <item android:title="@string/share_pdf"
         android:id="@+id/btnShare"
+        android:visible="false"
         android:icon="@drawable/ic_baseline_share_24"/>
     s<item android:title="@string/back_text"
         android:id="@+id/btnBack"

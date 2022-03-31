@@ -5,7 +5,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +56,7 @@ import com.prgs.etithe.R;
 import com.prgs.etithe.models.AreaPerson;
 import com.prgs.etithe.models.FieldOfficer;
 import com.prgs.etithe.models.Slideshow;
+import com.prgs.etithe.service.TrackingService;
 import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.InternalStorage;
@@ -102,13 +108,31 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             InitDrawerMenu(mToolbar);
             SlideShowBuild();
             BuiltMenu();
+            LocationAccessPermission();
 
         } catch (Exception ex) {
             Messages.ShowToast(getApplicationContext(), ex.getMessage());
         }
+
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
+    private void LocationAccessPermission() {
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Toast.makeText(getApplicationContext(), "GPS tracking is not enabled", Toast.LENGTH_LONG).show();
+        }
+        int permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
 
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            startTrackerService();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST);
+        }
+
+    }
     private void getVersionInfo() {
         String versionName = "";
         int versionCode = -1;
@@ -530,5 +554,31 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+            grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST && grantResults.length == 1
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startTrackerService();
+        } else {
+            Toast.makeText(this, "Please enable location services to allow GPS tracking", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void startTrackerService() {
+        if (!isMyServiceRunning(TrackingService.class)) {
+            Intent myIntent = new Intent(MainActivity.this, TrackingService.class);
+            startService(myIntent);
+            Toast.makeText(this, "Tracking Service started..", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

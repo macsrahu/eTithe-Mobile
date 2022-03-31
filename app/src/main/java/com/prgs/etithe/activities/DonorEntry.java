@@ -185,13 +185,13 @@ public class DonorEntry extends AppCompatActivity {
         if (extras != null) {
             _NAVIGATE_FROM = extras.getString("FROM");
         }
-        InitLocation();
+        
 
         if (Global.LOGIN_USER_DETAIL==null){
             Global.GET_LOGIN_INFO_FROM_MEMORY(getApplicationContext());
         }
         InitControls();
-
+        InitLocation();
         if (Global.SELECTED_DONOR_MODEL != null) {
             ENTRY_MODE_NEW = false;
             mDonor = Global.SELECTED_DONOR_MODEL;
@@ -304,10 +304,6 @@ public class DonorEntry extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
         buttonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         buttonNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
