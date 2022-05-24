@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -161,6 +160,10 @@ public class DonorEntry extends AppCompatActivity {
     @BindView(R.id.spinner_state)
     MaterialSpinner spinner_state;
 
+    @BindView(R.id.spinner_salutaion)
+    MaterialSpinner spinner_salutation;
+
+
 
     BottomNavigationView buttonNavigationView;
 
@@ -173,6 +176,7 @@ public class DonorEntry extends AppCompatActivity {
     String mDistrict, mState, mWedDate, mBirthDate, mGender, mMemberType;
     String _NAVIGATE_FROM = "";
     String mPrimaryKey = "";
+    String mSalutation="Mr.";
 
     Area mArea=null;
     @Override
@@ -238,6 +242,9 @@ public class DonorEntry extends AppCompatActivity {
         if (mDonor.getAadhar() != null && !mDonor.getAadhar().equals("NA")) {
             input_aadhar_no.setText(mDonor.getAadhar());
         }
+        if (mDonor.getSalutation() != null && !mDonor.getSalutation().equals("NA")) {
+            spinner_salutation.setText(mDonor.getSalutation());
+        }
         if (mDonor.getPan() != null) {
             input_pan.setText(mDonor.getPan());
         }
@@ -268,6 +275,7 @@ public class DonorEntry extends AppCompatActivity {
         if (mDonor.getState() != null && !mDonor.getState().equals("NA")) {
             spinner_state.setText(mDonor.getState());
         }
+
         if (mDonor.getMobile() != null && !mDonor.getMobile().equals("NA")) {
             input_mobile_no.setText(mDonor.getMobile());
         }
@@ -443,6 +451,23 @@ public class DonorEntry extends AppCompatActivity {
 
             });
         }
+        ArrayList<String> salutationList = CommonList.GetSalutationList();
+        if (salutationList.size()>0) {
+            MaterialSpinnerAdapter adpSalutation = new MaterialSpinnerAdapter<String>(getBaseContext(), salutationList);
+            spinner_salutation.setAdapter(adpSalutation);
+            mSalutation = "Mr.";
+            spinner_salutation.setHint(mSalutation);
+            spinner_salutation.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+                @Override
+                public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                    view.setSelectedIndex(position);
+                    if (view != null) {
+                        mSalutation = item;
+                    }
+                }
+
+            });
+        }
     }
 
     private void LoadArea(){
@@ -576,12 +601,14 @@ public class DonorEntry extends AppCompatActivity {
             mDonor = Global.SELECTED_DONOR_MODEL;
             mPrimaryKey = Global.DONOR_KEY;
         }
+
+        mSalutation = mSalutation!="" || mSalutation.isEmpty() ? mSalutation : "Mr.";
         mDonor.setDonor(mDonorName);
+        mDonor.setSalutation(mSalutation);
         mDonor.setAadhar(mAadharNo);
         mDonor.setPan(mPanNo);
         mDonor.setBirthdate(mBirthDate);
         mDonor.setGender(mGender);
-
         mDonor.setMarried(mMarried);
         mDonor.setWeddate(mWedDate);
         mDonor.setAddrline1(mAddressLine1);

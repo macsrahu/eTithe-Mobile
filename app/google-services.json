@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "848562142695",
-    "firebase_url": "https://etithe-default-rtdb.firebaseio.com",
-    "project_id": "etithe",
-    "storage_bucket": "etithe.appspot.com"
+    "project_number": "675536183832",
+    "firebase_url": "https://etithe-admin-default-rtdb.firebaseio.com",
+    "project_id": "etithe-admin",
+    "storage_bucket": "etithe-admin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:848562142695:android:ff65627acd228d03271142",
+        "mobilesdk_app_id": "1:675536183832:android:ad7e4ec3b280e2750c996d",
         "android_client_info": {
           "package_name": "com.prgs.etithe"
         }
       },
       "oauth_client": [
         {
-          "client_id": "848562142695-hccof2nj6h0r67bc7i8gmds9utms7ijq.apps.googleusercontent.com",
+          "client_id": "675536183832-hl6ljs569qmrcoiv7hmkinhm4uvolk18.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCVR8dNqkeOe-tqSykvEzVyvEYCFRkXtKI"
+          "current_key": "AIzaSyCc9xdyitAJwqaPiJVNuvHzjxqISpD_0fY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "848562142695-hccof2nj6h0r67bc7i8gmds9utms7ijq.apps.googleusercontent.com",
+              "client_id": "675536183832-hl6ljs569qmrcoiv7hmkinhm4uvolk18.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

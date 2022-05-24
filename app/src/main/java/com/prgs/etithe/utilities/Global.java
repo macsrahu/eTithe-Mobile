@@ -64,12 +64,13 @@ public class Global {
     public static ArrayList<Slideshow> mImageSlide = null;
     public static Donor SELECTED_DONOR_MODEL = null;
     public static Dependent SELECTED_DEPENDENT_MODEL = null;
+    public static Region SELECTED_REGION=null;
     public static Regions REGION_MODEL;
     public static List<FundType> FUND_TYPE_LIST;
     public static Receipt SELECTED_RECEIPT;
     public static ArrayList<ReceiptLine> SELECTED_RECEIPTS_LIST;
     public static String PDF_FILE="";
-
+    public static ArrayList<Salutations> SALUTATIONS;
     public static Toolbar PrepareToolBar(final Activity context, boolean isBackButtonVisible, String title) {
         Toolbar toolbar = (Toolbar) context.findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
@@ -123,10 +124,7 @@ public class Global {
 
     public static String GetFormatedAmount(String amount) {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        String fromatedAmount = decimalFormat.format(Double.parseDouble(amount));
-
-        return fromatedAmount;
-
+        return decimalFormat.format(Double.parseDouble(amount));
     }
 
     public static String GetFormatedAmountWithCurrency(String amount) {
@@ -218,6 +216,26 @@ public class Global {
             return -111;
         }
         return 1;
+    }
+    public static int WRITE_SALUTATIONS_TO_MEMORY(Context context) {
+        try {
+            InternalStorage.writeObject(context, "SALUTATIONS", Global.SALUTATIONS);
+
+        } catch (Exception ex) {
+            return -111;
+        }
+        return 1;
+    }
+    public static ArrayList<Salutations> READ_SALUTATIONS_FROM_MEMORY(Context context) {
+        ArrayList<Salutations> mSalutation = null;
+        try {
+            mSalutation = new ArrayList<Salutations>();
+            mSalutation = (ArrayList<Salutations>) InternalStorage.readObject(context, "SALUTATIONS");
+
+        } catch (Exception ex) {
+            mSalutation = null;
+        }
+        return mSalutation;
     }
 
     public static int GET_OBJECT_FROM_MEMORY(Context context, int userType) {
@@ -366,10 +384,8 @@ public class Global {
                     Global.REGION_MODEL = dataSnapshot.getValue(Regions.class);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -394,6 +410,28 @@ public class Global {
 
             }
         });
+    }
+
+    public static String GetRegionAddress(Regions mRegion){
+        String mAddress="";
+        if (mRegion!=null){
+            mAddress = mAddress + mRegion.getRegion();
+            if (mRegion.getAddressline1()!="NA" && mRegion.getAddressline1() !="" && !mRegion.getAddressline1().isEmpty()){
+                mAddress = mAddress + mRegion.getAddressline1() +",";
+            }
+            if (mRegion.getAddressline2()!="NA" && mRegion.getAddressline2() !="" && !mRegion.getAddressline2().isEmpty()){
+                if (mAddress!="") {
+                    mAddress = mAddress + mRegion.getAddressline2() + ",";
+                }
+            }
+            if (mRegion.getCity()!="NA" && mRegion.getCity() !="" && !mRegion.getCity().isEmpty()){
+                mAddress = mAddress + mRegion.getCity();
+            }
+            if (mRegion.getPincode()!="NA" && mRegion.getPincode() !="" && !mRegion.getPincode().isEmpty()){
+                mAddress = mAddress + "-" + mRegion.getPincode();
+            }
+        }
+        return mAddress;
     }
 
 //    public static String Receipt_No = "";

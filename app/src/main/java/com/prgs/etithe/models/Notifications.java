@@ -2,7 +2,7 @@ package com.prgs.etithe.models;
 
 import java.io.Serializable;
 
-public class Notification implements Serializable {
+public class Notifications implements Serializable {
     String title;
     String key;
     String regionkey;
@@ -12,7 +12,7 @@ public class Notification implements Serializable {
     boolean ispublished;
     boolean isactive;
 
-    public Notification() {
+    public Notifications() {
     }
 
     public String getTitle() {

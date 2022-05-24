@@ -1,5 +1,7 @@
 package com.prgs.etithe.utilities;
 
+import com.prgs.etithe.models.Salutations;
+
 import java.util.ArrayList;
 
 import crl.android.pdfwriter.Array;
@@ -45,6 +47,30 @@ public class CommonList {
         stateList.add("Uttarakhand");
         stateList.add("West Bengal");
         return stateList;
+    }
+    public static ArrayList<String> GetSalutationList() {
+        ArrayList<String> salutationList = new ArrayList<String>();
+//        if (Global.SALUTATIONS!=null && Global.SALUTATIONS.size()>0){
+//            for(Salutations sal: Global.SALUTATIONS){
+//                salutationList.add(sal.getSalutation());
+//            };
+//        }else {
+//            salutationList.add("Mr.");
+//            salutationList.add("Mrs.");
+//            salutationList.add("Ms.");
+//            salutationList.add("Sir.");
+//            salutationList.add("Rev.");
+//            salutationList.add("Dr.");
+//            salutationList.add("Er.");
+//        }
+        salutationList.add("Mr.");
+        salutationList.add("Mrs.");
+        salutationList.add("Ms.");
+        salutationList.add("Sir.");
+        salutationList.add("Rev.");
+        salutationList.add("Dr.");
+        salutationList.add("Er.");
+        return salutationList;
     }
 
 }

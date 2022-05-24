@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10ssp"
-            android:text="Fund Type" />
+            android:text="@string/dialog_fund_type" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:gravity="right"
-            android:hint="Amount">
+            android:hint="@string/dialog_amount">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_amount"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorPrimary"
                 android:checked="true"
-                android:text="CASH" />
+                android:text="@string/cash" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -92,7 +92,19 @@
                 android:layout_width="wrap_content"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_height="wrap_content"
-                android:text="CHEQUE" />
+                android:text="@string/cheque" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/radio_button_neft"
+                android:layout_width="wrap_content"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:text="@string/neft" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -100,9 +112,8 @@
                 android:layout_weight="1" />
         </RadioGroup>
 
-
         <LinearLayout
-            android:id="@+id/layBankDetail"
+            android:id="@+id/layNeftDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -113,25 +124,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="6dp"
-                android:hint="Cheque No">
+                android:hint="@string/refference_no">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_dialog_cheque_no"
+                    android:id="@+id/input_dialog_neft_ref"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/cheque"
+                    android:drawableLeft="@drawable/ic_outline_sticky_note_2_24"
                     android:drawablePadding="10dp"
                     android:imeOptions="actionDone"
-                    android:inputType="number" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layBankDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="6dp"
-                android:hint="Bank Name">
+                android:hint="@string/bank_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_dialog_bank_name"
@@ -142,6 +160,42 @@
                     android:imeOptions="actionDone"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:hint="@string/cheque_no">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_dialog_cheque_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/cheque"
+                    android:drawablePadding="10dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:hint="@string/cheque_date">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_dialog_cheque_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_date_range_24"
+                    android:drawablePadding="10dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
         </LinearLayout>
     </LinearLayout>

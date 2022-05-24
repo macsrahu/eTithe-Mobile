@@ -114,9 +114,9 @@ public class ReceiptEntry extends AppCompatActivity {
     String mFundType, mMonth, mPayMode, mChequeNo, mBankName, mReceiptAmount, mNotes;
     FundType mSelectedFund;
 
-    TextInputEditText input_cheque_amount, input_dialog_cheque_no, input_cheque_date, input_dialog_bank_name;
-    RadioButton radio_button_dialog_cheque, radio_button_dialog_cash;
-    LinearLayout layBankDetail_dialog;
+    TextInputEditText input_dialog_cheque_date, input_cheque_amount,input_dialog_neft_ref, input_dialog_cheque_no, input_cheque_date, input_dialog_bank_name;
+    RadioButton radio_button_dialog_cheque, radio_button_dialog_cash,radio_button_dialog_neft;
+    LinearLayout layBankDetail_dialog,layNeftDetail_dialog;
     MaterialSpinner spinner_dialog_fund_type;
     View positiveAction;
 
@@ -193,6 +193,8 @@ public class ReceiptEntry extends AppCompatActivity {
                         String amount = input_amount.getText().toString();
                         String bank_name = input_dialog_bank_name.getText().toString();
                         String cheque_no = input_dialog_cheque_no.getText().toString();
+                        String neft_refer = input_dialog_neft_ref.getText().toString();
+                        String cheque_date = input_dialog_cheque_date.getText().toString();
                         KeyboardUtil.hideKeyboard(ReceiptEntry.this);
                         if (amount != null) {
                             if (!amount.isEmpty()) {
@@ -204,17 +206,32 @@ public class ReceiptEntry extends AppCompatActivity {
                                     receiptLine.setBankname("NA");
                                     receiptLine.setChequeno("NA");
                                     receiptLine.setChequedate("NA");
-                                    receiptLine.setPaymode(radio_button_dialog_cash.isChecked() ? "CASH" : "CHEQUE");
+                                    receiptLine.setPaymode(radio_button_dialog_cash.isChecked() ? "CASH" : radio_button_dialog_cheque.isChecked()? "CHEQUE" : "NEFT");
                                     if (radio_button_dialog_cheque.isChecked()) {
-                                        if (!bank_name.isEmpty() && !cheque_no.isEmpty()) {
+                                        if (!bank_name.isEmpty() && !cheque_no.isEmpty() && !cheque_date.isEmpty()) {
                                             receiptLine.setBankname(bank_name);
                                             receiptLine.setChequeno(cheque_no);
+                                            receiptLine.setChequedate(cheque_date);
                                             mReceiptLineList.add(receiptLine);
                                             LoadReceiptList();
                                             KeyboardUtil.hideKeyboard(ReceiptEntry.this);
+                                            dialog.dismiss();
                                         } else {
                                             input_dialog_bank_name.setError("Cannot be empty");
                                             input_dialog_cheque_no.setError("Cannot be empty");
+                                            input_dialog_cheque_date.setError("Cannot be empty");
+                                        }
+                                    }else if(radio_button_dialog_neft.isChecked()){
+                                        if (!neft_refer.isEmpty()) {
+                                            receiptLine.setPaymode("NEFT");
+                                            receiptLine.setBankname("NEFT");
+                                            receiptLine.setChequeno(neft_refer);
+                                            mReceiptLineList.add(receiptLine);
+                                            LoadReceiptList();
+                                            KeyboardUtil.hideKeyboard(ReceiptEntry.this);
+                                            dialog.dismiss();
+                                        } else {
+                                            input_dialog_neft_ref.setError("Cannot be empty");
                                         }
                                     } else {
                                         mReceiptLineList.add(receiptLine);
@@ -238,22 +255,49 @@ public class ReceiptEntry extends AppCompatActivity {
 
         positiveAction = dialogCheque.getActionButton(DialogAction.POSITIVE);
         layBankDetail_dialog = (LinearLayout) dialogCheque.findViewById(R.id.layBankDetail);
+        layNeftDetail_dialog = (LinearLayout) dialogCheque.findViewById(R.id.layNeftDetail);
         input_amount = (TextInputEditText) dialogCheque.findViewById(R.id.input_amount);
         radio_button_dialog_cash = (RadioButton) dialogCheque.findViewById(R.id.radio_button_cash);
+        radio_button_dialog_neft = (RadioButton) dialogCheque.findViewById(R.id.radio_button_neft);
+
         radio_button_dialog_cheque = (RadioButton) dialogCheque.findViewById(R.id.radio_button_cheque);
         spinner_dialog_fund_type = (MaterialSpinner) dialogCheque.findViewById(R.id.spinner_fund_type);
         input_dialog_cheque_no = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_cheque_no);
         input_dialog_bank_name = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_bank_name);
+        input_dialog_cheque_date = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_cheque_date);
+        input_dialog_neft_ref = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_neft_ref);
+
         radio_button_dialog_cash.setChecked(true);
 
         layBankDetail_dialog.setVisibility(View.GONE);
+        layNeftDetail_dialog.setVisibility(View.GONE);
+        radio_button_dialog_cheque.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    layBankDetail_dialog.setVisibility(View.VISIBLE);
+                } else {
+                    layBankDetail_dialog.setVisibility(View.GONE);
+                }
+            }
+        });
+        radio_button_dialog_neft.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    layNeftDetail_dialog.setVisibility(View.VISIBLE);
+                } else
+                {
+                    layNeftDetail_dialog.setVisibility(View.GONE);
+                }
+            }
+        });
         radio_button_dialog_cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     layBankDetail_dialog.setVisibility(View.GONE);
-                } else {
-                    layBankDetail_dialog.setVisibility(View.VISIBLE);
+                    layNeftDetail_dialog.setVisibility(View.GONE);
                 }
             }
         });
@@ -338,7 +382,8 @@ public class ReceiptEntry extends AppCompatActivity {
             }
         });
         if (mDonor != null) {
-            text_view_donor.setText(mDonor.getDonor());
+            String mDonerName = mDonor.getSalutation()!=null? mDonor.getSalutation() +" "+  mDonor.getDonor() : mDonor.getDonor();
+            text_view_donor.setText(mDonerName);
             String sAddress = mDonor.getAddrline1() + "\n" + mDonor.getAddrline2() + "\n" + mDonor.getCity() + "\n" + mDonor.getPincode();
             text_view_address.setText(sAddress);
         }
@@ -478,7 +523,11 @@ public class ReceiptEntry extends AppCompatActivity {
         mReceipt.setReceiptdate(Global.GetCurrentDate());
         mReceipt.setReceiptno(receiptNo);
         mReceipt.setDonorkey(mDonor.getKey());
-        mReceipt.setDonor(mDonor.getDonor());
+        if (mDonor.getSalutation()!=null) {
+            mReceipt.setDonor(mDonor.getSalutation() +" " + mDonor.getDonor());
+        }else{
+            mReceipt.setDonor(mDonor.getDonor());
+        }
         mReceipt.setPaymonth(mMonth + "-" + Global.GetCurrentYear());
         mReceipt.setNotes(mNotes != null ? "Donation for the month of " + (mMonth + "-" + Global.GetCurrentYear()) : mNotes);
         mReceipt.setAddress(mDonor.getAddrline1() + "\n" + mDonor.getAddrline2() + "\n" + mDonor.getCity() + "\n" + mDonor.getPincode());

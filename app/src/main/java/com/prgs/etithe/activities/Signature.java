@@ -235,10 +235,14 @@ public class Signature extends AppCompatActivity {
                 case R.id.btnSubmit:
 
                     Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
+                    if (signaturePad.isEmpty()){
+                        Messages.ShowToast(getApplicationContext(), "Please get signature from donor");
+                        break;
+                    }
                     if (signatureBitmap != null) {
-                        SaveImage(Global.SELECTED_RECEIPT.getRegionkey());
+                        ConfirmSave();
                     } else {
-                        Messages.ShowToast(getApplicationContext(), "Please do signature");
+                        Messages.ShowToast(getApplicationContext(), "Please get signature from donor");
                     }
                     break;
                 case R.id.btnClear:
@@ -250,11 +254,35 @@ public class Signature extends AppCompatActivity {
                     break;
 
                 case R.id.btnCancel:
-
-                        break;
+                  break;
             }
             return true;
         });
+    }
+    private void  ConfirmSave(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(getResources().getDrawable(R.drawable.logo_spalsh_blue));
+        builder.setMessage(getResources().getString(R.string.dialog_confirm));
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog,
+                                        final int which) {
+                        SaveImage(Global.SELECTED_RECEIPT.getRegionkey());
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog,
+                                        final int which) {
+                        dialog.dismiss();
+                    }
+                });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
     private void CancelReceipt() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

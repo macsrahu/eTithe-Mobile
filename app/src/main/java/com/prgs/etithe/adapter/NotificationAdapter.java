@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.prgs.etithe.R;
 import com.prgs.etithe.activities.DependentEntry;
 import com.prgs.etithe.models.Dependent;
-import com.prgs.etithe.models.Notification;
+import com.prgs.etithe.models.Notifications;
 import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 
@@ -32,7 +32,7 @@ import java.util.List;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
     private Context mContext;
     private Activity mActivity;
-    private List<Notification> notificationsList;
+    private List<Notifications> notificationsList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView text_view_title, text_view_date, text_view_message;
@@ -55,7 +55,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return new NotificationAdapter.MyViewHolder(itemView);
     }
 
-    public NotificationAdapter(Context mContext, List<Notification> _notificationsList) {
+    public NotificationAdapter(Context mContext, List<Notifications> _notificationsList) {
         this.mContext = mContext;
         this.notificationsList = _notificationsList;
     }
@@ -63,7 +63,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(final NotificationAdapter.MyViewHolder holder, final int position) {
-        final Notification notification = notificationsList.get(position);
+        final Notifications notification = notificationsList.get(position);
         holder.text_view_title.setText(notification.getTitle());
         //holder.text_view_date.setText(notification.getMessagedon());
         holder.text_view_date.setText(Global.GetDateStringByLong(notification.getMessagedon()));

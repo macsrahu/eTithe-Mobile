@@ -17,7 +17,8 @@ public class FirebaseTables {
     public static String TBL_DEPENDENTS="Dependents";
     public static String TBL_REGION_SETTINGS="RegionSetting";
     public static String TBL_MOBILE_DEVICE_REG="MobileDeviceInfo";
-    public static String TBL_NOTIFICATION="Notifications";
+    public static String TBL_SALUTATION="Salutations";
+    public static String TBL_NOTIFICATIONS="Notifications";
     public static String TBL_LOCATION = "location";
 
 

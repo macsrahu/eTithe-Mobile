@@ -160,7 +160,8 @@ public class DonorsList extends AppCompatActivity {
         // running a for loop to compare elements.
         for (Donor item : mDonors) {
             // checking if the entered string matched with any item of our recycler view.
-            if (item.getDonor().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getDonor().toLowerCase().contains(text.toLowerCase())
+               || item.getMobile().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);

@@ -18,7 +18,6 @@
             android:elevation="4dp" />
 
 
-
         <ScrollView
             android:id="@+id/content_scroll"
             android:layout_width="match_parent"
@@ -32,8 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_70ssp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <com.github.florent37.expansionpanel.ExpansionHeader
                     android:layout_width="match_parent"
@@ -49,8 +47,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:textColor="@color/white"
                         android:text="Personal Detail"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"></TextView>
                     <!-- HEADER INDICATOR -->
                     <ImageView
@@ -68,8 +66,8 @@
                 <com.github.florent37.expansionpanel.ExpansionLayout
                     android:id="@+id/expansionLayout"
                     android:layout_width="match_parent"
-                    android:padding="@dimen/_2ssp"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/_2ssp"
                     app:expansion_expanded="true">
 
                     <LinearLayout
@@ -79,24 +77,50 @@
                         android:orientation="vertical"
                         android:padding="@dimen/_5ssp">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginBottom="6dp"
-                            android:hint="Donor Name ">
+                            android:background="@drawable/date_border"
+                            android:orientation="horizontal">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/input_donor_name"
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8ssp"
+                                android:layout_marginLeft="@dimen/_4ssp"
+                                android:layout_marginRight="@dimen/_4ssp"
+                                android:padding="@dimen/_4ssp"
+                                android:background="@drawable/date_border"
+                                >
+
+                                <com.jaredrummler.materialspinner.MaterialSpinner
+                                    android:id="@+id/spinner_salutaion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center">
+                                </com.jaredrummler.materialspinner.MaterialSpinner>
+
+                            </LinearLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_baseline_person_24"
-                                android:drawablePadding="10dp"
-                                android:imeOptions="actionNext"
-                                android:inputType="text" />
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:hint="Donor Name ">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/input_donor_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/ic_baseline_person_24"
+                                    android:drawablePadding="10dp"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                         <RadioGroup
                             android:id="@+id/radioGroup"
@@ -118,8 +142,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/colorPrimaryDark"
-                                android:checked="true"
                                 android:buttonTint="@color/colorPrimaryDark"
+                                android:checked="true"
                                 android:text="Male" />
 
                             <Space
@@ -143,8 +167,8 @@
                                 android:id="@+id/radio_button_unknown"
                                 android:layout_width="wrap_content"
 
-                                android:buttonTint="@color/colorPrimaryDark"
                                 android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimaryDark"
                                 android:text="Unknown" />
 
                             <Space
@@ -203,8 +227,8 @@
                             <RadioButton
                                 android:id="@+id/radio_button_married"
                                 android:layout_width="wrap_content"
-                                android:buttonTint="@color/colorPrimaryDark"
                                 android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimaryDark"
                                 android:checked="true"
                                 android:text="Married" />
 
@@ -215,9 +239,9 @@
 
                             <RadioButton
                                 android:id="@+id/radio_button_single"
-                                android:buttonTint="@color/colorPrimaryDark"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimaryDark"
                                 android:text="Single" />
 
                             <Space
@@ -289,8 +313,8 @@
                             <RadioButton
                                 android:id="@+id/radio_button_non_member"
                                 android:layout_width="wrap_content"
-                                android:buttonTint="@color/colorPrimaryDark"
                                 android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimaryDark"
                                 android:text="Non-Member" />
 
                             <Space
@@ -315,9 +339,9 @@
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_baseline_credit_card_24"
                                 android:drawablePadding="10dp"
-                                android:maxLength="12"
                                 android:imeOptions="actionNext"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:maxLength="12" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -335,9 +359,9 @@
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_baseline_credit_card_24"
                                 android:drawablePadding="10dp"
-                                android:maxLength="11"
                                 android:imeOptions="actionNext"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:maxLength="11" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -361,8 +385,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:drawablePadding="4dp"
-                        android:textColor="@color/white"
                         android:text="Address Detail"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"></TextView>
                     <!-- HEADER INDICATOR -->
                     <ImageView
@@ -406,6 +430,7 @@
                                 android:gravity="center"></com.jaredrummler.materialspinner.MaterialSpinner>
 
                         </LinearLayout>
+
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"

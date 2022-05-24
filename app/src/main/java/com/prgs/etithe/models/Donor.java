@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Donor implements Serializable {
     String key;
+    String salutation;
     String donor;
     String birthdate;
     String gender;
@@ -284,5 +285,13 @@ public class Donor implements Serializable {
 
     public void setUpdatedon(String updatedon) {
         this.updatedon = updatedon;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
     }
 }

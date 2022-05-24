@@ -85,8 +85,8 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-       // _emailText.setText("rahupathi@gmail.com");
-       // _passwordText.setText("test@123");
+        // _emailText.setText("rahupathi@gmail.com");
+        //_passwordText.setText("test@123");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -131,6 +131,7 @@ public class Login extends AppCompatActivity {
                                         Global.USER_CODE = task.getResult().getUser().getUid();
                                         GetUserDetail(Global.USER_CODE);
                                     } else {
+                                        Messages.ShowToast(Login.this,task.getException().getMessage());
                                         Global.ShowSnackMessage(Login.this, "Invalid user id or password");
                                     }
 

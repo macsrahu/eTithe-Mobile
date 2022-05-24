@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Region;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.internal.GmsLogger;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +45,7 @@ import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.Messages;
 import com.prgs.etithe.utilities.NumberToWord;
+
 import android.print.PrintPDF;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +62,7 @@ public class WebViewPDF extends AppCompatActivity {
     boolean printBtnPressed;
     String _FOLDER_PATH = "eTithe/Pictures";
     String mOutputFilePath;
-
+    String sBranchAddress;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +86,20 @@ public class WebViewPDF extends AppCompatActivity {
                 printWeb = webView;
             }
         });
+        LoadRegion();
         LoadMenu(webView);
         LoadDonor(webView);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
+    private void LoadRegion() {
+        if (Global.LOGIN_USER_DETAIL != null && Global.REGION_MODEL==null) {
+            Global.GetRegionNameByRegionKey(Global.LOGIN_USER_DETAIL.getRegionkey());
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void LoadMenu(final WebView webView){
+    private void LoadMenu(final WebView webView) {
         BottomNavigationView bottonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         bottonNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -117,7 +128,7 @@ public class WebViewPDF extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void SharePDFFile(final WebView webView){
+    private void SharePDFFile(final WebView webView) {
 
         try {
             printBtnPressed = true;
@@ -130,14 +141,14 @@ public class WebViewPDF extends AppCompatActivity {
             //File path = getCacheDir().getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/");
 
             File pdfDirectory = new File(getCacheDir(), _FOLDER_PATH);
-            mOutputFilePath =  "//RECEIPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf";
+            mOutputFilePath = "//RECEIPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf";
             PrintPDF pdfPrint = new PrintPDF(attributes);
             pdfPrint.print(webView.createPrintDocumentAdapter(jobName), pdfDirectory, "RECIEPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf");
-            Messages.ShowToast(getApplicationContext(),"First:" + mOutputFilePath);
+            //s.ShowToast(getApplicationContext(), "First:" + mOutputFilePath);
             Intent intentShareFile = new Intent(Intent.ACTION_SEND);
             if (pdfDirectory.exists()) {
                 File mFile = new File(getBaseContext().getExternalCacheDir().getAbsolutePath() + mOutputFilePath);
-                Messages.ShowToast(getApplicationContext(),"Second:" + mOutputFilePath);
+                //.ShowToast(getApplicationContext(), "Second:" + mOutputFilePath);
                 intentShareFile.setType("application/pdf");
                 intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
                 intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
@@ -145,14 +156,16 @@ public class WebViewPDF extends AppCompatActivity {
                 intentShareFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(intentShareFile, "Share via"));
             }
-        }catch (Exception ex){
-            Messages.ShowToast(getApplicationContext(),ex.getMessage());
+        } catch (Exception ex) {
+            Messages.ShowToast(getApplicationContext(), ex.getMessage());
         }
     }
 
     private void LoadDonor(final WebView webView) {
 
         if (Global.SELECTED_RECEIPT != null) {
+            sBranchAddress = Global.GetRegionAddress(Global.REGION_MODEL);
+
             final ProgressDialog dialog = new ProgressDialog(WebViewPDF.this, R.style.MyAlertDialogStyle);
             dialog.setMessage("Loading receipt..");
             dialog.show();
@@ -200,27 +213,29 @@ public class WebViewPDF extends AppCompatActivity {
             String imgSign = Global.SELECTED_RECEIPT.getSignurl();
 
 
-
             for (ReceiptLine receiptLine : Global.SELECTED_RECEIPTS_LIST) {
                 sbReceiptLine.append("<tr>\n");
                 sbReceiptLine.append("<td>" + receiptLine.getFundtype() + "</td>\n");
-                sbReceiptLine.append("<td style='text-align:right;margin-right:5px;'>" + Global.GetFormatedAmountWithCurrency(String.valueOf(receiptLine.getAmount())) + "</td>\n");
+                sbReceiptLine.append("<td style='text-align:right;margin-right:5px;'>" + Global.GetFormatedAmount(String.valueOf(receiptLine.getAmount())) + "</td>\n");
                 sbReceiptLine.append("</tr>\n");
+
             }
-            sbReceiptLine.append("<td style='text-align:right'><span>Total&nbsp;&nbsp;</span></td>\n");
-            sbReceiptLine.append("<td style='text-align:right;margin-right:5px;'><span no-wrap>" + Global.GetFormatedAmountWithCurrency(String.valueOf(Global.SELECTED_RECEIPT.getAmount())) + "</span></td>\n");
+            sbReceiptLine.append("<td style='text-align:right'><span style='font-weight:bold'>Total&nbsp;&nbsp;</span></td>\n");
+            sbReceiptLine.append("<td style='text-align:right;margin-right:5px;'><span style='font-weight:bold'>" + Global.GetFormatedAmount(String.valueOf(Global.SELECTED_RECEIPT.getAmount())) + "</span></td>\n");
             sbReceiptLine.append("</tr>\n");
 
 
             //Payment Mode
 
             sbReceiptLine.append("<tr><td colspan=\"2\"><table style=\"font-family: Cambria;font-size:12px;\">\n");
-            if (Global.SELECTED_RECEIPTS_LIST.size()>0) {
+            if (Global.SELECTED_RECEIPTS_LIST.size() > 0) {
                 ReceiptLine mReceiptLine = Global.SELECTED_RECEIPTS_LIST.get(0);
                 if (mReceiptLine != null) {
                     //Messages.ShowToast(getApplicationContext(),mReceiptLine.getPaymode());
-                    if (mReceiptLine.getPaymode().equals("CASH")) {
-                        sbReceiptLine.append("<tr><td>Received as :" + mReceiptLine.getPaymode() +"</td></tr>");
+                    if (mReceiptLine.getPaymode()=="CASH") {
+                        sbReceiptLine.append("<tr><td>Received as :" + mReceiptLine.getPaymode() + "</td></tr>");
+                    }else if(mReceiptLine.getPaymode()=="NEFT"){
+                        sbReceiptLine.append("<tr><td style='width:50%'>Received as:NEFT</td><td style='width:50%'></td><tr><td style='width:50%'>Ref. No: " + mReceiptLine.getChequeno() + "</td></tr>");
                     } else {
                         sbReceiptLine.append("<tr><td style='width:50%'>Received as:Cheque</td><td style='width:50%'>Bank Name:" + mReceiptLine.getBankname() + "</td><tr><td style='width:50%'>Cheque/DD No: " + mReceiptLine.getChequeno() + "</td><td style='width:50%'>Cheque/DD Date: " + mReceiptLine.getChequedate() + "</td></tr>");
                     }
@@ -229,7 +244,7 @@ public class WebViewPDF extends AppCompatActivity {
             sbReceiptLine.append("</table></td></tr>\n");
 
             sbReceiptLine.append("<tr><td colspan=\"2\">\n");
-            sbReceiptLine.append("<table  style=\"font-family: Cambria;font-size:12px;\" ><tr><td valign=\"top\"><span style=\"float:left;margin-left:2px;\">Rupees " + NumberToWord.convert((long)(Global.SELECTED_RECEIPT.getAmount())));
+            sbReceiptLine.append("<table  style=\"font-family: Cambria;font-size:12px;\" ><tr><td valign=\"top\"><span style=\"float:left;margin-left:2px;\">Rupees " + NumberToWord.convert((long) (Global.SELECTED_RECEIPT.getAmount())));
             sbReceiptLine.append("</td></tr></table>\n");
             sbReceiptLine.append("</td></tr>\n");
 
@@ -241,48 +256,29 @@ public class WebViewPDF extends AppCompatActivity {
             //sbReceiptLine.append("<table><tr><td valign=\"top\"><span style=\"float:left;\">Rupees " + NumberToWord.convert((long)(Global.SELECTED_RECEIPT.getAmount())));
             //sbReceiptLine.append("</td></tr></table></td>\n");
             sbReceiptLine.append("<td style=\"width:65%;text-align:right;float:right\">");
-            sbReceiptLine.append("<table  style=\"font-family: Cambria;font-size:12px;\"><tr><td><span>for Scripture Union & CSSM council of India</span></td></tr>\n");
+            sbReceiptLine.append("<table  style=\"font-family: Cambria;font-size:12px;font-weight:bold;\"><tr><td><span >for Scripture Union & CSSM council of India</span></td></tr>\n");
             sbReceiptLine.append("<tr><td style=\"text-align:center;\"><img style=\"text-align:center\" src='" + imgSign + "'  width=\"70\" height=\"50\"></img></td></tr>\n");
             sbReceiptLine.append("<tr><td style=\"text-align:center;\"><span style=\"text-align:center;\" >Authorised Signatory</span></td></tr></table>");
             sbReceiptLine.append("<tr>\n");
+            sbReceiptLine.append("<td style=\"width:100%\" colspan=\"2\" >&nbsp;</td>\n");
+            sbReceiptLine.append("</tr>\n");
+            sbReceiptLine.append("<tr>\n");
+
             sbReceiptLine.append("<td style=\"width:100%\" colspan=\"2\" >\n");
-            sbReceiptLine.append("<table style=\"width:100%;text-align:center;font-family: Cambria;font-size:10px;\"><tr><td style\"text-align:center\">");
+
+            sbReceiptLine.append("<table style=\"width:100%;text-align:center;font-family: Cambria;font-size:10px;font-weight:bold;\"><tr><td style\"text-align:center\">");
             sbReceiptLine.append("<span>\"Your word is lamp to my feet and a light for my path. Psalms 119:105\"</span>");
             sbReceiptLine.append("</td></tr></table>\n");
+
+
             sbReceiptLine.append("</td>\n");
             sbReceiptLine.append("</tr>\n");
-            sbReceiptLine.append("</table>\n");
-            sbReceiptLine.append("</tr>\n");
 
+            sbReceiptLine.append("<tr>\n");
+            sbReceiptLine.append("<td style=\"width:100%\" colspan=\"2\" >\n");
 
-            StringBuilder receiptHTML = new StringBuilder();
-            receiptHTML.append("<html>\n" +
-                    "<tbody>\n" +
-                    "    <div style=\"border: 0px solid gray;width: 100%;border-collapse:collapse;font-family: Cambria;\">\n" +
-                    "        <table style=\"width: 100%; border: 1px solid gray;width: 100%;border-collapse:collapse;\">\n" +
-                    "            <tr>\n" +
-                    "                <td>\n" +
-                    "                     <table style=\"width:100%;\">\n" +
-                    "                         <tr>\n" +
-                    "                             <td style=\"width: 20%;\">\n" +
-                    "                                 <img src='" + imgUrl + "'  width=\"90\" height=\"90\"></img> \n" +
-                    "                             </td>\n" +
-                    "                             <td style=\"text-align: center;width: 80%;\">\n" +
-                    "                                 <table>\n" +
-                    "                                     <tr>\n" +
-                    "                                         <td  style=\"text-align:center;\">\n" +
-                    "                                            <table>\n" +
-                    "                                                <tr>\n" +
-                    "                                                    <td style=\"text-align: center;font-size: 16px;font-weight: bold;\">\n" +
-                    "                                                        SCRIPTURE UNIOIN & CSSM COUNCIL OF INDIA\n" +
-                    "                                                    </td>\n" +
-                    "                                                </tr>\n" +
-                    "                                                <tr>\n" +
-                    "                                                    <td style=\"text-align: center;font-size: 12px;\">\n" +
-                    "                                                        <span>Society Registration Number : 1/1975</span>\n" +
-                    "                                                    </td>\n" +
-                    "                                                </tr>\n" +
-                    "                                                <tr><td style=\"text-align: center;font-size: 12px;\">\n" +
+            sbReceiptLine.append("<table style=\"width:100%;text-align:center;font-family: Cambria;font-size:10px;font-weight:bold;\"><tr><td style\"text-align:center\">");
+            sbReceiptLine.append("<tr><td style=\"text-align: center;font-size: 14px;\">\n" +
                     "                                                    <span>\n" +
                     "                                                        Head Office: No. 27 First Main Road, United India Nagar, Ayanavaram, Chennai-600023\n" +
                     "                                                    </span>\n" +
@@ -291,14 +287,78 @@ public class WebViewPDF extends AppCompatActivity {
                     "                                                    <span>\n" +
                     "                                                        Phone:044-2674 0137 Email:scriptureunionindia@gmail.com\n" +
                     "                                                    </span>\n" +
-                    "                                                </td></tr>\n" +
+                    "                                                </td></tr>\n");
+            sbReceiptLine.append("</td></tr></table>\n");
+
+            sbReceiptLine.append("</td>\n");
+            sbReceiptLine.append("</tr>\n");
+
+
+            sbReceiptLine.append("</table>\n");
+            sbReceiptLine.append("</tr>\n");
+
+
+            StringBuilder receiptHTML = new StringBuilder();
+            receiptHTML.append("<html>\n" +
+                    "<tbody>\n" +
+                    "    <div style=\"border: 1px solid black;width: 100%;border-collapse:collapse;font-family: Cambria;\">\n" +
+                    "        <table style=\"width: 100%; border: 0px solid gray;width: 100%;border-collapse:collapse;\">\n" +
+                    "            <tr>\n" +
+                    "                <td style=\"text-align:center;\">\n" +
+                    "                     <table style=\"width:90%;text-align:center;\">\n" +
+                    "                         <tr>\n" +
+                    "                             <td style=\"width: 20%;text-align:right;\">\n" +
+                    "                                 <img src='" + imgUrl + "'  width=\"90\" height=\"90\"></img> \n" +
+                    "                             </td>\n" +
+                    "                             <td style=\"text-align: center;width: 80%;\">\n" +
+                    "                                 <table>\n" +
+                    "                                     <tr>\n" +
+                    "                                         <td  style=\"text-align:center;\">\n" +
+                    "                                            <table>\n" +
+                    "                                                <tr>\n" +
+                    "                                                    <td style=\"text-align: center;font-size: 18px;font-weight: bold;\">\n" +
+                    "                                                        SCRIPTURE UNION & CSSM COUNCIL OF INDIA\n" +
+                    "                                                    </td>\n" +
+                    "                                                </tr>\n" +
+                    "                                                <tr>\n" +
+                    "                                                    <td style=\"text-align: center;font-size: 12px;\">\n" +
+                    "                                                        <span>Society Registration Number : 1/1975</span>\n" +
+                    "                                                    </td>\n" +
+                    "                                                </tr>\n" +
+                    "                                               <tr>\n" +
+                    "                                                   <td style=\"width:100%;text-align:center;font-weight:bold;font-size:12px;\">\n" +
+                    "                                                           <span>" + sBranchAddress +"</span>\n" +
+                    "                                                   </td>\n" +
+                    "                                              </tr>\n" +
+
+//                    "                                                <tr><td style=\"text-align: center;font-size: 12px;\">\n" +
+//                    "                                                    <span>\n" +
+//                    "                                                        Head Office: No. 27 First Main Road, United India Nagar, Ayanavaram, Chennai-600023\n" +
+//                    "                                                    </span>\n" +
+//                    "                                                </td></tr>\n" +
+//                    "                                                <tr><td style=\"text-align: center;font-size: 10px;\">\n" +
+//                    "                                                    <span>\n" +
+//                    "                                                        Phone:044-2674 0137 Email:scriptureunionindia@gmail.com\n" +
+//                    "                                                    </span>\n" +
+//                    "                                                </td></tr>\n" +
+
                     "                                            </table> \n" +
                     "                                        </td>\n" +
                     "                                     </tr>\n" +
                     "                                 </table>\n" +
                     "                             </td>\n" +
                     "                         </tr>\n" +
-                    "                     </table>   \n" +
+                    "                     </table>\n" +
+                    "                </td>\n" +
+                    "            </tr>\n" +
+                    "           <tr>\n" +
+                    "                <td colspan='2'>\n" +
+                    "                     <hr/>\n" +
+                    "                </td>\n" +
+                    "           </tr>\n" +
+                    "           <tr>\n" +
+                    "           <td colspan='2' style=\"width:100%;text-align:center;\">\n" +
+                    "                      <span style='font-size: 15px;text-align:center;font-weight:bold'>RECEIPT</span>\n" +
                     "                </td>\n" +
                     "            </tr>\n" +
                     "            <tr>\n" +
@@ -310,23 +370,34 @@ public class WebViewPDF extends AppCompatActivity {
                     "                <td>\n" +
                     "                    <table  style=\"width: 100%;margin-top: 5px;  padding: 10px;font-family: Cambria;font-size:12px\" cellspacing=\"5\" >\n" +
                     "                        <tr>\n" +
-                    "                            <td>\n" +
-                    "                                <span>Received with thanks from &nbsp;&nbsp;</span><span>Mr/Mrs.<b>" + Global.SELECTED_RECEIPT.getDonor() + "</b></span>\n" +
+                    "                            <td colspan='2'>\n" +
+                    "                                <span>Received with thanks from &nbsp;&nbsp;</span><span><b>" + Global.SELECTED_RECEIPT.getDonor().toUpperCase() + "</b></span>\n" +
                     "                            </td>\n" +
-                    "                            <td style=\"text-align:right\" ><span>Date:&nbsp;" + Global.SELECTED_RECEIPT.getReceiptdate() + "</span></td>\n" +
                     "                        </tr>\n" +
                     "                        <tr>\n" +
                     "                            <td>\n" +
-                    "                             <span>Address/Member Code:&nbsp;</span><br><span>" + Global.SELECTED_RECEIPT.getAddress() + "</span>\n" +
-                    "                         </td>\n" +
-                    "                         <td style=\"text-align:right\"><span>Receipt#:&nbsp;" + Global.SELECTED_RECEIPT.getReceiptno() + "</span></td>\n" +
+                    "                                   &nbsp;" +
+                    "                            </td>\n" +
+                    "                         <td style=\"width:35%;text-align:left;font-size:14px\"><span>Receipt No:&nbsp;" + Global.SELECTED_RECEIPT.getReceiptno() + "</span></td>\n" +
+                    "                        </tr>\n" +
+                    "                        <tr>\n" +
+                    "                            <td>\n" +
+                    "                             <span>Address</span><br><span style=\"font-weight:bold\" >" + Global.SELECTED_RECEIPT.getAddress() + "</span>\n" +
+                    "                            </td>\n" +
+                    "                            <td style=\"text-align:left\" ><span>Date:&nbsp;" + Global.SELECTED_RECEIPT.getReceiptdate() + "</span></td>\n" +
                     "                        </tr>\n" +
                     "                        <tr>\n" +
                     "                            <td>\n" +
                     "                                 <span>Mobile No:&nbsp;</span><span>" + mDonor.getMobile() + "</span>\n" +
                     "                            </td>\n" +
-                    "                            <td style=\"text-align:right\">\n" +
+                    "                            <td>\n" +
+                    "                            </td>\n" +
+                    "                        </tr>\n" +
+                    "                        <tr>\n" +
+                    "                            <td>\n" +
                     "                                 <span>Email:&nbsp;" + mDonor.getEmail() + "</span>\n" +
+                    "                            </td>\n" +
+                    "                            <td>\n" +
                     "                            </td>\n" +
                     "                        </tr>\n" +
                     "                    </table>\n" +
@@ -459,6 +530,7 @@ public class WebViewPDF extends AppCompatActivity {
         }
         return new File("");
     }
+
     @Override
     protected void onResume() {
         super.onResume();

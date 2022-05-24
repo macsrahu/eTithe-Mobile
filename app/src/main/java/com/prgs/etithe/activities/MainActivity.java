@@ -1,7 +1,6 @@
 package com.prgs.etithe.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,8 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -27,15 +24,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,12 +46,12 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.prgs.etithe.R;
 import com.prgs.etithe.models.AreaPerson;
 import com.prgs.etithe.models.FieldOfficer;
+import com.prgs.etithe.models.Salutations;
 import com.prgs.etithe.models.Slideshow;
 import com.prgs.etithe.service.TrackingService;
 import com.prgs.etithe.utilities.FirebaseTables;
@@ -63,9 +60,11 @@ import com.prgs.etithe.utilities.InternalStorage;
 import com.prgs.etithe.utilities.Messages;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
 
-import static android.widget.Toast.LENGTH_LONG;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         setContentView(R.layout.activity_main);
 
         try {
-            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
             mSavedInstanceState = savedInstanceState;
             getVersionInfo();
 
@@ -109,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             SlideShowBuild();
             BuiltMenu();
             LocationAccessPermission();
+            LoadSalutations();
 
         } catch (Exception ex) {
             Messages.ShowToast(getApplicationContext(), ex.getMessage());
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
+
     private void LocationAccessPermission() {
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         }
 
     }
+
     private void getVersionInfo() {
         String versionName = "";
         int versionCode = -1;
@@ -149,6 +151,46 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         versionInfo = String.format(" Version %s.%d", versionName, versionCode);
         //TextView textViewVersionInfo = (TextView) findViewById(R.id.textview_version_info);
         //textViewVersionInfo.setText(String.format("Version name = %s \nVersion code = %d", versionName, versionCode));
+    }
+
+    private void LoadSalutations() {
+        Global.SALUTATIONS = Global.READ_SALUTATIONS_FROM_MEMORY(getApplicationContext());
+        if (Global.SALUTATIONS == null) {
+            final ProgressDialog dialog = ProgressDialog.show(this,
+                    null,
+                    "Loading data..",
+                    true);
+
+            dialog.show();
+
+            FirebaseDatabase.getInstance().getReference().child(FirebaseTables.TBL_SALUTATION)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Global.SALUTATIONS = new ArrayList<Salutations>();
+                                for (DataSnapshot salutationNode : dataSnapshot.getChildren()) {
+                                    Salutations salutationModel = salutationNode.getValue(Salutations.class);
+                                    if (salutationModel != null) {
+                                        Global.SALUTATIONS.add(salutationModel);
+                                        //Messages.ShowToast(getApplicationContext(), salutationModel.getCode());
+                                    }
+                                }
+                                if (Global.SALUTATIONS != null && Global.SALUTATIONS.size() > 0) {
+                                    Global.WRITE_SALUTATIONS_TO_MEMORY(getApplicationContext());
+                                }
+                                dialog.dismiss();
+                            } else {
+                                dialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
+                            dialog.dismiss();
+                        }
+                    });
+        }
     }
 
     private void SetUserDetailByUserType() {
@@ -297,14 +339,14 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
                 Global.DONOR_KEY = "";
                 Global.SELECTED_DONOR_MODEL = null;
-                if (Global.LOGIN_USER_DETAIL!=null) {
+                if (Global.LOGIN_USER_DETAIL != null) {
                     Intent iDonorEntry = new Intent(MainActivity.this, DonorEntry.class);
                     iDonorEntry.putExtra("FROM", "MAIN");
                     iDonorEntry.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(iDonorEntry);
                     finish();
-                }else{
-                    if (Global.GET_LOGIN_INFO_FROM_MEMORY(getApplicationContext())>0){
+                } else {
+                    if (Global.GET_LOGIN_INFO_FROM_MEMORY(getApplicationContext()) > 0) {
                         Intent iDonorEntry = new Intent(MainActivity.this, DonorEntry.class);
                         iDonorEntry.putExtra("FROM", "MAIN");
                         iDonorEntry.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -341,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         findViewById(R.id.cardAnnouncement).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent iLocationList = new Intent(MainActivity.this, Notifications.class);
+                Intent iLocationList = new Intent(MainActivity.this, NotificationsActivity.class);
                 iLocationList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(iLocationList);
                 finish();
@@ -555,6 +597,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     public void onPageScrollStateChanged(int state) {
 
     }
+
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
             grantResults) {
         if (requestCode == PERMISSIONS_REQUEST && grantResults.length == 1
@@ -564,6 +607,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             Toast.makeText(this, "Please enable location services to allow GPS tracking", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void startTrackerService() {
         if (!isMyServiceRunning(TrackingService.class)) {
             Intent myIntent = new Intent(MainActivity.this, TrackingService.class);

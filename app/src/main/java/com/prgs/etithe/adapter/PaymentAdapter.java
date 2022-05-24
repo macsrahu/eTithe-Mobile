@@ -73,7 +73,11 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.MyViewHo
         }
         if (receiptLine.getBankname() != null) {
             if (!receiptLine.getBankname().isEmpty()) {
-                holder.text_view_bank.setText("Pay by :" + receiptLine.getPaymode() + " Bank: " + receiptLine.getBankname() + " - Cheque No:" + receiptLine.getChequeno());
+                if (receiptLine.getBankname()!="NEFT") {
+                    holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Bank: " + receiptLine.getBankname() + "  No:" + receiptLine.getChequeno()  +"  Date:" + receiptLine.getChequedate() +" ]");
+                }else{
+                    holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Ref #: " + receiptLine.getChequeno() +" ]");
+                }
             }
         }
         holder.layReceiptContent.setOnLongClickListener(new View.OnLongClickListener() {

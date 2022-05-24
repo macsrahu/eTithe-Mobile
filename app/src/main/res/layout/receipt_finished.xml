@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:layout_margin="@dimen/_8ssp"
             android:layout_centerVertical="true">
 
             <ImageView
@@ -41,37 +42,45 @@
                 android:includeFontPadding="true"
                 android:padding="@dimen/_20ssp"
                 android:text="@string/success_receipt"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_20ssp"
                 android:typeface="monospace" />
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_done"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_10ssp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
                 android:layout_below="@+id/text_title"
                 android:layout_centerHorizontal="true"
-                android:text="Done"
-                android:textSize="@dimen/_14ssp"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_print"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_10ssp"
-                android:layout_below="@+id/button_done"
-                android:layout_centerHorizontal="true"
-                android:text="Print"
-                android:textSize="@dimen/_14ssp"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_done"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10ssp"
+                    android:text="@string/done"
+                    android:layout_marginLeft="@dimen/_8ssp"
+                    android:layout_marginRight="@dimen/_8ssp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_print"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10ssp"
+                    android:text="@string/print"
+                    android:layout_marginLeft="@dimen/_8ssp"
+                    android:layout_marginRight="@dimen/_8ssp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 
