@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".30"
-                android:background="@drawable/rectangel_text_view"
+                android:background="@drawable/rectangle_text_view"
                 android:fontFamily="@font/good_time"
                 android:gravity="center_vertical|center_horizontal"
                 android:includeFontPadding="true"

@@ -29,7 +29,7 @@
             android:layout_margin="@dimen/_4ssp"
             android:layout_marginBottom="@dimen/_4ssp"
             android:textColor="@color/white"
-            android:background="@drawable/rectangel_text_view"
+            android:background="@drawable/rectangle_text_view"
             android:padding="@dimen/_4ssp"
             android:text="Donor Name"
             android:textAlignment="center"

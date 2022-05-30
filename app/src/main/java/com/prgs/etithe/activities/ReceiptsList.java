@@ -124,6 +124,7 @@ public class ReceiptsList extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_RECEIPTS);
         mDonorsValueListener = mDatabaseReference.orderByChild("repkey")
                 .equalTo(lByKeyValueOf)
+                .limitToLast(25)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

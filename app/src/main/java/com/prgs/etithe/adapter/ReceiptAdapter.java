@@ -12,27 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prgs.etithe.R;
-import com.prgs.etithe.activities.DependentsList;
-import com.prgs.etithe.activities.DonorEntry;
-import com.prgs.etithe.activities.ReceiptEntry;
 import com.prgs.etithe.activities.ReceiptView;
-import com.prgs.etithe.activities.ReceiptsList;
-import com.prgs.etithe.models.Donor;
 import com.prgs.etithe.models.Receipt;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.Messages;
-import com.prgs.etithe.utilities.RoundedCornersTransformation;
 import com.skydoves.powermenu.CustomPowerMenu;
-import com.skydoves.powermenu.MenuAnimation;
-import com.skydoves.powermenu.OnMenuItemClickListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +37,19 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvDonor, tvAmount, tvAddress, tvMode, tvMonth, tvReceiptNo, tvReceiptDate;
         public CircleImageView imgPicture;
-        public LinearLayout layDefault;
+        public LinearLayout layDefault,layTitle;
         public CardView cardView;
         public ImageButton menu_edit;
+        public View lineView;
 
 
         public MyViewHolder(View view) {
             super(view);
+            layTitle = (LinearLayout)view.findViewById(R.id.layTitle);
             layDefault = (LinearLayout) view.findViewById(R.id.layDefaultMore);
             tvDonor = (TextView) view.findViewById(R.id.tvDonor);
             tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate);
+            lineView =(View)view.findViewById(R.id.lineView);
             tvReceiptNo = (TextView) view.findViewById(R.id.tvReceiptNo);
             tvAmount = (TextView) view.findViewById(R.id.tvAmount);
             tvMonth = (TextView) view.findViewById(R.id.tvMonth);
@@ -106,6 +96,18 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
         final Receipt receipt = receiptList.get(position);
         if (receipt.getDonor() != null) {
             holder.tvDonor.setText(receipt.getDonor().trim().toUpperCase());
+        }
+        if (receipt.getCancel()==1){
+            holder.tvMode.setText("CANCELLED");
+            holder.tvMode.setVisibility(View.VISIBLE);
+            //holder.tvDonor.setTextColor(mContext.getColor(R.color.colorRed));
+            holder.lineView.setBackground(mContext.getResources().getDrawable(R.color.colorRed));
+            holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_cancel_view));
+        }else{
+            holder.tvMode.setText("");
+
+            holder.tvMode.setVisibility(View.GONE);
+            holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_view));
         }
         holder.tvReceiptDate.setText(receipt.getReceiptdate());
         holder.tvReceiptNo.setText(receipt.getReceiptno());

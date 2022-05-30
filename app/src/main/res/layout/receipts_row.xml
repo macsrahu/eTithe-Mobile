@@ -38,9 +38,10 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/layTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rectangel_text_view"
+                        android:background="@drawable/rectangle_text_view"
                         android:orientation="horizontal"
                         android:padding="@dimen/_5ssp">
 
@@ -143,7 +144,9 @@
                     android:id="@+id/tvMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/good_time"
                     android:layout_weight="1"
+                    android:textColor="@color/colorRed"
                     android:gravity="center_horizontal"
                     android:text="Pay-Mode"
                     android:textSize="@dimen/_10ssp" />

@@ -297,7 +297,7 @@ public class WebViewPDF extends AppCompatActivity {
             sbReceiptLine.append("</table>\n");
             sbReceiptLine.append("</tr>\n");
 
-
+            String  sReceiptTitle = Global.SELECTED_RECEIPT.getCancel()==0? "RECEIPT" : "CANCELLED RECEIPT";
             StringBuilder receiptHTML = new StringBuilder();
             receiptHTML.append("<html>\n" +
                     "<tbody>\n" +
@@ -358,7 +358,7 @@ public class WebViewPDF extends AppCompatActivity {
                     "           </tr>\n" +
                     "           <tr>\n" +
                     "           <td colspan='2' style=\"width:100%;text-align:center;\">\n" +
-                    "                      <span style='font-size: 15px;text-align:center;font-weight:bold'>RECEIPT</span>\n" +
+                    "                      <span style='font-size: 15px;text-align:center;font-weight:bold'>" + sReceiptTitle + "</span>\n" +
                     "                </td>\n" +
                     "            </tr>\n" +
                     "            <tr>\n" +

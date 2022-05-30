@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/rectangel_text_view"
+                    android:background="@drawable/rectangle_text_view"
                     android:gravity="center_vertical"
                     android:includeFontPadding="true"
                     android:lines="1"

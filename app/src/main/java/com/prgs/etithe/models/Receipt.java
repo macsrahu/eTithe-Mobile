@@ -15,7 +15,8 @@ public class Receipt {
     String signurl;
     String paymonth;
     String notes;
-
+    int cancel;
+    String reason;
     public Receipt() {
     }
 
@@ -129,5 +130,21 @@ public class Receipt {
 
     public void setCreatedon(long createdon) {
         this.createdon = createdon;
+    }
+
+    public int getCancel() {
+        return cancel;
+    }
+
+    public void setCancel(int cancel) {
+        this.cancel = cancel;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

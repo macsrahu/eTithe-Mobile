@@ -165,7 +165,7 @@ public class ReceiptView extends AppCompatActivity {
             _NAVIGATE_FROM = extras.getString("FROM");
         }
 
-        Toolbar mToolbarView = Global.PrepareToolBar(this, true, "Receipt View");
+        Toolbar mToolbarView = Global.PrepareToolBar(this, true, Global.SELECTED_RECEIPT.getCancel() ==0? "Receipt View" :"Cancelled Receipt");
         setSupportActionBar(mToolbarView);
 
         BindReceiptDetails();
