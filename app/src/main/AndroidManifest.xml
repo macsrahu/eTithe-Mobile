@@ -23,6 +23,7 @@
         android:theme="@style/AppMaterialTheme">
         <activity
             android:name=".activities.Splash"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,38 +33,47 @@
         <activity
             android:name=".activities.Login"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.DonorEntry"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activities.UploadPhoto"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.ChangePassword"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activities.DonorsList"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.DependentsList"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.DependentEntry"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activities.ProfileEntry"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activities.ReceiptEntry"
@@ -72,36 +82,46 @@
         <activity
             android:name=".activities.Signature"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activities.ReceiptFinish"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.ReceiptsList"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.ReceiptView"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.ImageCropper"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.WebViewPDF"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.PDFViewer"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.NotificationsActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden" />
-        <service android:name=".service.TrackingService" />
+        <service
+            android:exported="true"
+            android:name=".service.TrackingService" />
     </application>
 
 </manifest>

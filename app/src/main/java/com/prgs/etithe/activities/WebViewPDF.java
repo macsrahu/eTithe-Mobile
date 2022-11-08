@@ -200,7 +200,7 @@ public class WebViewPDF extends AppCompatActivity {
 
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setAppCacheEnabled(true);
+        //webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
