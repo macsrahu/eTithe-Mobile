@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,9 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -41,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.karumi.dexter.Dexter;
 import com.prgs.etithe.R;
 import com.prgs.etithe.adapter.PaymentAdapter;
 import com.prgs.etithe.adapter.ReceiptAdapter;
@@ -50,8 +50,10 @@ import com.prgs.etithe.models.ReceiptLine;
 import com.prgs.etithe.utilities.FirebaseTables;
 import com.prgs.etithe.utilities.Global;
 import com.prgs.etithe.utilities.GridSpacingItemDecoration;
+import com.prgs.etithe.utilities.ImageCompressor;
 import com.prgs.etithe.utilities.Messages;
 import com.prgs.etithe.utilities.RoundedCornersTransformation;
+import com.prgs.etithe.utilities.ScreenshotUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -65,12 +67,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import crl.android.pdfwriter.PDFWriter;
 import crl.android.pdfwriter.PaperSize;
 import crl.android.pdfwriter.StandardFonts;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.annotations.NonNull;
 
 public class ReceiptView extends AppCompatActivity {
 
@@ -145,7 +150,7 @@ public class ReceiptView extends AppCompatActivity {
     public static final int STORAGE = 125;
     private ValueEventListener mDonorsValueListener;
     private DatabaseReference mDatabaseReference;
-
+    private ScrollView parentView;
     Donor mDonor = null;
     Receipt mReceipt;
     String _FOLDER_PATH = "eTithe/pdf";
@@ -167,7 +172,7 @@ public class ReceiptView extends AppCompatActivity {
 
         Toolbar mToolbarView = Global.PrepareToolBar(this, true, Global.SELECTED_RECEIPT.getCancel() ==0? "Receipt View" :"Cancelled Receipt");
         setSupportActionBar(mToolbarView);
-
+        parentView = findViewById(R.id.content_scroll);
         BindReceiptDetails();
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,23 +293,61 @@ public class ReceiptView extends AppCompatActivity {
         try {
             fos = new FileOutputStream(imagePath);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Messages.ShowToast(getApplicationContext(),"Saved:" + imagePath);
             fos.flush();
             fos.close();
+
         } catch (FileNotFoundException e) {
             Log.e("GREC", e.getMessage(), e);
+            Messages.ShowToast(getApplicationContext(),"File Not found:" + e.getMessage());
         } catch (IOException e) {
             Log.e("GREC", e.getMessage(), e);
+            Messages.ShowToast(getApplicationContext(),"Exception:" + e.getMessage());
         }
     }
+    public void SaveAndCompress(Bitmap bitmap) throws IOException {
+        int retValue = 1;
 
-    private void shareIt() {
-        Uri uri = Uri.fromFile(imagePath);
+        File fileSigns = new File(getBaseContext().getExternalCacheDir() + "/" + _FOLDER_PATH, "ScreenShot.jpg");
+
+        try {
+
+//            FileOutputStream out = new FileOutputStream(fileSigns);
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+//            out.flush();
+//            out.close();
+            String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"screen_shot", null);
+            //sUri bitmapUri = Uri.parse(bitmapPath);
+            shareIt(bitmapPath);
+
+        } catch (Exception e) {
+            Messages.ShowToast(getApplicationContext(), e.getMessage());
+            e.printStackTrace();
+            retValue = -1;
+        }
+//        if (fileSigns.exists()) {
+//            try {
+//                ImageCompressor imageCompressor = new ImageCompressor();
+//                String imagePath = imageCompressor.compressImage(getBaseContext(), fileSigns.getAbsolutePath(),
+//                        _FOLDER_PATH,
+//                        "SCREEN_SHOT_" + String.valueOf(System.currentTimeMillis()));
+//                Messages.ShowToast(getApplicationContext(),"Path:" + imagePath);
+//
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//                Messages.ShowToast(getApplicationContext(),"Compress:" + ex.getMessage());
+//                retValue = -1;
+//            }
+//        }
+    }
+    private void shareIt(String bitmapPath) {
+        Uri bitmapUri = Uri.parse(bitmapPath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
         String shareBody = "Receipt: " + mReceipt.getReceiptno();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Please find receipt as attachment for the month of " + mReceipt.getPaymonth());
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
         layPicture.setVisibility(View.VISIBLE);
         layShare.setVisibility(View.VISIBLE);
         button_back.setVisibility(View.VISIBLE);
@@ -381,9 +424,16 @@ public class ReceiptView extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     text_view_notes.setText("Receipt for the month of " + mReceipt.getPaymonth().toUpperCase() + "\n\n\n Thank you \n Yours eTithe");
-                    Bitmap bitmap = takeScreenshot();
-                    saveBitmap(bitmap);
-                    shareIt();
+                    Bitmap bitmap  = ScreenshotUtil.getInstance().takeScreenshotForView(parentView);
+                    //imageViewShowScreenshot.setImageBitmap(bitmap);
+                    //takeScreenshot();
+                    //saveBitmap(bitmap);
+                    try {
+                        SaveAndCompress(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
             LoadReceiptItems();
@@ -438,7 +488,7 @@ public class ReceiptView extends AppCompatActivity {
                 });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void CreatePdf(String sometext) {
         // create a new document
         PdfDocument document = new PdfDocument();

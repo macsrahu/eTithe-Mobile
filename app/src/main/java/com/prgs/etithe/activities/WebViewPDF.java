@@ -20,8 +20,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -53,6 +52,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+
 import static android.widget.Toast.LENGTH_LONG;
 
 public class WebViewPDF extends AppCompatActivity {
@@ -63,7 +64,7 @@ public class WebViewPDF extends AppCompatActivity {
     String _FOLDER_PATH = "eTithe/Pictures";
     String mOutputFilePath;
     String sBranchAddress;
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +99,7 @@ public class WebViewPDF extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void LoadMenu(final WebView webView) {
         BottomNavigationView bottonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         bottonNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -127,7 +128,7 @@ public class WebViewPDF extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void SharePDFFile(final WebView webView) {
 
         try {
@@ -172,7 +173,7 @@ public class WebViewPDF extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS).orderByKey()
                     .equalTo(Global.SELECTED_RECEIPT.getDonorkey())
                     .addValueEventListener(new ValueEventListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
                         @Override
                         public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
                             dialog.dismiss();
@@ -195,7 +196,7 @@ public class WebViewPDF extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void LoadReportView(WebView webView, Donor mDonor) {
 
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -235,9 +236,9 @@ public class WebViewPDF extends AppCompatActivity {
                     if (mReceiptLine.getPaymode()=="CASH") {
                         sbReceiptLine.append("<tr><td>Received as :" + mReceiptLine.getPaymode() + "</td></tr>");
                     }else if(mReceiptLine.getPaymode()=="NEFT"){
-                        sbReceiptLine.append("<tr><td style='width:50%'>Received as:NEFT</td><td style='width:50%'></td><tr><td style='width:50%'>Ref. No: " + mReceiptLine.getChequeno() + "</td></tr>");
+                        sbReceiptLine.append("<tr><td style='width:50%'>Received as:NEFT/UPI ID</td><td style='width:50%'></td><tr><td style='width:50%'>Ref. No: " + mReceiptLine.getChequeno() + "</td></tr>");
                     } else {
-                        sbReceiptLine.append("<tr><td style='width:50%'>Received as:Cheque</td><td style='width:50%'>Bank Name:" + mReceiptLine.getBankname() + "</td><tr><td style='width:50%'>Cheque/DD No: " + mReceiptLine.getChequeno() + "</td><td style='width:50%'>Cheque/DD Date: " + mReceiptLine.getChequedate() + "</td></tr>");
+                        sbReceiptLine.append("<tr><td style='width:50%'>Received as:Cheque</td><td style='width:50%'>Bank Name:" + mReceiptLine.getBankname() + "</td><tr><td style='width:50%'>Cheque/DD/NEFT/UPI ID: " + mReceiptLine.getChequeno() + "</td><td style='width:50%'></td></tr>");
                     }
                 }
             }
@@ -440,7 +441,7 @@ public class WebViewPDF extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void PrintTheWebPage(WebView webView) {
         // set printBtnPressed true
 

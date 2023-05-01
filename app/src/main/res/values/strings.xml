@@ -5,7 +5,7 @@
     <string name="drawer_item_logout">Logout</string>
     <string name="dialog_logout_message">Do you want to log out</string>
     <string name="dialog_cancel_receipt">Do you want to cancel receipt?</string>
-    <string name="dialog_confirm">Do you wish to confirm?</string>
+    <string name="dialog_confirm">Receipt created cannot be delete. Do you want to continue?</string>
     <string name="dialog_delete_fund">Do you want to delete the payment?</string>
     <string name="dialog_cancel">Do you want to cancel ?</string>
     <string name="save_text">Save</string>
@@ -36,10 +36,11 @@
     <string name="bank_name">Bank Name</string>
     <string name="cash">CASH</string>
     <string name="cheque">CHEQUE</string>
-    <string name="neft">NEFT</string>
+    <string name="neft">NEFT/UPI ID</string>
     <string name="dialog_amount">Amount</string>
     <string name="dialog_fund_type">Fund Type</string>
     <string name="cheque_date">Cheque Date</string>
     <string name="done">Done</string>
     <string name="print">Print</string>
+    <string name="filter_text">Filter</string>
 </resources>

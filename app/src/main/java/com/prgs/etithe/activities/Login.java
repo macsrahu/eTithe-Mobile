@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +41,7 @@ import com.prgs.etithe.utilities.Messages;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
 
 public class Login extends AppCompatActivity {
 
@@ -85,8 +86,11 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-        // _emailText.setText("rahupathi@gmail.com");
-        //_passwordText.setText("test@123");
+       // _emailText.setText("bharath_0774@rediffmail.com");
+      //  _passwordText.setText("test@123");
+
+         ///_emailText.setText("rahupathi@gmail.com");
+       /// _passwordText.setText("Test@12345");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 

@@ -22,8 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -71,9 +70,12 @@ import java.net.URI;
 import java.security.Permission;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
+import io.reactivex.annotations.NonNull;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -447,7 +449,7 @@ public class UploadPhoto extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (PickFromGallary) {
             try {
-                Messages.ShowToast(getApplicationContext(),"Req:" + String.valueOf(requestCode) +" Result:" + String.valueOf(resultCode));
+                //Messages.ShowToast(getApplicationContext(),"Req:" + String.valueOf(requestCode) +" Result:" + String.valueOf(resultCode));
                 mOutputFilePath = ImageUtil.PrepareImage(getApplicationContext(), requestCode, resultCode, data, RESULT_OK, imgPicture, _FOLDER_PATH, "DONOR");
             } catch (IOException e) {
                 e.printStackTrace();

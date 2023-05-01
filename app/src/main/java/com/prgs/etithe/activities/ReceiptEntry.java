@@ -13,8 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -56,8 +55,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
 
 public class ReceiptEntry extends AppCompatActivity {
 
@@ -194,7 +196,7 @@ public class ReceiptEntry extends AppCompatActivity {
                         String bank_name = input_dialog_bank_name.getText().toString();
                         String cheque_no = input_dialog_cheque_no.getText().toString();
                         String neft_refer = input_dialog_neft_ref.getText().toString();
-                        String cheque_date = input_dialog_cheque_date.getText().toString();
+                        String cheque_date = ""; //input_dialog_cheque_date.getText().toString();
                         KeyboardUtil.hideKeyboard(ReceiptEntry.this);
                         if (amount != null) {
                             if (!amount.isEmpty()) {
@@ -208,7 +210,7 @@ public class ReceiptEntry extends AppCompatActivity {
                                     receiptLine.setChequedate("NA");
                                     receiptLine.setPaymode(radio_button_dialog_cash.isChecked() ? "CASH" : radio_button_dialog_cheque.isChecked()? "CHEQUE" : "NEFT");
                                     if (radio_button_dialog_cheque.isChecked()) {
-                                        if (!bank_name.isEmpty() && !cheque_no.isEmpty() && !cheque_date.isEmpty()) {
+                                        if (!bank_name.isEmpty() && !cheque_no.isEmpty()) {
                                             receiptLine.setBankname(bank_name);
                                             receiptLine.setChequeno(cheque_no);
                                             receiptLine.setChequedate(cheque_date);
@@ -219,7 +221,7 @@ public class ReceiptEntry extends AppCompatActivity {
                                         } else {
                                             input_dialog_bank_name.setError("Cannot be empty");
                                             input_dialog_cheque_no.setError("Cannot be empty");
-                                            input_dialog_cheque_date.setError("Cannot be empty");
+                                           // input_dialog_cheque_date.setError("Cannot be empty");
                                         }
                                     }else if(radio_button_dialog_neft.isChecked()){
                                         if (!neft_refer.isEmpty()) {
@@ -264,7 +266,7 @@ public class ReceiptEntry extends AppCompatActivity {
         spinner_dialog_fund_type = (MaterialSpinner) dialogCheque.findViewById(R.id.spinner_fund_type);
         input_dialog_cheque_no = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_cheque_no);
         input_dialog_bank_name = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_bank_name);
-        input_dialog_cheque_date = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_cheque_date);
+        //input_dialog_cheque_date = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_cheque_date);
         input_dialog_neft_ref = (TextInputEditText) dialogCheque.findViewById(R.id.input_dialog_neft_ref);
 
         radio_button_dialog_cash.setChecked(true);
@@ -532,6 +534,10 @@ public class ReceiptEntry extends AppCompatActivity {
         mReceipt.setNotes(mNotes != null ? "Donation for the month of " + (mMonth + "-" + Global.GetCurrentYear()) : mNotes);
         mReceipt.setAddress(mDonor.getAddrline1() + "\n" + mDonor.getAddrline2() + "\n" + mDonor.getCity() + "\n" + mDonor.getPincode());
         mReceipt.setRegionkey(mDonor.getRegionkey());
+
+        if(mReceiptLineList.size()>0){
+            mReceipt.setPaymode(mReceiptLineList.get(0).getPaymode());
+        }
         if (Global.USER_TYPE == 3) {
             mReceipt.setRepkey(Global.LOGIN_BY_AREA_PERSON.getKey());
             mReceipt.setReptype("AO");

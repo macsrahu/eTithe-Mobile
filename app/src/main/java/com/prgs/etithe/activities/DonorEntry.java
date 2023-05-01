@@ -21,8 +21,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -84,8 +83,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
 
 public class DonorEntry extends AppCompatActivity {
     @BindView(R.id.input_donor_name)
@@ -494,8 +496,10 @@ public class DonorEntry extends AppCompatActivity {
 
                                 for (DataSnapshot areaSnapshot : dataSnapshot.getChildren()) {
                                     Area area = areaSnapshot.getValue(Area.class);
-                                    area.setKey(areaSnapshot.getKey());
-                                    areas.add(area);
+                                    if (area.getDeleted()==0) {
+                                        area.setKey(areaSnapshot.getKey());
+                                        areas.add(area);
+                                    }
                                 }
                                 if (areas.size() > 0) {
                                     MaterialSpinnerAdapter adpArea = new MaterialSpinnerAdapter<Area>(getBaseContext(), areas);

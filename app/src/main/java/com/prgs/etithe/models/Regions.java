@@ -10,6 +10,7 @@ public class Regions implements Serializable {
     String city;
     String pincode;
     String mobile;
+    String phone;
     String email;
     Boolean isactive;
     String cpemail;
@@ -74,6 +75,14 @@ public class Regions implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {

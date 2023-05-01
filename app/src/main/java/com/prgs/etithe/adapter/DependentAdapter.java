@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +42,8 @@ import com.viethoa.RecyclerViewFastScroller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.reactivex.annotations.NonNull;
 
 
 public class DependentAdapter extends RecyclerView.Adapter<DependentAdapter.MyViewHolder> {

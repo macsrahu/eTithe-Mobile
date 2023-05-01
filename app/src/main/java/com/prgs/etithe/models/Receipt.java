@@ -11,9 +11,13 @@ public class Receipt {
     String reptype;
     double amount;
     String receiptdate;
+
+
+
     long createdon;
     String signurl;
     String paymonth;
+    String paymode;
     String notes;
     int cancel;
     String reason;
@@ -147,4 +151,12 @@ public class Receipt {
     public void setReason(String reason) {
         this.reason = reason;
     }
+    public String getPaymode() {
+        return paymode;
+    }
+
+    public void setPaymode(String paymode) {
+        this.paymode = paymode;
+    }
+
 }

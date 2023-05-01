@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
@@ -47,6 +46,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import io.reactivex.annotations.NonNull;
 
 public class Global {
     public static String _ETITHE_REMEMBER_ME = "ETITHE_REMEMBER_ME";
@@ -415,20 +416,25 @@ public class Global {
     public static String GetRegionAddress(Regions mRegion){
         String mAddress="";
         if (mRegion!=null){
-            mAddress = mAddress + mRegion.getRegion();
+            mAddress = mAddress + mRegion.getRegion().trim();
             if (mRegion.getAddressline1()!="NA" && mRegion.getAddressline1() !="" && !mRegion.getAddressline1().isEmpty()){
-                mAddress = mAddress + mRegion.getAddressline1() +",";
+                mAddress = mAddress + mRegion.getAddressline1().trim() +",";
             }
             if (mRegion.getAddressline2()!="NA" && mRegion.getAddressline2() !="" && !mRegion.getAddressline2().isEmpty()){
                 if (mAddress!="") {
-                    mAddress = mAddress + mRegion.getAddressline2() + ",";
+                    mAddress = mAddress + mRegion.getAddressline2().trim() + ",";
                 }
             }
             if (mRegion.getCity()!="NA" && mRegion.getCity() !="" && !mRegion.getCity().isEmpty()){
-                mAddress = mAddress + mRegion.getCity();
+                mAddress = mAddress + mRegion.getCity().trim();
             }
             if (mRegion.getPincode()!="NA" && mRegion.getPincode() !="" && !mRegion.getPincode().isEmpty()){
                 mAddress = mAddress + "-" + mRegion.getPincode();
+            }
+            if (mRegion.getPhone()!=null) {
+                if (mRegion.getPhone() != "NA" && mRegion.getPhone() != "" && !mRegion.getPhone().isEmpty()) {
+                    mAddress = mAddress + "\nPhone: " + mRegion.getPhone();
+                }
             }
         }
         return mAddress;
