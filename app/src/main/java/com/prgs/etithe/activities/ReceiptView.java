@@ -85,6 +85,8 @@ public class ReceiptView extends AppCompatActivity {
     @BindView(R.id.text_view_detail)
     MaterialTextView text_view_detail;
 
+    @BindView(R.id.text_view_receipt_owner)
+    MaterialTextView text_view_receipt_owner;
 
     @BindView(R.id.text_view_receipt_date)
     MaterialTextView text_view_receipt_date;
@@ -186,7 +188,7 @@ public class ReceiptView extends AppCompatActivity {
         } else {
             CreateFolders();
         }
-
+        text_view_receipt_owner.setVisibility(View.GONE);
         imgPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -383,7 +385,8 @@ public class ReceiptView extends AppCompatActivity {
             mReceipt = Global.SELECTED_RECEIPT;
             text_view_donor.setText(mReceipt.getDonor());
             text_view_detail.setText(mReceipt.getAddress());
-
+            text_view_receipt_owner.setText(mReceipt.getDonor() +"\n" + mReceipt.getAddress());
+            text_view_receipt_owner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             text_view_receipt_no.setText(mReceipt.getReceiptno());
             text_view_receipt_date.setText(Global.GetDateStringByLong(mReceipt.getCreatedon()).toUpperCase());
             text_view_amount.setText(Global.GetFormatedAmount(String.valueOf(mReceipt.getAmount())));
@@ -423,8 +426,10 @@ public class ReceiptView extends AppCompatActivity {
             imgShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    text_view_receipt_owner.setVisibility(View.VISIBLE);
                     text_view_notes.setText("Receipt for the month of " + mReceipt.getPaymonth().toUpperCase() + "\n\n\n Thank you \n Yours eTithe");
                     Bitmap bitmap  = ScreenshotUtil.getInstance().takeScreenshotForView(parentView);
+                    text_view_receipt_owner.setVisibility(View.GONE);
                     //imageViewShowScreenshot.setImageBitmap(bitmap);
                     //takeScreenshot();
                     //saveBitmap(bitmap);

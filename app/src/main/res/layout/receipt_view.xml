@@ -201,6 +201,18 @@
                             android:textSize="@dimen/_14ssp">
 
                         </com.google.android.material.textview.MaterialTextView>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_view_receipt_owner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_receipt_24"
+                            android:drawablePadding="@dimen/_5ssp"
+                            android:padding="@dimen/_5ssp"
+                            android:text="Receipt to"
+                            app:autoSizeTextType="uniform"
+                            android:textSize="@dimen/_13ssp">
+
+                        </com.google.android.material.textview.MaterialTextView>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_view_receipt_no"

@@ -34,6 +34,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/layGrid"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -43,9 +44,48 @@
                 android:background="@color/white"
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/lyTotal"
+                android:layout_alignBottom="@+id/rvReceipts"
+                android:layout_above="@+id/rvReceipts"
+                android:padding="@dimen/_8ssp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/_2ssp"
+                android:layout_marginRight="@dimen/_2ssp"
+                app:backgroundTint="@color/primary_dark"
+                android:background="@color/colorAccent"
+                android:layout_marginBottom="@dimen/_45ssp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtTotalAmout"
+                    android:fontFamily="@font/good_time"
+                    android:text="Total"
+                    android:textSize="@dimen/_15ssp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </TextView>
+            </LinearLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rvReceipts"
+                android:backgroundTint="@color/white"
+                android:layout_alignBottom="@+id/rvReceipts"
+                app:backgroundTint="@color/primary_dark"
+                app:elevation="@dimen/_5ssp"
+                app:itemIconTint="@color/white"
+                app:itemRippleColor="@color/colorAccent"
+                app:itemTextColor="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/menu_nav_receipt_list" />
         </RelativeLayout>
+
+
+
     </RelativeLayout>
 </LinearLayout>
