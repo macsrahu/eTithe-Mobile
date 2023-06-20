@@ -1,5 +1,0 @@
-<manifest package="crl.android.pdfwriter"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-sdk android:minSdkVersion="16"/>
-    <application/>
-</manifest>

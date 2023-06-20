@@ -65,21 +65,24 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.MyViewHo
             holder.text_view_fund.setText(receiptLine.getFundtype().trim());
         }
         if (receiptLine.getPaymode() != null) {
-            holder.text_view_bank.setText("Pay by :" + receiptLine.getPaymode());
+           // Messages.ShowToast(mContext,receiptLine.getPaymode());
+            if (receiptLine.getPaymode().equals("CASH")) {
+                holder.text_view_bank.setText("Payed as :" + receiptLine.getPaymode());
+            }else {
+                if (receiptLine.getBankname() != null) {
+                    if (receiptLine.getPaymode() == "CHEQUE") {
+                        holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Bank: " + receiptLine.getBankname() + "  No:" + receiptLine.getChequeno() + "  Date:" + receiptLine.getChequedate() + " ]");
+                    } else {
+                        holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Ref #: " + receiptLine.getChequeno() + " ]");
+                    }
+                }
+            }
         }
 
         if (receiptLine.getAmount() != null) {
             holder.text_view_amount.setText(Global.GetFormatedAmountWithCurrency(String.valueOf(receiptLine.getAmount())));
         }
-        if (receiptLine.getBankname() != null) {
-            if (!receiptLine.getBankname().isEmpty()) {
-                if (receiptLine.getBankname()!="NEFT") {
-                    holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Bank: " + receiptLine.getBankname() + "  No:" + receiptLine.getChequeno()  +"  Date:" + receiptLine.getChequedate() +" ]");
-                }else{
-                    holder.text_view_bank.setText(receiptLine.getPaymode() + " [ Ref #: " + receiptLine.getChequeno() +" ]");
-                }
-            }
-        }
+
         holder.layReceiptContent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

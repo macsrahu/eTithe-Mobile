@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             InitDrawerMenu(mToolbar);
             SlideShowBuild();
             BuiltMenu();
-            LocationAccessPermission();
+            //LocationAccessPermission();
             LoadSalutations();
 
         } catch (Exception ex) {
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (permission == PackageManager.PERMISSION_GRANTED) {
-            startTrackerService();
+           // startTrackerService();
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -599,31 +599,31 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
-            grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST && grantResults.length == 1
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startTrackerService();
-        } else {
-            Toast.makeText(this, "Please enable location services to allow GPS tracking", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void startTrackerService() {
-        if (!isMyServiceRunning(TrackingService.class)) {
-            Intent myIntent = new Intent(MainActivity.this, TrackingService.class);
-            startService(myIntent);
-            Toast.makeText(this, "Tracking Service started..", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+//            grantResults) {
+//        if (requestCode == PERMISSIONS_REQUEST && grantResults.length == 1
+//                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            startTrackerService();
+//        } else {
+//            Toast.makeText(this, "Please enable location services to allow GPS tracking", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    private void startTrackerService() {
+//        if (!isMyServiceRunning(TrackingService.class)) {
+//            Intent myIntent = new Intent(MainActivity.this, TrackingService.class);
+//            startService(myIntent);
+//            Toast.makeText(this, "Tracking Service started..", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    private boolean isMyServiceRunning(Class<?> serviceClass) {
+//        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+//            if (serviceClass.getName().equals(service.service.getClassName())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

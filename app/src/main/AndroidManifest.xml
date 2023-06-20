@@ -119,9 +119,9 @@
             android:screenOrientation="portrait"
             android:exported="true"
             android:windowSoftInputMode="stateHidden" />
-        <service
-            android:exported="true"
-            android:name=".service.TrackingService" />
+<!--        <service-->
+<!--            android:exported="true"-->
+<!--            android:name=".service.TrackingService" />-->
     </application>
 
 </manifest>

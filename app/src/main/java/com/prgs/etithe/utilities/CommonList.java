@@ -4,7 +4,7 @@ import com.prgs.etithe.models.Salutations;
 
 import java.util.ArrayList;
 
-import crl.android.pdfwriter.Array;
+//import crl.android.pdfwriter.Array;
 
 public class CommonList {
 
@@ -70,6 +70,7 @@ public class CommonList {
         salutationList.add("Rev.");
         salutationList.add("Dr.");
         salutationList.add("Er.");
+        salutationList.add("Ps.");
         return salutationList;
     }
 

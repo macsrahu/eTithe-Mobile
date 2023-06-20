@@ -54,7 +54,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
             tvAmount = (TextView) view.findViewById(R.id.tvAmount);
             tvMonth = (TextView) view.findViewById(R.id.tvMonth);
             tvMode = (TextView) view.findViewById(R.id.tvMode);
-            tvMode.setVisibility(View.GONE);
+            //tvMode.setVisibility(View.GONE);
             tvAddress = (TextView) view.findViewById(R.id.tvAddress);
             cardView = (CardView) view.findViewById(R.id.card_viewMore);
             //menu_edit = (ImageButton) view.findViewById(R.id.menu_edit);
@@ -105,8 +105,9 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
             holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_cancel_view));
         }else{
             holder.tvMode.setText("");
-
-            holder.tvMode.setVisibility(View.GONE);
+            //holder.tvMode.setVisibility(View.GONE);
+            holder.tvMode.setText(receipt.getPaymode());
+            holder.tvMode.setTextColor(mContext.getResources().getColor(R.color.md_green_500));
             holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_view));
         }
         holder.tvReceiptDate.setText(receipt.getReceiptdate());

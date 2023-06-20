@@ -57,14 +57,24 @@
                 android:layout_marginLeft="@dimen/_2ssp"
                 android:layout_marginRight="@dimen/_2ssp"
                 app:backgroundTint="@color/primary_dark"
-                android:background="@color/colorAccent"
-                android:layout_marginBottom="@dimen/_45ssp"
+                android:background="@drawable/recntangle_receipt_total"
+                android:layout_marginBottom="@dimen/_46ssp"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/txtTotalAmout"
+                    android:id="@+id/txtTotal"
                     android:fontFamily="@font/good_time"
                     android:text="Total"
                     android:textSize="@dimen/_15ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                </TextView>
+                <TextView
+                    android:id="@+id/txtTotalAmount"
+                    android:fontFamily="@font/good_time"
+                    android:text="0.00"
+                    android:gravity="right"
+                    android:textSize="@dimen/_15ssp"
+                    android:layout_marginRight="@dimen/_4ssp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </TextView>
