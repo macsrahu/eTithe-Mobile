@@ -53,6 +53,7 @@
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="6dp"
             android:background="@drawable/date_border"
@@ -67,24 +68,21 @@
                 android:buttonTint="@color/colorPrimary"
                 android:checked="true"
                 android:text="ALL" />
+
               <RadioButton
                 android:id="@+id/radio_dialog_cash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/_2ssp"
+                  android:layout_marginRight="@dimen/_2ssp"
                 android:buttonTint="@color/colorPrimary"
                 android:text="@string/cash" />
+
             <RadioButton
-                android:id="@+id/radio_dialog_cheque"
+                android:id="@+id/radio_dialog_bank"
                 android:layout_width="wrap_content"
-                android:buttonTint="@color/colorPrimary"
                 android:layout_height="wrap_content"
-                android:text="@string/cheque" />
-            <RadioButton
-                android:id="@+id/radio_dialog_neft"
-                android:layout_width="wrap_content"
-                android:buttonTint="@color/colorPrimary"
-                android:layout_height="wrap_content"
-                android:text="UPI" />
+                android:text="BANK" />
 
         </RadioGroup>
 

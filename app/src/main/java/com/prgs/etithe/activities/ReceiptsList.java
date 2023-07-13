@@ -93,7 +93,7 @@ public class ReceiptsList extends AppCompatActivity {
     FundType mSelectedFund;
     String FROM_DATE="";
     String TO_DATE="";
-    RadioButton radio_dialog_all,radio_button_dialog_cheque, radio_button_dialog_cash,radio_button_dialog_neft;
+    RadioButton radio_dialog_all,radio_button_dialog_bank, radio_button_dialog_cash;
     MaterialSpinner spinner_dialog_fund_type;
     TextView input_dialog_from_date, input_dialog_to_date;
     DatePickerDialog picker;
@@ -206,20 +206,17 @@ public class ReceiptsList extends AppCompatActivity {
                             PAYMENT_MODE="ALL";
                         }else if (radio_button_dialog_cash.isChecked()){
                             PAYMENT_MODE="CASH";
-                        }else if (radio_button_dialog_cheque.isChecked()) {
-                            PAYMENT_MODE="CHEQUE";
                         }else{
-                            PAYMENT_MODE="NEFT";
+                            PAYMENT_MODE="BANK";
                         }
                         LoadFilter();
                         dialog.dismiss();
                     }
                 }).build();
         radio_dialog_all = (RadioButton) dialogCheque.findViewById(R.id.radio_dialog_all);
-
+        radio_dialog_all.setChecked(true);
         radio_button_dialog_cash = (RadioButton) dialogCheque.findViewById(R.id.radio_dialog_cash);
-        radio_button_dialog_neft = (RadioButton) dialogCheque.findViewById(R.id.radio_dialog_neft);
-        radio_button_dialog_cheque = (RadioButton) dialogCheque.findViewById(R.id.radio_dialog_cheque);
+        radio_button_dialog_bank = (RadioButton) dialogCheque.findViewById(R.id.radio_dialog_bank);
         spinner_dialog_fund_type = (MaterialSpinner) dialogCheque.findViewById(R.id.spinner_fund_type);
         input_dialog_from_date = (TextView) dialogCheque.findViewById(R.id.input_from_date);
         input_dialog_to_date = (TextView) dialogCheque.findViewById(R.id.input_to_date);
@@ -232,10 +229,8 @@ public class ReceiptsList extends AppCompatActivity {
             radio_dialog_all.setChecked(true);
         }else if(PAYMENT_MODE.equals("CASH")){
             radio_button_dialog_cash.setChecked(true);
-        }else if(PAYMENT_MODE.equals("CHEQUE")){
-            radio_button_dialog_cheque.setChecked(true);
         }else{
-            radio_button_dialog_neft.setChecked(true);
+            radio_button_dialog_bank.setChecked(true);
         }
 
         ArrayList<FundType> mFundTypes = new ArrayList<FundType>();
@@ -502,13 +497,20 @@ public class ReceiptsList extends AppCompatActivity {
                         return;
                     }
                     int totalReceipts=0;
+
                     for (Receipt receipt : mReceipts) {
                         //Messages.ShowToast(getApplicationContext(), receipt.getPaymode());
                         //if (receipt.getPaymode() == "CHEQUE") {
-                            SimpleDateFormat sdfRecet = new SimpleDateFormat("dd/MM/yyyy");
-                            Date recept = sdfRecet.parse(receipt.getReceiptdate());
-                            long rectDate = recept.getTime();
-                            if (PAYMENT_MODE!="ALL"){
+                        SimpleDateFormat sdfRecet = new SimpleDateFormat("dd/MM/yyyy");
+                        Date recept = sdfRecet.parse(receipt.getReceiptdate());
+                        long rectDate = recept.getTime();
+                        String message ="From Date: " + input_dialog_from_date.getText().toString() +"\nToDate: " + input_dialog_to_date.getText().toString() + "\nPayMode: "  + PAYMENT_MODE;
+
+                        Messages.ShowToast(getApplicationContext(),message);
+
+                        if (PAYMENT_MODE != "ALL") {
+
+                            if (PAYMENT_MODE=="CASH"){
                                 if (receipt.getPaymode().equals(PAYMENT_MODE)) {
                                     if (rectDate >= startDate && rectDate <= endDate) {
 
@@ -526,24 +528,43 @@ public class ReceiptsList extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            }
-                            else {
-                                if (rectDate >= startDate && rectDate <= endDate) {
+                            }else{
+                                //BANK
+                                if (!receipt.getPaymode().equals("CASH")) {
+                                    if (rectDate >= startDate && rectDate <= endDate) {
 
-                                    if (receipt.getCancel() == 0) {
-                                        dblAmount += receipt.getAmount();
-                                    }
-                                    if (chkShowCancelled.isChecked()) {
-                                        IsCancelled = true;
-                                        mListFilter.add(receipt);
-                                    } else {
-                                        IsCancelled = false;
                                         if (receipt.getCancel() == 0) {
+                                            dblAmount += receipt.getAmount();
+                                        }
+                                        if (chkShowCancelled.isChecked()) {
+                                            IsCancelled = true;
                                             mListFilter.add(receipt);
+                                        } else {
+                                            IsCancelled = false;
+                                            if (receipt.getCancel() == 0) {
+                                                mListFilter.add(receipt);
+                                            }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            if (rectDate >= startDate && rectDate <= endDate) {
+
+                                if (receipt.getCancel() == 0) {
+                                    dblAmount += receipt.getAmount();
+                                }
+                                if (chkShowCancelled.isChecked()) {
+                                    IsCancelled = true;
+                                    mListFilter.add(receipt);
+                                } else {
+                                    IsCancelled = false;
+                                    if (receipt.getCancel() == 0) {
+                                        mListFilter.add(receipt);
+                                    }
+                                }
+                            }
+                        }
                         //}
                     }
                 } catch (Exception ex) {

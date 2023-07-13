@@ -107,8 +107,13 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
             holder.tvMode.setText("");
             //holder.tvMode.setVisibility(View.GONE);
             holder.tvMode.setText(receipt.getPaymode());
-            holder.tvMode.setTextColor(mContext.getResources().getColor(R.color.md_green_500));
-            holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_view));
+            if (receipt.getPaymode().equals("CASH")) {
+                holder.tvMode.setTextColor(mContext.getResources().getColor(R.color.md_green_500));
+                holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_green));
+            }else{
+                holder.tvMode.setTextColor(mContext.getResources().getColor(R.color.md_blue_500));
+                holder.layTitle.setBackground(mContext.getResources().getDrawable(R.drawable.rectangle_text_blue));
+            }
         }
         holder.tvReceiptDate.setText(receipt.getReceiptdate());
         holder.tvReceiptNo.setText(receipt.getReceiptno());
