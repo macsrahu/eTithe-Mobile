@@ -86,19 +86,17 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8ssp"
                                 android:layout_marginLeft="@dimen/_4ssp"
+                                android:layout_marginTop="@dimen/_8ssp"
                                 android:layout_marginRight="@dimen/_4ssp"
-                                android:padding="@dimen/_4ssp"
                                 android:background="@drawable/date_border"
-                                >
+                                android:padding="@dimen/_4ssp">
 
                                 <com.jaredrummler.materialspinner.MaterialSpinner
                                     android:id="@+id/spinner_salutaion"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center">
-                                </com.jaredrummler.materialspinner.MaterialSpinner>
+                                    android:gravity="center"></com.jaredrummler.materialspinner.MaterialSpinner>
 
                             </LinearLayout>
 
@@ -169,7 +167,7 @@
 
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/colorPrimaryDark"
-                                android:text="Unknown" />
+                                android:text="Other" />
 
                             <Space
                                 android:layout_width="wrap_content"
@@ -243,6 +241,18 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/colorPrimaryDark"
                                 android:text="Single" />
+
+                            <Space
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radio_button_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimaryDark"
+                                android:text="Other" />
 
                             <Space
                                 android:layout_width="wrap_content"

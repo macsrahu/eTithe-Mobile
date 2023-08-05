@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_gravity="center_vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtAmount"
+                android:text="Amount"
+                android:fontFamily="@font/good_time"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/_15ssp"
+                android:layout_marginBottom="@dimen/_5ssp"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <ImageView
+                android:background="@drawable/date_border"
+                android:id="@+id/imgQRCode"
+                android:layout_width="300dp"
+                android:layout_below="@id/txtAmount"
+                android:layout_height="300dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/logo_spalsh" />
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgQRCode"
+                android:fontFamily="@font/good_time"
+                android:paddingTop="5dp"
+                android:text="Upi id"
+                android:gravity="center_horizontal|center"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:layout_marginRight="@dimen/_5ssp"
+                android:typeface="monospace" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_below="@id/text_title"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/refholder"
+                android:layout_marginLeft="@dimen/_7ssp"
+                android:layout_marginRight="@dimen/_7ssp"
+                android:layout_marginBottom="6dp"
+                android:hint="Enter UPI Ref. #">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_ref"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_bank_24"
+                    android:drawablePadding="10dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="15" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:id="@+id/btnNext"
+                android:layout_margin="@dimen/_10ssp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/refholder"
+                android:textColor="@color/white"
+                android:background="@color/md_blue_500"
+                android:layout_centerHorizontal="true"
+                style="@style/Widget.MaterialComponents.Button"
+                android:text="Next">
+
+            </androidx.appcompat.widget.AppCompatButton>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

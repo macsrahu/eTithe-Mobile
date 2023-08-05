@@ -16,7 +16,7 @@ public class Regions implements Serializable {
     String cpemail;
     String epmobile;
     String cpname;
-
+    String UPI;
     public Regions() {
 
     }
@@ -123,5 +123,13 @@ public class Regions implements Serializable {
 
     public void setCpname(String cpname) {
         this.cpname = cpname;
+    }
+
+    public String getUPI() {
+        return UPI;
+    }
+
+    public void setUPI(String UPI) {
+        this.UPI = UPI;
     }
 }

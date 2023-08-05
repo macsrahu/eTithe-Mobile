@@ -147,6 +147,10 @@ public class ReceiptEntry extends AppCompatActivity {
             Global.GET_FUND_TYPES();
         }
         InitializeControls();
+        //GetRegionNameByRegionKey
+        if(Global.REGION_MODEL==null) {
+            Global.GetRegionNameByRegionKey(Global.LOGIN_USER_DETAIL.getRegionkey());
+        }
 
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
@@ -547,10 +551,23 @@ public class ReceiptEntry extends AppCompatActivity {
         }
         Global.SELECTED_RECEIPT = mReceipt;
         Global.SELECTED_RECEIPTS_LIST = mReceiptLineList;
-        //Messages.ShowToast(getApplicationContext(),"Receipt:" + Global.SELECTED_RECEIPT.getReceiptno());
-        Intent intent = new Intent(ReceiptEntry.this, Signature.class);
-        startActivity(intent);
-        finish();
+        if (Global.SELECTED_RECEIPT.getPaymode()=="NEFT" && Global.REGION_MODEL!=null){
+            //Global.REGION_MODEL.setUPI("rahupathi-1@okhdfcbank");
+            if (!Global.REGION_MODEL.getUPI().isEmpty()) {
+                Intent intent = new Intent(ReceiptEntry.this, ShowUPIPaymentCode.class);
+                startActivity(intent);
+                finish();
+            }else{
+                Messages.ShowToast(this.getApplicationContext(),"UPI Id not specified to this region");
+                Intent intent = new Intent(ReceiptEntry.this, Signature.class);
+                startActivity(intent);
+                finish();
+            }
+        }else {
+            Intent intent = new Intent(ReceiptEntry.this, Signature.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void GetReceiptNoByRegionKey(String regionkey, final OnGetDataListener listener) {

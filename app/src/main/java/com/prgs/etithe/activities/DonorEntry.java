@@ -149,6 +149,9 @@ public class DonorEntry extends AppCompatActivity {
     @BindView(R.id.radio_button_single)
     RadioButton radio_button_single;
 
+    @BindView(R.id.radio_button_other)
+    RadioButton radio_button_other;
+
     @BindView(R.id.radio_button_member)
     RadioButton radio_button_member;
 
@@ -230,6 +233,8 @@ public class DonorEntry extends AppCompatActivity {
         if (mDonor.getMarried() != null) {
             if (mDonor.getMarried().toLowerCase().equals("married")) {
                 radio_button_married.setChecked(true);
+            }else if(mDonor.getMarried().toLowerCase().equals("other")){
+                radio_button_other.setChecked(true);
             } else {
                 radio_button_single.setChecked(true);
             }
@@ -690,8 +695,12 @@ public class DonorEntry extends AppCompatActivity {
         boolean isvalid = true;
         mDonorName = input_donor_name.getText().toString();
         mGender = radio_button_female.isChecked() ? "Female" : radio_button_male.isChecked() ? "Male" : "Unknown";
-        mMarried = radio_button_married.isChecked() ? "Married" : "Single";
 
+        if (radio_button_other.isChecked()){
+            mMarried ="Other";
+        }else{
+            mMarried = radio_button_married.isChecked() ? "Married" : "Single";
+        }
         mBirthDate = input_birth_date.getText().toString();
         mWedDate = input_web_date.getText().toString();
 

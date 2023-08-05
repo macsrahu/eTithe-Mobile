@@ -86,15 +86,15 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-       // _emailText.setText("bharath_0774@rediffmail.com");
-       // _passwordText.setText("test@123");
+//        _emailText.setText("bharath_0774@rediffmail.com");
+//        _passwordText.setText("test@123");
 
         //_emailText.setText("jomycssm@gmail.com");
         //_passwordText.setText("test@123");
 
         //_emailText.setText("yasarooban81@gmail.com");
-         //_emailText.setText("rahupathi@gmail.com");
-        //_passwordText.setText("Test@12345");s
+         _emailText.setText("rahupathi@gmail.com");
+         _passwordText.setText("Test@12345");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
