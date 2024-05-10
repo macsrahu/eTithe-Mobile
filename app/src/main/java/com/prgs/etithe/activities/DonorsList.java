@@ -216,11 +216,11 @@ public class DonorsList extends AppCompatActivity {
                                             view.setSelectedIndex(position);
                                             if (view != null) {
                                                 mArea = item;
-                                                LoadDonorsByReps();
+                                                LoadDonorsByReps(mArea.getKey());
                                             }
                                         }
                                     });
-                                    LoadDonorsByReps();
+                                    LoadDonorsByReps(mArea.getKey());
                                 }
                                 dialog.dismiss();
                             } else {
@@ -240,71 +240,124 @@ public class DonorsList extends AppCompatActivity {
         }
     }
 
-    private void LoadDonorsByReps() {
+    private void LoadDonorsByReps(String areaKey) {
 
         Global.GET_OBJECT_FROM_MEMORY(getApplicationContext(), Global.USER_TYPE);
-
-
         String loadByKeyName = Global.USER_TYPE == 3 ? "personkey" : "officerkey";
         String lByKeyValueOf = Global.USER_TYPE == 3 ? Global.LOGIN_BY_AREA_PERSON.getKey() : Global.LOGIN_BY_FIELD_OFFICER.getKey();
 
         final ProgressDialog dialog = new ProgressDialog(DonorsList.this, R.style.MyAlertDialogStyle);
         dialog.setMessage("Loading donor..");
         dialog.show();
-        // mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS);
-        FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS).orderByChild(loadByKeyName)
-                .equalTo(lByKeyValueOf)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            mDonors.clear();
-                            for (DataSnapshot donorSnapshot : dataSnapshot.getChildren()) {
-                                Donor donor = donorSnapshot.getValue(Donor.class);
-                                if (mArea!=null) {
-                                    if (mArea.getKey().equals("all")) {
-                                        donor.setKey(donorSnapshot.getKey());
-                                        mDonors.add(donor);
-                                    } else {
-                                        if (donor.getAreakey() != null) {
-                                            if (donor.getAreakey().equals(mArea.getKey())) {
-                                                donor.setKey(donorSnapshot.getKey());
-                                                mDonors.add(donor);
+
+         if (areaKey!="all"){
+            // mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS);
+            FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS).orderByChild("areakey")
+                    .equalTo(areaKey)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                mDonors.clear();
+                                for (DataSnapshot donorSnapshot : dataSnapshot.getChildren()) {
+                                    Donor donor = donorSnapshot.getValue(Donor.class);
+                                    if (mArea != null) {
+                                        if (mArea.getKey().equals("all")) {
+                                            donor.setKey(donorSnapshot.getKey());
+                                            mDonors.add(donor);
+                                        } else {
+                                            if (donor.getAreakey() != null) {
+                                                if (donor.getAreakey().equals(mArea.getKey())) {
+                                                    donor.setKey(donorSnapshot.getKey());
+                                                    mDonors.add(donor);
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            if (mDonors.size() > 0) {
-                                Collections.sort(mDonors, new Comparator<Donor>() {
-                                    public int compare(Donor o1, Donor o2) {
-                                        return o1.getDonor().compareTo(o2.getDonor());
-                                    }
-                                });
-                                rvDonors.setVisibility(View.VISIBLE);
-                                tvNoRecordFound.setVisibility(View.GONE);
-                                adapter.notifyDataSetChanged();
+                                if (mDonors.size() > 0) {
+                                    Collections.sort(mDonors, new Comparator<Donor>() {
+                                        public int compare(Donor o1, Donor o2) {
+                                            return o1.getDonor().compareTo(o2.getDonor());
+                                        }
+                                    });
+                                    rvDonors.setVisibility(View.VISIBLE);
+                                    tvNoRecordFound.setVisibility(View.GONE);
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    rvDonors.setVisibility(View.GONE);
+                                    tvNoRecordFound.setVisibility(View.VISIBLE);
+                                }
+                                dialog.dismiss();
                             } else {
                                 rvDonors.setVisibility(View.GONE);
                                 tvNoRecordFound.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
                             }
-                            dialog.dismiss();
-                        } else {
-                            rvDonors.setVisibility(View.GONE);
-                            tvNoRecordFound.setVisibility(View.VISIBLE);
-                            dialog.dismiss();
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        dialog.dismiss();
-                        rvDonors.setVisibility(View.GONE);
-                        tvNoRecordFound.setText(databaseError.getMessage());
-                        tvNoRecordFound.setVisibility(View.VISIBLE);
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            dialog.dismiss();
+                            rvDonors.setVisibility(View.GONE);
+                            tvNoRecordFound.setText(databaseError.getMessage());
+                            tvNoRecordFound.setVisibility(View.VISIBLE);
+                        }
+                    });
+        }else{
+             FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_DONORS).orderByChild("regionkey")
+                     .equalTo(Global.LOGIN_USER_DETAIL.getRegionkey())
+                     .addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                             if (dataSnapshot.exists()) {
+                                 mDonors.clear();
+                                 for (DataSnapshot donorSnapshot : dataSnapshot.getChildren()) {
+                                     Donor donor = donorSnapshot.getValue(Donor.class);
+                                     if (mArea != null) {
+                                         if (mArea.getKey().equals("all")) {
+                                             donor.setKey(donorSnapshot.getKey());
+                                             mDonors.add(donor);
+                                         } else {
+                                             if (donor.getAreakey() != null) {
+                                                 if (donor.getAreakey().equals(mArea.getKey())) {
+                                                     donor.setKey(donorSnapshot.getKey());
+                                                     mDonors.add(donor);
+                                                 }
+                                             }
+                                         }
+                                     }
+                                 }
+                                 if (mDonors.size() > 0) {
+                                     Collections.sort(mDonors, new Comparator<Donor>() {
+                                         public int compare(Donor o1, Donor o2) {
+                                             return o1.getDonor().compareTo(o2.getDonor());
+                                         }
+                                     });
+                                     rvDonors.setVisibility(View.VISIBLE);
+                                     tvNoRecordFound.setVisibility(View.GONE);
+                                     adapter.notifyDataSetChanged();
+                                 } else {
+                                     rvDonors.setVisibility(View.GONE);
+                                     tvNoRecordFound.setVisibility(View.VISIBLE);
+                                 }
+                                 dialog.dismiss();
+                             } else {
+                                 rvDonors.setVisibility(View.GONE);
+                                 tvNoRecordFound.setVisibility(View.VISIBLE);
+                                 dialog.dismiss();
+                             }
+                         }
 
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                             dialog.dismiss();
+                             rvDonors.setVisibility(View.GONE);
+                             tvNoRecordFound.setText(databaseError.getMessage());
+                             tvNoRecordFound.setVisibility(View.VISIBLE);
+                         }
+                     });
+         }
     }
 
 }

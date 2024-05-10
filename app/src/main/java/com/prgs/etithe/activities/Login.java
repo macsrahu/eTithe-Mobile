@@ -86,15 +86,17 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-//        _emailText.setText("bharath_0774@rediffmail.com");
-//        _passwordText.setText("test@123");
+        //_emailText.setText("bharath_0774@rediffmail.com");
+        //_emailText.setText("\tsales@maaziah.com");
+        //_emailText.setText("sales@maaziah.com");
+        //_passwordText.setText("test@123");
 
         //_emailText.setText("jomycssm@gmail.com");
         //_passwordText.setText("test@123");
 
         //_emailText.setText("yasarooban81@gmail.com");
-         _emailText.setText("rahupathi@gmail.com");
-         _passwordText.setText("Test@12345");
+        // _emailText.setText("rahupathi@gmail.com");
+         //_passwordText.setText("Test@12345");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +190,6 @@ public class Login extends AppCompatActivity {
         dialog.setMessage("Verifying information....");
         dialog.show();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_USER_DETAIL);
-        //Toast.makeText(getApplicationContext(), key, Toast.LENGTH_LONG).show();
         mDatabase.orderByChild("userid").equalTo(key).addValueEventListener(new ValueEventListener() {
             @SuppressLint("WrongConstant")
             @Override
@@ -196,13 +197,24 @@ public class Login extends AppCompatActivity {
                 dialog.dismiss();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+
                         UserDetails userDetail = userSnapshot.getValue(UserDetails.class);
+                        userDetail.setKey(userSnapshot.getKey());
                         if (userDetail != null) {
                             Global.LOGIN_USER_DETAIL = userDetail;
                             Global.WRITE_LOGIN_INFO_TO_MEMORY(getApplicationContext());
 
+                            String sUserDetail = "Name:" + userDetail.getName() + "\n" +
+                                                 "Email:" + userDetail.getEmail() + "\n" +
+                                                  "Key:" + userDetail.getKey() +"\n" +
+                                                 "UserID:" + userDetail.getUserid() +"\n" +
+                                                 "UserType:" + String.valueOf(userDetail.getUsertype());
 
-                            //User Type : 1 - WEB_USER
+                           // Messages.ShowToast(getApplicationContext(), sUserDetail);
+
+
+                            //Messages.ShowToast(getApplicationContext(), String.valueOf(userDetail.getEmail()));
+                            //User Type : 1 - WEB_USERs
                             //USER TYPE : 2 - FIELD_OFFICER
                             //USER TYPE : 3 - AREA  REP
                             //Toast.makeText(getApplicationContext(),"user type:" + String.valueOf(userDetail.getUserkey()),Toast.LENGTH_LONG).show();

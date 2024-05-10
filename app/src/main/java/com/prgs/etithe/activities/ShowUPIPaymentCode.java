@@ -84,7 +84,7 @@ public class ShowUPIPaymentCode extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String referenceNo = input_ref.getText().toString();
-                Messages.ShowToast(getApplicationContext(),referenceNo);
+                //Messages.ShowToast(getApplicationContext(),referenceNo);
                 if (!referenceNo.isEmpty()){
                     if (referenceNo.length()!=13) {
                         Intent intent = new Intent(ShowUPIPaymentCode.this, Signature.class);
@@ -100,9 +100,9 @@ public class ShowUPIPaymentCode extends AppCompatActivity {
         });
 
         String url = "upi://pay?pa=" +   // payment method.
-                "rahupathi-1@okhdfcbank" +         // VPA number.
+                Global.REGION_MODEL.getUPI() +        // VPA number.
                 "&am="+ String.valueOf(Global.SELECTED_RECEIPT.getAmount()) +       // this param is for fixed amount (non editable).
-                "&pn=Ragupathi%P"+      // to showing your name in app.
+                "&pn="+ Global.REGION_MODEL.getRegion() +      // to showing your name in app.
                 "&cu=INR" +                  // Currency code.
                 "&mode=02" +                 // mode O2 for Secure QR Code.
                 "&orgid=189999" +            //If the transaction is initiated by any PSP app then the respective orgID needs to be passed.
@@ -113,7 +113,7 @@ public class ShowUPIPaymentCode extends AppCompatActivity {
 
             Bitmap bitmap = textToImageEncode(url);
             imgQRCode.setImageBitmap(bitmap);
-            text_title.setText(Global.REGION_MODEL.getUPI());
+            text_title.setText(Global.REGION_MODEL.getRegion());
             if (Global.SELECTED_RECEIPT.getAmount()>0) {
                 txtAmount.setText("Receipt Amount:" + Global.GetFormatedAmountWithCurrency(String.valueOf(Global.SELECTED_RECEIPT.getAmount())));
             }
