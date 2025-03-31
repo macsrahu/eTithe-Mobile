@@ -62,7 +62,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.MyViewHo
 
         @Override
         public void onClick(View v) {
-            Messages.ShowToast(mContext, "Clicked");
+           // Messages.ShowToast(mContext, "Clicked");
             Receipt receipt = receiptList.get(getAdapterPosition());
             if (receipt != null) {
                 Global.SELECTED_RECEIPT = receipt;

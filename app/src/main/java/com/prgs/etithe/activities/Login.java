@@ -86,12 +86,12 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-        //_emailText.setText("bharath_0774@rediffmail.com");
+        //emailText.setText("bharath_0774@rediffmail.com");
         //_emailText.setText("\tsales@maaziah.com");
         //_emailText.setText("sales@maaziah.com");
-        //_passwordText.setText("test@123");
+       //_passwordText.setText("test@123");
 
-        //_emailText.setText("jomycssm@gmail.com");
+      // _emailText.setText("jomycssm@gmail.com");
         //_passwordText.setText("test@123");
 
         //_emailText.setText("yasarooban81@gmail.com");

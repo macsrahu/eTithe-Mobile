@@ -52,6 +52,8 @@ import com.prgs.etithe.utilities.KeyboardUtil;
 import com.prgs.etithe.utilities.Messages;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -83,6 +85,7 @@ public class ReceiptsList extends AppCompatActivity {
 
     ReceiptAdapter adapter;
     ArrayList<Receipt> mReceipts = new ArrayList<Receipt>();
+    ArrayList<Receipt> mReceiptsFilter = new ArrayList<Receipt>();
     ArrayList<Receipt> mListFilter = new ArrayList<Receipt>();
 
     private ValueEventListener mDonorsValueListener;
@@ -336,7 +339,7 @@ public class ReceiptsList extends AppCompatActivity {
         rvReceipts.setLayoutManager(mLayoutManager);
         rvReceipts.addItemDecoration(new GridSpacingItemDecoration(1, Global.dpToPx(5, getApplicationContext()), true));
         rvReceipts.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ReceiptAdapter(getApplicationContext(), mReceipts, _NAVIGATE_FROM);
+        adapter = new ReceiptAdapter(getApplicationContext(), mReceiptsFilter, _NAVIGATE_FROM);
         rvReceipts.setAdapter(adapter);
 
         String lByKeyValueOf = Global.USER_TYPE == 3 ? Global.LOGIN_BY_AREA_PERSON.getKey() : Global.LOGIN_BY_FIELD_OFFICER.getKey();
@@ -344,29 +347,41 @@ public class ReceiptsList extends AppCompatActivity {
         final ProgressDialog dialog = new ProgressDialog(ReceiptsList.this, R.style.MyAlertDialogStyle);
         dialog.setMessage("Loading..");
         dialog.show();
-        mReceipts.clear();
+        mReceiptsFilter.clear();
         dialog.show();
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM-yyyy", Locale.ENGLISH); // Full month name + Year
+        String currentMonthYear = dateFormat.format(calendar.getTime()).toUpperCase(); // Convert to uppercase
+
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(FirebaseTables.TBL_RECEIPTS);
-        mDonorsValueListener = mDatabaseReference.orderByChild("repkey")
+        mDonorsValueListener = mDatabaseReference.orderByChild("repkey") // repkey
                 .equalTo(lByKeyValueOf)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            mReceipts.clear();
+                            mReceiptsFilter.clear();
                             Double dblAmount=0d;
                             for (DataSnapshot donorSnapshot : dataSnapshot.getChildren()) {
+
                                 Receipt receipt = donorSnapshot.getValue(Receipt.class);
-                                receipt.setKey(donorSnapshot.getKey());
-                                if (receipt.getCancel()==0) {
-                                    dblAmount += receipt.getAmount();
+                                //Messages.ShowToast(getApplicationContext(),String.valueOf((receipt.getRepkey())));
+                                if (receipt != null && receipt.getPaymonth().equals(currentMonthYear)) {
+                                    receipt.setKey(donorSnapshot.getKey());
+                                    if (receipt.getCancel() == 0) {
+                                        dblAmount += receipt.getAmount();
+                                    }
+                                    mReceiptsFilter.add(receipt);
                                 }
+                                // Receipts added for filter
                                 mReceipts.add(receipt);
                             }
-                            if (mReceipts.size() > 0) {
+                            if (mReceiptsFilter.size() > 0) {
 
                                 //Sort By Latest Receipt
-                                Collections.sort(mReceipts, new Comparator<Receipt>() {
+                                Collections.sort(mReceiptsFilter, new Comparator<Receipt>() {
                                     public int compare(Receipt obj1, Receipt obj2) {
                                         return (obj1.getCreatedon() > obj2.getCreatedon()) ? -1 : (obj1.getCreatedon() > obj2.getCreatedon()) ? 1 : 0;
                                     }
@@ -374,7 +389,7 @@ public class ReceiptsList extends AppCompatActivity {
                                 rvReceipts.setVisibility(View.VISIBLE);
                                 tvNoRecordFound.setVisibility(View.GONE);
                                 adapter.notifyDataSetChanged();
-                                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrency(String.valueOf(dblAmount)));
+                                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrencyWithSeperation(String.valueOf(dblAmount)));
 
                                 //LoadFilter();
                             } else {
@@ -443,7 +458,7 @@ public class ReceiptsList extends AppCompatActivity {
                                         return (obj1.getCreatedon() > obj2.getCreatedon()) ? -1 : (obj1.getCreatedon() > obj2.getCreatedon()) ? 1 : 0;
                                     }
                                 });
-                                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrency(String.valueOf(dblAmount)));
+                                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrencyWithSeperation(String.valueOf(dblAmount)));
                                 rvReceipts.setVisibility(View.VISIBLE);
                                 tvNoRecordFound.setVisibility(View.GONE);
                                 adapter.notifyDataSetChanged();
@@ -475,119 +490,77 @@ public class ReceiptsList extends AppCompatActivity {
     }
 
     private void LoadFilter() {
+        if (mReceipts != null && !mReceipts.isEmpty()) {
 
+            if (!input_dialog_from_date.getText().toString().isEmpty() &&
+                    !input_dialog_to_date.getText().toString().isEmpty()) {
 
-        if (mReceipts != null && mReceipts.size() > 0) {
-            //Messages.ShowToast(getApplicationContext(),String.valueOf((mReceipts.size())));
-
-            if (!input_dialog_from_date.getText().toString().isEmpty() && !input_dialog_to_date.getText().toString().isEmpty()) {
-                Double dblAmount=0d;
+                double totalAmount = 0.0;
                 mListFilter.clear();
+
                 try {
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
                     Date fromDate = sdf.parse(input_dialog_from_date.getText().toString());
-                    long startDate = fromDate.getTime();
-
                     Date toDate = sdf.parse(input_dialog_to_date.getText().toString());
+
+                    long startDate = fromDate.getTime();
                     long endDate = toDate.getTime();
 
+
+
                     if (startDate > endDate) {
-                        Messages.ShowToast(getApplicationContext(), "ToDate must be grater than FromDate");
+                        Messages.ShowToast(getApplicationContext(), "ToDate must be greater than FromDate");
                         return;
                     }
-                    int totalReceipts=0;
+
+                    String filterMessage = "From Date: " + input_dialog_from_date.getText().toString() +
+                            "\nToDate: " + input_dialog_to_date.getText().toString() +
+                            "\nPayMode: " + PAYMENT_MODE;
+                    Messages.ShowToast(getApplicationContext(), filterMessage);
 
                     for (Receipt receipt : mReceipts) {
-                        //Messages.ShowToast(getApplicationContext(), receipt.getPaymode());
-                        //if (receipt.getPaymode() == "CHEQUE") {
-                        SimpleDateFormat sdfRecet = new SimpleDateFormat("dd/MM/yyyy");
-                        Date recept = sdfRecet.parse(receipt.getReceiptdate());
-                        long rectDate = recept.getTime();
-                        String message ="From Date: " + input_dialog_from_date.getText().toString() +"\nToDate: " + input_dialog_to_date.getText().toString() + "\nPayMode: "  + PAYMENT_MODE;
+                        Date receiptDate = sdf.parse(receipt.getReceiptdate());
+                        long receiptTime = receiptDate.getTime();
 
-                        Messages.ShowToast(getApplicationContext(),message);
+                        if (receiptTime >= startDate && receiptTime <= endDate) {
+                            boolean isMatchingPayMode = PAYMENT_MODE.equals("ALL") ||
+                                    (PAYMENT_MODE.equals("CASH") && receipt.getPaymode().equals("CASH")) ||
+                                    (!PAYMENT_MODE.equals("CASH") && !receipt.getPaymode().equals("CASH"));
 
-                        if (PAYMENT_MODE != "ALL") {
-
-                            if (PAYMENT_MODE=="CASH"){
-                                if (receipt.getPaymode().equals(PAYMENT_MODE)) {
-                                    if (rectDate >= startDate && rectDate <= endDate) {
-
-                                        if (receipt.getCancel() == 0) {
-                                            dblAmount += receipt.getAmount();
-                                        }
-                                        if (chkShowCancelled.isChecked()) {
-                                            IsCancelled = true;
-                                            mListFilter.add(receipt);
-                                        } else {
-                                            IsCancelled = false;
-                                            if (receipt.getCancel() == 0) {
-                                                mListFilter.add(receipt);
-                                            }
-                                        }
-                                    }
-                                }
-                            }else{
-                                //BANK
-                                if (!receipt.getPaymode().equals("CASH")) {
-                                    if (rectDate >= startDate && rectDate <= endDate) {
-
-                                        if (receipt.getCancel() == 0) {
-                                            dblAmount += receipt.getAmount();
-                                        }
-                                        if (chkShowCancelled.isChecked()) {
-                                            IsCancelled = true;
-                                            mListFilter.add(receipt);
-                                        } else {
-                                            IsCancelled = false;
-                                            if (receipt.getCancel() == 0) {
-                                                mListFilter.add(receipt);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            if (rectDate >= startDate && rectDate <= endDate) {
-
+                            if (isMatchingPayMode) {
                                 if (receipt.getCancel() == 0) {
-                                    dblAmount += receipt.getAmount();
+                                    totalAmount += receipt.getAmount();
                                 }
-                                if (chkShowCancelled.isChecked()) {
-                                    IsCancelled = true;
+
+                                if (chkShowCancelled.isChecked() || receipt.getCancel() == 0) {
                                     mListFilter.add(receipt);
-                                } else {
-                                    IsCancelled = false;
-                                    if (receipt.getCancel() == 0) {
-                                        mListFilter.add(receipt);
-                                    }
                                 }
                             }
                         }
-                        //}
                     }
-                } catch (Exception ex) {
+                } catch (Exception ignored) { }
 
-                }
-                //Messages.ShowToast(getApplicationContext(),String.valueOf(mListFilter));
-                if (mListFilter.size()==0){
+                // Show/hide UI elements based on filter results
+                if (mListFilter.isEmpty()) {
                     tvNoRecordFound.setText("No record(s) found for the filtered criteria");
                     tvNoRecordFound.setVisibility(View.VISIBLE);
                     rvReceipts.setVisibility(View.INVISIBLE);
                     lyTotal.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     tvNoRecordFound.setVisibility(View.GONE);
                     lyTotal.setVisibility(View.VISIBLE);
                     rvReceipts.setVisibility(View.VISIBLE);
                 }
-                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrency(String.valueOf(dblAmount)));
+
+                tvTotalAmount.setText(Global.GetFormatedAmountWithCurrencyWithSeperation(String.valueOf(totalAmount)));
                 adapter = new ReceiptAdapter(getApplicationContext(), mListFilter, _NAVIGATE_FROM);
                 rvReceipts.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                //Messages.ShowToast(getApplicationContext(), String.valueOf(mListFiter.size()));
             }
+        }else{
+            Messages.ShowToast(getApplicationContext(),"No Receipts");
         }
+
     }
 
     private void ResetList(){
@@ -601,7 +574,7 @@ public class ReceiptsList extends AppCompatActivity {
                     dblAmount += receipt.getAmount();
                 }
             }
-            tvTotalAmount.setText(Global.GetFormatedAmountWithCurrency(String.valueOf(dblAmount)));
+            tvTotalAmount.setText(Global.GetFormatedAmountWithCurrencyWithSeperation(String.valueOf(dblAmount)));
         }
     }
 

@@ -4,7 +4,10 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Region;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,8 +25,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -50,6 +56,9 @@ import android.print.PrintPDF;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -64,6 +73,11 @@ public class WebViewPDF extends AppCompatActivity {
     String _FOLDER_PATH = "eTithe/Pictures";
     String mOutputFilePath;
     String sBranchAddress;
+    private File pdfFile;
+    StringBuilder receiptHTML = new StringBuilder();
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
+    private static final String TAG = "PDF_SHARE";
+    String message="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +87,8 @@ public class WebViewPDF extends AppCompatActivity {
         Toolbar mToolbarView = Global.PrepareToolBar(this, true, "Receipt View");
         setSupportActionBar(mToolbarView);
         CheckFolderPermission();
-
         final WebView webView = (WebView) findViewById(R.id.webViewMain);
+
         webView.setVerticalScrollBarEnabled(true);
         webView.setHorizontalScrollBarEnabled(true);
         // Initializing the Button
@@ -87,6 +101,7 @@ public class WebViewPDF extends AppCompatActivity {
                 printWeb = webView;
             }
         });
+
         LoadRegion();
         LoadMenu(webView);
         LoadDonor(webView);
@@ -100,6 +115,7 @@ public class WebViewPDF extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void LoadMenu(final WebView webView) {
         BottomNavigationView bottonNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         bottonNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -117,7 +133,10 @@ public class WebViewPDF extends AppCompatActivity {
                     }
                     break;
                 case R.id.btnShare:
-                    SharePDFFile(webView);
+                    generatePdfFromWebViewAsImage(webView);
+                    break;
+                case R.id.btnMesageShare:
+                    shareMessage();
                     break;
                 case R.id.btnBack:
                     onBackPressed();
@@ -128,34 +147,143 @@ public class WebViewPDF extends AppCompatActivity {
     }
 
 
+    private void sharePdf() {
+        if (pdfFile == null || !pdfFile.exists()) {
+            Toast.makeText(this, "PDF not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(uri);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        shareIntent.setType("application/pdf");
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+        shareIntent.setPackage("com.whatsapp"); // Share only to WhatsApp
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(shareIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void shareMessage() {
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.setData(Uri.parse("https://api.whatsapp.com/send?text=" + Uri.encode(message)));
+        sendIntent.setPackage("com.whatsapp");
+        try {
+            startActivity(sendIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void generatePdfFromWebView(WebView webViews) {
+        PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+        String jobName = "HTML_to_PDF";
+
+        PrintDocumentAdapter printAdapter = webViews.createPrintDocumentAdapter(jobName);
+        PrintAttributes attributes = new PrintAttributes.Builder()
+                .setMediaSize(PrintAttributes.MediaSize.ISO_B0)
+                .setResolution(new PrintAttributes.Resolution("res1", "PDF", 600, 600))
+                .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+                .build();
+
+        pdfFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "html_to_pdf.pdf");
+
+        printManager.print(jobName, printAdapter, attributes);
+        Toast.makeText(this, "PDF:" + pdfFile, Toast.LENGTH_SHORT).show();
+        // Delay for WebView rendering, then share PDF
+        webViews.postDelayed(this::sharePdf, 3000);
+    }
+    private void generatePdfFromWebViewAsImage(WebView webView) {
+
+        webView.postDelayed(() -> {
+            int width = webView.getWidth();
+            int height = (int) (webView.getContentHeight() * webView.getScale()); // Get full height
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            webView.draw(canvas);
+
+            saveBitmapAsPdf(bitmap);
+        }, 3000); // Wait for rendering
+    }
+    private void saveBitmapAsPdf(Bitmap bitmap) {
+        pdfFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "receipt.pdf");
+
+        try {
+            PdfDocument document = new PdfDocument();
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+
+            Canvas canvas = page.getCanvas();
+            canvas.drawBitmap(bitmap, 0, 0, null);
+
+            document.finishPage(page);
+            document.writeTo(new FileOutputStream(pdfFile));
+            document.close();
+
+            sharePdf();
+        } catch (IOException e) {
+            Toast.makeText(this, "Error saving PDF", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void SharePDFFile(final WebView webView) {
 
         try {
             printBtnPressed = true;
-
+            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
             PrintAttributes attributes = new PrintAttributes.Builder()
                     .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
                     .setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600))
                     .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build();
-            String jobName = Global.SELECTED_RECEIPT.getReceiptno();
+            String jobName = "RECEIPT_PRINT";
             //File path = getCacheDir().getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/");
 
-            File pdfDirectory = new File(getCacheDir(), _FOLDER_PATH);
-            mOutputFilePath = "//RECEIPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf";
-            PrintPDF pdfPrint = new PrintPDF(attributes);
-            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), pdfDirectory, "RECIEPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf");
-            //s.ShowToast(getApplicationContext(), "First:" + mOutputFilePath);
-            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-            if (pdfDirectory.exists()) {
-                File mFile = new File(getBaseContext().getExternalCacheDir().getAbsolutePath() + mOutputFilePath);
-                //.ShowToast(getApplicationContext(), "Second:" + mOutputFilePath);
-                intentShareFile.setType("application/pdf");
-                intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
-                intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                        "Sharing File from eTithe");
-                intentShareFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(Intent.createChooser(intentShareFile, "Share via"));
+            //File pdfDirectory = new File(getCacheDir(), _FOLDER_PATH);
+            //mOutputFilePath = "//RECEIPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf";
+            //PrintPDF pdfPrint = new PrintPDF(attributes);
+            //spdfPrint.print(webView.createPrintDocumentAdapter(jobName), pdfDirectory, "RECIEPT_" + Global.SELECTED_RECEIPT.getReceiptno() + ".pdf");
+            //pdfFile = new File(pdfDirectory, mOutputFilePath);
+            PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(jobName);
+
+            printManager.print(jobName, printAdapter, attributes);
+            //s.ShowToast(getApplicationContext(), "First:" + mOutputFilePath);s
+//            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+//            if (pdfDirectory.exists()) {
+//                File mFile = new File(getBaseContext().getExternalCacheDir().getAbsolutePath() + mOutputFilePath);
+//                //.ShowToast(getApplicationContext(), "Second:" + mOutputFilePath);
+//                intentShareFile.setType("application/pdf");
+//                intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
+//                intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+//                        "Sharing File from eTithe");
+//                intentShareFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(Intent.createChooser(intentShareFile, "Share via"));
+//            }
+
+            //Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+            //File mFile = new File(getBaseContext().getExternalCacheDir().getAbsolutePath() + mOutputFilePath);
+            pdfFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "receipt.pdf");
+            //Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+            Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+            Messages.ShowToast(getApplicationContext(),uri.toString());
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("application/pdf");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //shareIntent.setPackage("com.whatsapp"); // Share only to WhatsApp
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
+            try {
+                startActivity(shareIntent);
+            } catch (Exception e) {
+                Toast.makeText(this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception ex) {
             Messages.ShowToast(getApplicationContext(), ex.getMessage());
@@ -198,7 +326,7 @@ public class WebViewPDF extends AppCompatActivity {
 
 
     private void LoadReportView(WebView webView, Donor mDonor) {
-
+        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.getSettings().setDomStorageEnabled(true);
         //webView.getSettings().setAppCacheEnabled(true);
@@ -212,7 +340,9 @@ public class WebViewPDF extends AppCompatActivity {
 
             String imgUrl = "https://firebasestorage.googleapis.com/v0/b/etithe.appspot.com/o/Logo%2Flogo.png?alt=media&token=3ce66a8e-b023-47cb-9137-e2b4074f77f3";
             String imgSign = Global.SELECTED_RECEIPT.getSignurl();
-
+            message="Received with thanks Rs." + Global.SELECTED_RECEIPT.getAmount() +" from " +Global.SELECTED_RECEIPT.getDonor() +" Church payments according to Psalm 134:3 \n" +
+                    "'MAY THE LORD BLESS YOU FROM ZION, HE WHO MADE HEAVEN AND EARTH'-.CSI Church of Victorious Cross. \n" +
+                    "By, \n  E-Church Team";
 
             for (ReceiptLine receiptLine : Global.SELECTED_RECEIPTS_LIST) {
                 sbReceiptLine.append("<tr>\n");
@@ -299,7 +429,7 @@ public class WebViewPDF extends AppCompatActivity {
             sbReceiptLine.append("</tr>\n");
 
             String  sReceiptTitle = Global.SELECTED_RECEIPT.getCancel()==0? "RECEIPT" : "CANCELLED RECEIPT";
-            StringBuilder receiptHTML = new StringBuilder();
+
             receiptHTML.append("<html>\n" +
                     "<tbody>\n" +
                     "    <div style=\"border: 1px solid black;width: 100%;border-collapse:collapse;font-family: Cambria;\">\n" +

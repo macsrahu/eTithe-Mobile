@@ -135,7 +135,13 @@ public class Global {
         return Global.CURRENCY_SYMBOL + " " + fromatedAmount;
 
     }
+    public static String GetFormatedAmountWithCurrencyWithSeperation(String amount) {
+        DecimalFormat decimalFormat = new DecimalFormat("##,##,##0.00");
+        String fromatedAmount = decimalFormat.format(Double.parseDouble(amount));
 
+        return Global.CURRENCY_SYMBOL + " " + fromatedAmount;
+
+    }
     public static int dpToPx(int dp, Context appContext) {
         Resources r = appContext.getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));

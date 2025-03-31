@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -159,6 +160,11 @@ public class ReceiptView extends AppCompatActivity {
     String _NAVIGATE_FROM;
     File imagePath;
     ArrayList<ReceiptLine> mReceiptLineList;
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
+    private static final String TAG = "PDF_SHARE";
+    private WebView webView;
+    private File pdfFile;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -342,6 +348,55 @@ public class ReceiptView extends AppCompatActivity {
 //            }
 //        }
     }
+
+//    private void generatePdfFromHtml() {
+//        String htmlContent = "<html><body><h1>Hello, PDF!</h1><p>This is a sample PDF generated from HTML.</p></body></html>";
+//        webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
+//
+//        webView.postDelayed(() -> {
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//                PdfDocument pdfDocument = new PdfDocument();
+//                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(600, 800, 1).create();
+//                PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+//                webView.draw(page.getCanvas());
+//                pdfDocument.finishPage(page);
+//
+//                pdfFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "html_to_pdf.pdf");
+//                try {
+//                    FileOutputStream fos = new FileOutputStream(pdfFile);
+//                    pdfDocument.writeTo(fos);
+//                    pdfDocument.close();
+//                    fos.close();
+//                    sharePdf();
+//                } catch (IOException e) {
+//                    Log.e(TAG, "Error writing PDF", e);
+//                    Toast.makeText(this, "Error creating PDF", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }, 3000); // Delay to allow WebView to render
+//    }
+
+
+//    private void sharePdf() {
+//        if (pdfFile == null || !pdfFile.exists()) {
+//            Toast.makeText(this, "PDF not found", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+//
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//        shareIntent.setType("application/pdf");
+//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//        shareIntent.setPackage("com.whatsapp"); // Share only to WhatsApp
+//
+//        try {
+//            startActivity(shareIntent);
+//        } catch (Exception e) {
+//            Toast.makeText(this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     private void shareIt(String bitmapPath) {
         Uri bitmapUri = Uri.parse(bitmapPath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -569,100 +624,6 @@ public class ReceiptView extends AppCompatActivity {
         startActivity(iMain);
         finish();
     }
-//    private void ReceiptCreation(int menu_type) {
-//        PDFWriter writer = new PDFWriter(PaperSize.FOLIO_WIDTH, PaperSize.FOLIO_HEIGHT);
-//        int _START_MARGIN = 890;
-//        int _FOLIO_WIDTH = 612;
-//        int _LEFT = 20;
-//        int _NO_OF_LINES_PER_PAGE = 17;
-//        Bitmap bitmapLogo = drawableToBitmap(getBaseContext().getResources().getDrawable(R.drawable.logo_print));
-//
-//        writer.setFont(StandardFonts.SUBTYPE, StandardFonts.MAC_ROMAN_ENCODING);
-//        String sSubTitle = "Donation Receipt";
-//        //writer.addRawContent("1 0 0 rg\n");
-//        // writer.addImage(_LEFT, _START_MARGIN, bitmapLogo);
-//
-//        String sTitle = getResources().getString(R.string.app_name).toUpperCase();
-//
-//        writer.addText(((_FOLIO_WIDTH / 2) - (sTitle.length() / 2)) - 20, _START_MARGIN, 20, sTitle);
-//
-//        _START_MARGIN = _START_MARGIN - 30;
-//        writer.addText(((_FOLIO_WIDTH / 2) - (sSubTitle.length() / 2) - 60), _START_MARGIN, 20, sSubTitle)
-//        ;
-//        //writer.addRawContent("0 0 0 rg\n");
-//
-//        _START_MARGIN = _START_MARGIN - 20;
-//        writer.addLine(_LEFT, _START_MARGIN, PaperSize.FOLIO_WIDTH - 10, _START_MARGIN);
-//
-//        _START_MARGIN = _START_MARGIN - 30;
-//
-//        String sProdductDesc = rightpad("Receipt No:", 8) + rightpad(Global.SELECTED_RECEIPT.getReceiptno(), 60) + rightpad("Date:", 7) + rightpad(Global.SELECTED_RECEIPT.getReceiptdate(), 10);
-//        writer.addText(_LEFT, _START_MARGIN, 14, sProdductDesc);
-//
-//        _START_MARGIN = _START_MARGIN - 20;
-//
-//        writer.addLine(_LEFT, _START_MARGIN, PaperSize.FOLIO_WIDTH - 10, _START_MARGIN);
-//
-//        _START_MARGIN = _START_MARGIN - 20;
-//
-//        String sName = rightpad("Name:", 10) + rightpad(Global.SELECTED_RECEIPT.getDonor(), 100);
-//        writer.addText(_LEFT, _START_MARGIN, 12, sName);
-//
-//        _START_MARGIN = _START_MARGIN - 20;
-//        String sAddress = rightpad("Address:", 10) + rightpad(Global.SELECTED_RECEIPT.getAddress(), 150);
-//        writer.addText(_LEFT, _START_MARGIN, 12, sAddress);
-//
-//        DecimalFormat decimalQtyFormat = new DecimalFormat("#.00");
-//        String receiptAmount = decimalQtyFormat.format(Float.parseFloat((String.valueOf(Global.SELECTED_RECEIPT.getAmount()))));
-//
-//        _START_MARGIN = _START_MARGIN - 20;
-//        String sAmount = rightpad("Amount:", 10) + rightpad(getStringAtFixedLength(receiptAmount, 8), 10);
-//        writer.addText(_LEFT, _START_MARGIN, 12, sAmount);
-//        _START_MARGIN = _START_MARGIN - 20;
-//
-//        String strProductName = "";
-//        double dblTotal = 0;
-//        int Bottom = _START_MARGIN;
-//        int iSerialNo = 1;
-//        if (mReceiptLineList.size() == 1) {
-//            writer.addText(_LEFT, _START_MARGIN, 12, rightpad("Donation distributed to the fund", 100));
-//        } else {
-//            writer.addText(_LEFT, _START_MARGIN, 12, rightpad("Donation distributed to the funds are:", 100));
-//        }
-//        _START_MARGIN = _START_MARGIN - 20;
-//        for (ReceiptLine receiptLine : mReceiptLineList) {
-//            if (receiptLine.getAmount() > 0) {
-//
-//                if (receiptLine.getFundtype().length() > 30) {
-//                    strProductName = receiptLine.getFundtype().substring(0, 30).trim().toUpperCase();
-//                } else {
-//                    strProductName = receiptLine.getFundtype().trim().toUpperCase();
-//                }
-//
-//                String sDesc = rightpad(String.valueOf(iSerialNo) + ".", 7)
-//                        + strProductName.toUpperCase();
-//                Bottom = Bottom - 20;
-//                writer.addText(_LEFT, Bottom, 12, sDesc);
-//                //----------------------------------------------------------
-//                //Price
-//                //----------------------------------------------------------
-//                DecimalFormat decimalFormat = new DecimalFormat("#.00");
-//                String amount = decimalFormat.format(receiptLine.getAmount());
-//                writer.addText(490, Bottom, 12, getStringAtFixedLength(amount, 8));
-//                iSerialNo = iSerialNo + 1;
-//            }
-//        }
-////        writer.addRawContent("1 0 0 rg\n");
-//        Bottom = Bottom - 20;
-//        writer.addLine(_LEFT, Bottom, PaperSize.FOLIO_WIDTH - 10, Bottom);
-//        //------------------------------------------------------------------------
-//        String sThanks = "Thank you for your great generosity.Your support is invaluable to us, thank you again!";
-//
-//        Bottom = Bottom - 20;
-//        writer.addText(_LEFT, Bottom, 10, sThanks);
-//
-//        outputToFile(Global.SELECTED_RECEIPT.getReceiptno() + ".pdf", writer.asString(), "ISO-8859-1", menu_type);
-//    }
 
     private String rightpad(String text, int length) {
         return String.format("%-" + length + "." + length + "s", text);
