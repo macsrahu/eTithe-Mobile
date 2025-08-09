@@ -60,8 +60,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -134,6 +133,8 @@ public class WebViewPDF extends AppCompatActivity {
                     break;
                 case R.id.btnShare:
                     generatePdfFromWebViewAsImage(webView);
+                    //generatePdfFromWebView(webView);
+
                     break;
                 case R.id.btnMesageShare:
                     shareMessage();
@@ -185,7 +186,7 @@ public class WebViewPDF extends AppCompatActivity {
 
         PrintDocumentAdapter printAdapter = webViews.createPrintDocumentAdapter(jobName);
         PrintAttributes attributes = new PrintAttributes.Builder()
-                .setMediaSize(PrintAttributes.MediaSize.ISO_B0)
+                .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
                 .setResolution(new PrintAttributes.Resolution("res1", "PDF", 600, 600))
                 .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
                 .build();
@@ -239,7 +240,7 @@ public class WebViewPDF extends AppCompatActivity {
             printBtnPressed = true;
             PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
             PrintAttributes attributes = new PrintAttributes.Builder()
-                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                    .setMediaSize(PrintAttributes.MediaSize.ISO_B0)
                     .setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600))
                     .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build();
             String jobName = "RECEIPT_PRINT";
@@ -272,7 +273,7 @@ public class WebViewPDF extends AppCompatActivity {
             //Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
             Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
-            Messages.ShowToast(getApplicationContext(),uri.toString());
+            //Messages.ShowToast(getApplicationContext(),uri.toString());
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("application/pdf");
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -340,9 +341,10 @@ public class WebViewPDF extends AppCompatActivity {
 
             String imgUrl = "https://firebasestorage.googleapis.com/v0/b/etithe.appspot.com/o/Logo%2Flogo.png?alt=media&token=3ce66a8e-b023-47cb-9137-e2b4074f77f3";
             String imgSign = Global.SELECTED_RECEIPT.getSignurl();
-            message="Received with thanks Rs." + Global.SELECTED_RECEIPT.getAmount() +" from " +Global.SELECTED_RECEIPT.getDonor() +" Church payments according to Psalm 134:3 \n" +
-                    "'MAY THE LORD BLESS YOU FROM ZION, HE WHO MADE HEAVEN AND EARTH'-.CSI Church of Victorious Cross. \n" +
-                    "By, \n  E-Church Team";
+            message="Received with Gratitude: We acknowledge with heartfelt thanks the generous contribution of: *Rs." + Global.SELECTED_RECEIPT.getAmount() +"* from *" +Global.SELECTED_RECEIPT.getDonor().trim() +"* " +
+                    "towards the noble cause of Scripture Union-India.\n\n" +
+                    "'May the Lord bless you from Zion, he who made heaven and earth.' (Psalm 134:3)\n" +
+                    "By,\n For *Scripture Union & CSSM Council of India*.";
 
             for (ReceiptLine receiptLine : Global.SELECTED_RECEIPTS_LIST) {
                 sbReceiptLine.append("<tr>\n");

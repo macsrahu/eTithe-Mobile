@@ -6,6 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -13,30 +14,31 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp" />
 
-    <RelativeLayout
+    <!-- Main Content Wrapper -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- No Records Found Text -->
         <TextView
             android:id="@+id/tvNoRecordFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_30ssp"
             android:fontFamily="@font/good_time"
             android:gravity="center"
             android:text="No Receipt(s) found"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="gone" />
 
+        <!-- RecyclerView with Total and Bottom Navigation -->
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/layGrid"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <!-- Receipts List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvReceipts"
                 android:layout_width="match_parent"
@@ -44,48 +46,45 @@
                 android:background="@color/white"
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
-                android:visibility="visible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+            <!-- Total Section -->
             <LinearLayout
-                android:layout_width="match_parent"
                 android:id="@+id/lyTotal"
-                android:layout_alignBottom="@+id/rvReceipts"
-                android:layout_above="@+id/rvReceipts"
-                android:padding="@dimen/_8ssp"
-                android:orientation="horizontal"
-                android:layout_marginLeft="@dimen/_2ssp"
-                android:layout_marginRight="@dimen/_2ssp"
-                app:backgroundTint="@color/primary_dark"
-                android:background="@drawable/recntangle_receipt_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="@dimen/_2ssp"
                 android:layout_marginBottom="@dimen/_46ssp"
-                android:layout_height="wrap_content">
+                android:background="@drawable/recntangle_receipt_total"
+                android:orientation="horizontal"
+                android:padding="@dimen/_8ssp">
+
                 <TextView
                     android:id="@+id/txtTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/good_time"
                     android:text="Total"
-                    android:textSize="@dimen/_15ssp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-                </TextView>
+                    android:textSize="@dimen/_15ssp" />
+
                 <TextView
                     android:id="@+id/txtTotalAmount"
-                    android:fontFamily="@font/good_time"
-                    android:text="0.00"
-                    android:gravity="right"
-                    android:textSize="@dimen/_15ssp"
-                    android:layout_marginRight="@dimen/_4ssp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </TextView>
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_4ssp"
+                    android:fontFamily="@font/good_time"
+                    android:gravity="right"
+                    android:text="0.00"
+                    android:textSize="@dimen/_15ssp" />
             </LinearLayout>
+
+            <!-- Bottom Navigation -->
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/rvReceipts"
-                android:backgroundTint="@color/white"
-                android:layout_alignBottom="@+id/rvReceipts"
+                android:layout_alignParentBottom="true"
                 app:backgroundTint="@color/primary_dark"
                 app:elevation="@dimen/_5ssp"
                 app:itemIconTint="@color/white"
@@ -95,7 +94,6 @@
                 app:menu="@menu/menu_nav_receipt_list" />
         </RelativeLayout>
 
+    </FrameLayout>
 
-
-    </RelativeLayout>
 </LinearLayout>

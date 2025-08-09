@@ -118,8 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15ssp"
             android:gravity="center_horizontal"
-            android:text="Version Info"
-            android:visibility="gone" />
+            android:text="Version: 1.0.0.4"
+            />
     </LinearLayout>
 
 

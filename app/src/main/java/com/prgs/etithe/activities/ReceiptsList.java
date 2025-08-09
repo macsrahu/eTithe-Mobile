@@ -66,7 +66,7 @@ import javax.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 //import crl.android.pdfwriter.Array;
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 public class ReceiptsList extends AppCompatActivity {
 
@@ -396,6 +396,7 @@ public class ReceiptsList extends AppCompatActivity {
                                 tvTotalAmount.setText("");
                                 rvReceipts.setVisibility(View.GONE);
                                 tvNoRecordFound.setVisibility(View.VISIBLE);
+                                tvNoRecordFound.setText("No record found for selected month:\n" + currentMonthYear);
                             }
                             dialog.dismiss();
                         } else {

@@ -74,8 +74,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import id.zelory.compressor.Compressor;
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -489,8 +488,12 @@ public class UploadPhoto extends AppCompatActivity {
                 imgPicture.setImageBitmap(imgRotated);
                 //File mDestination = new File(_FOLDER_PATH +"//temp.jpg");
 
-                File mCompressedFile = new Compressor(this).compressToFile(mFile.getAbsoluteFile());
-                mOutputFilePath = mCompressedFile.getAbsolutePath();
+                //File mCompressedFile = new Compressor(this).compressToFile(mFile.getAbsoluteFile());
+                String compressedImagePath = SiliCompressor.with(this).compress(mFile.getAbsoluteFile().toString(), getExternalFilesDir(null).getAbsoluteFile());
+                File compressedFile = new File(compressedImagePath);
+
+
+                mOutputFilePath = compressedFile.getAbsolutePath();
 
              } catch (Exception ex) {
                 Messages.ShowToast(getApplication(), "Error:" + ex.getMessage());

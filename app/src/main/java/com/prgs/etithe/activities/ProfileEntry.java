@@ -5,14 +5,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -22,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -40,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -61,8 +61,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -72,8 +70,6 @@ import javax.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import id.zelory.compressor.Compressor;
-import io.reactivex.annotations.NonNull;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -745,8 +741,12 @@ public class ProfileEntry extends AppCompatActivity {
                 Bitmap imgRotated = Global.rotateImageIfRequired(getApplicationContext(), myBitmap, Uri.fromFile(mFile));
                 imgPicture.setImageBitmap(imgRotated);
 
-                File mCompressedFile = new Compressor(this).compressToFile(mFile.getAbsoluteFile());
-                mOutputFilePath = mCompressedFile.getAbsolutePath();
+                //File mCompressedFile = new Compressor(this).compressToFile(mFile.getAbsoluteFile());
+
+                String compressedImagePath = SiliCompressor.with(this).compress(mFile.getAbsoluteFile().toString(), getExternalFilesDir(null).getAbsoluteFile());
+                File compressedFile = new File(compressedImagePath);
+
+                mOutputFilePath = compressedFile.getAbsolutePath();
                 if (mOutputFilePath!=""){
                     UploadingProfilePicture();
                 }

@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
+        android:authorities="com.prgs.etithe.provider"
         android:theme="@style/AppMaterialTheme">
         <activity
             android:name=".activities.Splash"
@@ -127,6 +128,15 @@
 <!--        <service-->
 <!--            android:exported="true"-->
 <!--            android:name=".service.TrackingService" />-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 
 </manifest>

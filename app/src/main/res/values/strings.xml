@@ -27,6 +27,7 @@
     <string name="sign_clear">Clear</string>
     <string name="covert_pdf">Show PDF</string>
     <string name="share_pdf">Share</string>
+    <string name="share_message">Message</string>
     <string name="remove_picture">Do you want to remove?</string>
     <string name="dialog_delete_message">Do you want to remove?</string>
     <string name="yes">YES</string>
@@ -37,7 +38,8 @@
     <string name="bank_name">Bank Name</string>
     <string name="cash">CASH</string>
     <string name="cheque">CHEQUE</string>
-    <string name="neft">NEFT/UPI ID</string>
+    <string name="neft">NEFT</string>
+    <string name="upi">UPI ID</string>
     <string name="dialog_amount">Amount</string>
     <string name="dialog_fund_type">Fund Type</string>
     <string name="cheque_date">Cheque Date</string>

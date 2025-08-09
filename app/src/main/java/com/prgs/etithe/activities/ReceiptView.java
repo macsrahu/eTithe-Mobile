@@ -72,11 +72,8 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-//import crl.android.pdfwriter.PDFWriter;
-//import crl.android.pdfwriter.PaperSize;
-//import crl.android.pdfwriter.StandardFonts;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 public class ReceiptView extends AppCompatActivity {
 
@@ -333,20 +330,7 @@ public class ReceiptView extends AppCompatActivity {
             e.printStackTrace();
             retValue = -1;
         }
-//        if (fileSigns.exists()) {
-//            try {
-//                ImageCompressor imageCompressor = new ImageCompressor();
-//                String imagePath = imageCompressor.compressImage(getBaseContext(), fileSigns.getAbsolutePath(),
-//                        _FOLDER_PATH,
-//                        "SCREEN_SHOT_" + String.valueOf(System.currentTimeMillis()));
-//                Messages.ShowToast(getApplicationContext(),"Path:" + imagePath);
-//
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//                Messages.ShowToast(getApplicationContext(),"Compress:" + ex.getMessage());
-//                retValue = -1;
-//            }
-//        }
+
     }
 
 //    private void generatePdfFromHtml() {

@@ -64,7 +64,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 import static android.widget.Toast.LENGTH_LONG;
 

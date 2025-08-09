@@ -3,39 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:background="@color/white">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="center">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:id="@+id/text_title"
             android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/good_time"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:typeface="monospace" />
 
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="260dp"
-                android:layout_height="260dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_logo" />
-
-            <TextView
-                android:id="@+id/text_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imgLogo"
-                android:fontFamily="@font/good_time"
-                android:paddingTop="100dp"
-                android:text="@string/app_name"
-                android:gravity="center_horizontal|center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp"
-                android:typeface="monospace" />
-        </RelativeLayout>
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/tvBuild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Version: 1.0.0.5"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 
 </RelativeLayout>

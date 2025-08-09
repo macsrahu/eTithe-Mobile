@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,7 +34,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.annotations.NonNull;
+import javax.annotation.Nonnull;
 
 public class DependentsList extends AppCompatActivity {
 

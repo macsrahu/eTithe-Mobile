@@ -1,5 +1,6 @@
 package com.prgs.etithe.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -65,7 +66,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import io.reactivex.annotations.NonNull;
+import javax.annotation.Nonnull;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
@@ -303,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 .addDrawerItems(
                         new SecondaryDrawerItem().withName(R.string.drawer_item_profile).withIcon(FontAwesome.Icon.faw_user).withTextColor(getResources().getColor(R.color.dark_blue)),
                         new SecondaryDrawerItem().withName(R.string.drawer_item_reset).withIcon(FontAwesome.Icon.faw_unlock).withTextColor(getResources().getColor(R.color.dark_blue)),
-                        //new SecondaryDrawerItem().withName(R.string.drawer_item_printer).withIcon(FontAwesome.Icon.faw_print).withTextColor(getResources().getColor(R.color.dark_blue)),
+                       //new SecondaryDrawerItem().withName("Version : 1.2.0.1").withIcon(FontAwesome.Icon.faw_archive).withTextColor(getResources().getColor(R.color.dark_blue)),
                         new SecondaryDrawerItem().withName(R.string.drawer_item_logout).withIcon(FontAwesome.Icon.faw_power_off).withTextColor(getResources().getColor(R.color.dark_blue)
                         )
                 )

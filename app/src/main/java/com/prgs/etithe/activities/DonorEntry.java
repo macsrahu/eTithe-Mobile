@@ -22,6 +22,7 @@ import android.location.Geocoder;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -87,7 +88,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.annotations.NonNull;
+import javax.annotation.Nonnull;
 
 public class DonorEntry extends AppCompatActivity {
     @BindView(R.id.input_donor_name)

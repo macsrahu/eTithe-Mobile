@@ -46,8 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 public class Global {
     public static String _ETITHE_REMEMBER_ME = "ETITHE_REMEMBER_ME";

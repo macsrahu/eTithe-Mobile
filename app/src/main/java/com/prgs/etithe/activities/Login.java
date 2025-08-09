@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +42,7 @@ import com.prgs.etithe.utilities.Messages;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.annotations.NonNull;
+import javax.annotation.Nonnull;
 
 public class Login extends AppCompatActivity {
 
@@ -86,13 +87,13 @@ public class Login extends AppCompatActivity {
             }
         }*/
 
-        //emailText.setText("bharath_0774@rediffmail.com");
-        //_emailText.setText("\tsales@maaziah.com");
+      // _emailText.setText("bharath_0774@rediffmail.com");
+        // _emailText.setText("\tsales@maaziah.com");
         //_emailText.setText("sales@maaziah.com");
        //_passwordText.setText("test@123");
 
-      // _emailText.setText("jomycssm@gmail.com");
-        //_passwordText.setText("test@123");
+        //_emailText.setText("Johnvincentsu@gmail.com");
+       // _passwordText.setText("test@123");
 
         //_emailText.setText("yasarooban81@gmail.com");
         // _emailText.setText("rahupathi@gmail.com");

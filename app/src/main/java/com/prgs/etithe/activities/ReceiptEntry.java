@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.adapters.ToolbarBindingAdapter;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,7 +58,7 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 public class ReceiptEntry extends AppCompatActivity {
 
@@ -117,7 +116,7 @@ public class ReceiptEntry extends AppCompatActivity {
     FundType mSelectedFund;
 
     TextInputEditText input_dialog_cheque_date, input_cheque_amount,input_dialog_neft_ref, input_dialog_cheque_no, input_cheque_date, input_dialog_bank_name;
-    RadioButton radio_button_dialog_cheque, radio_button_dialog_cash,radio_button_dialog_neft;
+    RadioButton radio_button_dialog_cheque, radio_button_dialog_cash,radio_button_dialog_neft,radio_button_dialog_upi;
     LinearLayout layBankDetail_dialog,layNeftDetail_dialog;
     MaterialSpinner spinner_dialog_fund_type;
     View positiveAction;
@@ -239,6 +238,14 @@ public class ReceiptEntry extends AppCompatActivity {
                                         } else {
                                             input_dialog_neft_ref.setError("Cannot be empty");
                                         }
+                                    }else if(radio_button_dialog_upi.isChecked()){
+                                        receiptLine.setPaymode("NEFT");
+                                        receiptLine.setBankname("NEFT");
+                                        receiptLine.setChequeno("UPI");
+                                        mReceiptLineList.add(receiptLine);
+                                        LoadReceiptList();
+                                        KeyboardUtil.hideKeyboard(ReceiptEntry.this);
+                                        dialog.dismiss();
                                     } else {
                                         mReceiptLineList.add(receiptLine);
                                         LoadReceiptList();
@@ -265,6 +272,7 @@ public class ReceiptEntry extends AppCompatActivity {
         input_amount = (TextInputEditText) dialogCheque.findViewById(R.id.input_amount);
         radio_button_dialog_cash = (RadioButton) dialogCheque.findViewById(R.id.radio_button_cash);
         radio_button_dialog_neft = (RadioButton) dialogCheque.findViewById(R.id.radio_button_neft);
+        radio_button_dialog_upi = (RadioButton) dialogCheque.findViewById(R.id.radio_button_upi);
 
         radio_button_dialog_cheque = (RadioButton) dialogCheque.findViewById(R.id.radio_button_cheque);
         spinner_dialog_fund_type = (MaterialSpinner) dialogCheque.findViewById(R.id.spinner_fund_type);
@@ -553,12 +561,19 @@ public class ReceiptEntry extends AppCompatActivity {
         Global.SELECTED_RECEIPTS_LIST = mReceiptLineList;
         if (Global.SELECTED_RECEIPT.getPaymode()=="NEFT" && Global.REGION_MODEL!=null){
             //Global.REGION_MODEL.setUPI("rahupathi-1@okhdfcbank");
-            if (!Global.REGION_MODEL.getUPI().isEmpty()) {
-                Intent intent = new Intent(ReceiptEntry.this, ShowUPIPaymentCode.class);
-                startActivity(intent);
-                finish();
+            if (mReceiptLineList.get(0)!=null && mReceiptLineList.get(0).getChequeno().contains("UPI"))
+            {
+                if (Global.REGION_MODEL!=null  && Global.REGION_MODEL.getUPI()!=null) {
+                    Intent intent = new Intent(ReceiptEntry.this, ShowUPIPaymentCode.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Messages.ShowToast(this.getApplicationContext(), "UPI Id not specified to this region");
+                    Intent intent = new Intent(ReceiptEntry.this, Signature.class);
+                    startActivity(intent);
+                    finish();
+                }
             }else{
-                Messages.ShowToast(this.getApplicationContext(),"UPI Id not specified to this region");
                 Intent intent = new Intent(ReceiptEntry.this, Signature.class);
                 startActivity(intent);
                 finish();
