@@ -27,7 +27,7 @@ android {
         applicationId "com.prgs.etithe"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 1
+        versionCode 5
         versionName "1.0"
         multiDexEnabled true
         ndk {

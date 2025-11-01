@@ -63,8 +63,9 @@ public class Login extends AppCompatActivity {
     TextView link_signup;
 
 
+
     @BindView(R.id.tvBuild)
-    TextView tvBuild;
+        TextView tvBuild;
 
     private FirebaseAuth mFirebaseAuth;
     View parentLayout;
@@ -92,8 +93,8 @@ public class Login extends AppCompatActivity {
         //_emailText.setText("sales@maaziah.com");
        //_passwordText.setText("test@123");
 
-        //_emailText.setText("Johnvincentsu@gmail.com");
-       // _passwordText.setText("test@123");
+//        _emailText.setText("jomycssm@gmail.com");
+//        _passwordText.setText("test@123");
 
         //_emailText.setText("yasarooban81@gmail.com");
         // _emailText.setText("rahupathi@gmail.com");
@@ -109,6 +110,8 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        tvBuild.setText("V.1.0.0.5\nBuild: 01.Nov.2025");
         //  _loginButton.callOnClick();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }

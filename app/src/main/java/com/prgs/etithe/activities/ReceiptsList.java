@@ -269,23 +269,27 @@ public class ReceiptsList extends AppCompatActivity {
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
-                if (fromDate!=null){
-                    day=fromDate.getDay();
-                    month=fromDate.getMonth();
-                    year=fromDate.getYear();
+
+                if (fromDate != null) {
+                    day = fromDate.getDay();
+                    month = fromDate.getMonth(); // keep as zero-based for Calendar
+                    year = fromDate.getYear();
                 }
-                // date picker dialog
+
                 picker = new DatePickerDialog(ReceiptsList.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String day = String.valueOf(dayOfMonth).length()==1? "0"+ String.valueOf(dayOfMonth) : String.valueOf(dayOfMonth);
-                                String month = String.valueOf(monthOfYear+1).length()==1? "0"+ String.valueOf(monthOfYear+1) : String.valueOf(monthOfYear);
+                                // monthOfYear is zero-based, add 1 only for display
+                                String day = (dayOfMonth < 10 ? "0" : "") + dayOfMonth;
+                                String month = ((monthOfYear + 1) < 10 ? "0" : "") + (monthOfYear + 1);
                                 FROM_DATE = day + "/" + month + "/" + year;
+
                                 input_dialog_from_date.setText(FROM_DATE);
-                                fromDate=new DateHolder();
+
+                                fromDate = new DateHolder();
                                 fromDate.setDay(dayOfMonth);
-                                fromDate.setMonth(monthOfYear);
+                                fromDate.setMonth(monthOfYear); // store zero-based
                                 fromDate.setYear(year);
                                 fromDate.setFulldate(FROM_DATE);
                             }
@@ -293,6 +297,7 @@ public class ReceiptsList extends AppCompatActivity {
                 picker.show();
             }
         });
+
         input_dialog_to_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,33 +306,34 @@ public class ReceiptsList extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
 
-
-                if (toDate!=null) {
+                if (toDate != null) {
                     day = toDate.getDay();
-                    month = toDate.getMonth();
+                    month = toDate.getMonth(); // keep zero-based
                     year = toDate.getYear();
                 }
+
                 picker = new DatePickerDialog(ReceiptsList.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String day = String.valueOf(dayOfMonth).length()==1? "0"+ String.valueOf(dayOfMonth) : String.valueOf(dayOfMonth);
-                                String month = String.valueOf(monthOfYear+1).length()==1? "0"+ String.valueOf(monthOfYear+1) : String.valueOf(monthOfYear);
+                                // monthOfYear is zero-based; add +1 only for display
+                                String day = (dayOfMonth < 10 ? "0" : "") + dayOfMonth;
+                                String month = ((monthOfYear + 1) < 10 ? "0" : "") + (monthOfYear + 1);
                                 TO_DATE = day + "/" + month + "/" + year;
+
                                 input_dialog_to_date.setText(TO_DATE);
 
-                                toDate=new DateHolder();
+                                toDate = new DateHolder();
                                 toDate.setDay(dayOfMonth);
-                                toDate.setMonth(monthOfYear);
+                                toDate.setMonth(monthOfYear); // store zero-based month
                                 toDate.setYear(year);
-
                                 toDate.setFulldate(TO_DATE);
                             }
                         }, year, month, day);
-
                 picker.show();
             }
         });
+
         dialogCheque.show();
     }
 
